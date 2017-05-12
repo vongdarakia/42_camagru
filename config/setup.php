@@ -32,7 +32,7 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
 catch (PDOException $e) {
-    echo 'Connection failed: ' . $e->getMessage();
+    echo 'Connection failed: ' . $e->getMessage() . "\n";
 }
 
 try {
@@ -83,7 +83,9 @@ try {
     $dbh->exec($qry);
 }
 catch (PDOException $e) {
-    echo 'Database setup failed: ' . $e->getMessage();
+    echo 'Database setup failed: ' . $e->getMessage() . "\n";
 }
-    
+
+echo "Setup complete!\n";
+
 ?>

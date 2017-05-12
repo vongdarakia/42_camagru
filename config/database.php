@@ -14,5 +14,5 @@
 
     $DB_DSN = 'mysql:dbname=Camagru;host=localhost';
     $DB_USER = 'root';
-    $DB_PASSWORD = 'root';
+    $DB_PASSWORD = 'password';
 ?>
