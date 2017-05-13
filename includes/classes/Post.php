@@ -12,6 +12,8 @@
  * @link      localhost:8080
  */
 
+require_once 'DbItem.php';
+
 /**
  * Post class that holds all its database operations. This is the
  * image post by a user. Other users can like or comment on it.
@@ -25,13 +27,11 @@
  */
 class Post extends DbItem
 {
-    private $_db;
-    private $_id;
-    private $_first;
-    private $_last;
-    private $_email;
-    private $_password;
-    private static $_fields = ["id", "first", "last", "email", "password"];
+    private $_author_id;
+    private $_img_name;
+    private $_title;
+    private $_description;
+    private static $_fields = ["id", "author_id", "img_name", "title", "description"];
     
     /**
      * Constructs a post object given some values.
@@ -40,15 +40,13 @@ class Post extends DbItem
                                          to access post data.
      * @param Array              $fields Fields we're setting for the object.
      */
-    function __construct($db, $fields)
+    function __construct($db, $fields=null)
     {
-        if (!isset($db)) {
-            throw new Exception("Db must be set.", 1);
-        }
-        $this->_db = $db;
-        $this->_id = 0;
-        $this->_author_id = "";
-        $this->_img_path = "";
+        parent::__construct($db, 'post');
+        $this->_author_id = 0;
+        $this->_img_name = "";
+        $this->_title = "";
+        $this->_description = "";
         if (isset($fields)) {
             if ($this->validFields($fields, Post::$_fields)) {
                 $this->setFields($fields);
@@ -59,172 +57,111 @@ class Post extends DbItem
     }
 
     /**
-     * Sets the id of the user. Id must be greater than 0.
+     * Gets the author id.
      *
-     * @param String $value id of the user.
+     * @return Int the author id.
+     */
+    public function getAuthorId()
+    {
+        return $this->_author_id;
+    }
+
+    /**
+     * Sets the author_id.
+     *
+     * @param Int $value author id.
      *
      * @return Boolean whether set was successful or not.
      */
-    public function setId($value)
+    public function setAuthorId($value)
     {
         if (isset($value) && $value > 0) {
-            $this->_id = $value;
+            $this->_author_id = $value;
             return true;
         }
         return false;
     }
 
     /**
-     * Gets the id of the user.
+     * Gets the image name.
      *
-     * @return String the id.
+     * @return String the image name.
      */
-    public function getId()
+    public function getImgName()
     {
-        return $this->_id;
+        return $this->_img_name;
     }
 
     /**
-     * Gets the first name of the user.
+     * Sets the image name.
      *
-     * @return String the first name.
-     */
-    public function getFirstName()
-    {
-        return $this->_first;
-    }
-
-    /**
-     * Sets the first name of the user.
-     *
-     * @param String $value First name of the user.
+     * @param String $value image name.
      *
      * @return Boolean whether set was successful or not.
      */
-    public function setFirstName($value)
+    public function setImgName($value)
     {
         if (isset($value) && !empty($value)) {
-            $this->_first = $value;
+            $this->_img_name = $value;
             return true;
         }
         return false;
     }
 
     /**
-     * Gets the first name of the user.
+     * Gets the title.
      *
-     * @return String the first name.
+     * @return String the title.
      */
-    public function getLastName()
+    public function getTitle()
     {
-        return $this->_last;
+        return $this->_title;
     }
 
     /**
-     * Sets the last name of the user.
+     * Sets the title.
      *
-     * @param String $value Last name of the user.
+     * @param String $value title.
      *
      * @return Boolean whether set was successful or not.
      */
-    public function setLastName($value)
+    public function setTitle($value)
     {
         if (isset($value) && !empty($value)) {
-            $this->_last = $value;
+            $this->_title = $value;
             return true;
         }
         return false;
     }
 
     /**
-     * Gets the email of the user.
+     * Gets the description.
      *
-     * @return String the email.
+     * @return String the description.
      */
-    public function getEmail()
+    public function getDescription()
     {
-        return $this->_email;
+        return $this->_description;
     }
 
     /**
-     * Sets the email of the user.
+     * Sets the description.
      *
-     * @param String $value email of the user.
+     * @param String $value description.
      *
      * @return Boolean whether set was successful or not.
      */
-    public function setEmail($value)
-    {
-        if (isset($value) && !empty($value) && $this->validEmail($value)) {
-            $this->_email = $value;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Gets the password of the user.
-     *
-     * @return String the password.
-     */
-    public function getPassword()
-    {
-        return $this->_password;
-    }
-
-    /**
-     * Sets the password of the user.
-     *
-     * @param String $value password of the user.
-     *
-     * @return Boolean whether set was successful or not.
-     */
-    public function setPassword($value)
+    public function setDescription($value)
     {
         if (isset($value) && !empty($value)) {
-            $this->_password = $value;
+            $this->_description = $value;
             return true;
         }
         return false;
     }
-    
-    /**
-     * Returns whether the email is valid.
-     * Resource:
-     *      http://stackoverflow.com/questions/12026842/how-to-validate-an-email-address-in-php
-     *
-     * @param String $email Email we're validating.
-     *
-     * @return Boolean whether email is valid or not.
-     */
-    public function validEmail($email)
-    {
-        $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|'.
-        '(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C'.
-        '[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)'.
-        '(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F'.
-        '\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F'.
-        '\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))'.
-        '(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D'.
-        '\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-'.
-        '\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*'.
-        '\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+'.
-        '(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:'.
-        '(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:'.
-        '(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9]'.
-        '[:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:'.
-        '[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:'.
-        '[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:)'.
-        '{5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}'.
-        '(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|'.
-        '(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|'.
-        '(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
-
-        return (preg_match($pattern, $email) === 1);
-    }
 
     /**
-     * Saves the user data.
+     * Updates the object data in the database.
      *
      * @return Int number of users saved. Will be 1 or 0.
      */
@@ -232,70 +169,40 @@ class Post extends DbItem
     {
         $qry = "update `user`
             set
-                first=:first,
-                last=:last,
-                email=:email,
-                password=:password
+                author_id=:author_id,
+                title=:title,
+                img_name=:img_name,
+                description=:description,
             where id=:id";
-        $stmt = $this->_db->prepare($qry);
-        return $stmt->execute(
+        $stmt = $this->db->prepare($qry);
+        $stmt->execute(
             array(
-                ":first" => $this->_first,
-                ":last" => $this->_last,
-                ":email" => $this->_email,
-                ":password" => $this->_password,
-                ":id" => $this->_id
+                ":author_id" => $this->_author_id,
+                ":title" => $this->_title,
+                ":img_name" => $this->_img_name,
+                ":description" => $this->_description,
+                ":id" => $this->id
             )
         );
+        return $stmt->rowCount();
     }
 
     /**
-     * Removes the user from the database.
+     * Loads the data to this object given the ID.
      *
-     * @return Int number of users removed. Will be 1 or 0.
-     */
-    public function remove()
-    {
-        return $this->removeUserById($this->_id);
-    }
-
-    /**
-     * Loads the user data to this object given the ID.
-     *
-     * @param Array $id ID of the user we're trying to get.
+     * @param Int $id ID of the we're trying to get.
      *
      * @return Boolean on whether it was successful or not.
      */
     public function loadById($id)
     {
-        $result = $this->getUserById($id);
+        $result = $this->getById($id);
         if ($result) {
-            $this->_id = $result->id;
-            $this->_first = $result->first;
-            $this->_last = $result->last;
-            $this->_email = $result->email;
-            $this->_password = $result->password;
-            unset($result);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Loads the user data to this object given the email.
-     *
-     * @param Array $email Email of the user we're trying to get.
-     *
-     * @return Boolean on whether it was successful or not.
-     */
-    public function loadByEmail($email)
-    {
-        $result = $this->getUserByEmail($email);
-        if ($result) {
-            $this->_first = $result->first;
-            $this->_last = $result->last;
-            $this->_email = $result->email;
-            $this->_password = $result->password;
+            $this->id = $result->id;
+            $this->_author_id = $result->author_id;
+            $this->_title = $result->title;
+            $this->_img_name = $result->img_name;
+            $this->_description = $result->description;
             unset($result);
             return true;
         }
@@ -316,60 +223,32 @@ class Post extends DbItem
         if (isset($fields) && is_array($fields)) {
             if (array_key_exists('id', $fields)) {
                 if (!$this->setId($fields['id'])) {
-                    throw new Exception("Id must be greater than 0", 1);
+                    throw new Exception("id must be greater than 0.", 1);
                 }
             }
-            if (array_key_exists('first', $fields)) {
-                if (!$this->setFirstName($fields['first'])) {
-                    throw new Exception("First name can't be empty.", 1);
+            if (array_key_exists('author_id', $fields)) {
+                if (!$this->setAuthorId($fields['author_id'])) {
+                    throw new Exception("author_id must be greater than 0", 1);
                 }
             }
-            if (array_key_exists('last', $fields)) {
-                if (!$this->setLastName($fields['last'])) {
-                    throw new Exception("Last name can't be empty", 1);
+            if (array_key_exists('title', $fields)) {
+                if (!$this->setTitle($fields['title'])) {
+                    throw new Exception("title can't be empty.", 1);
                 }
             }
-            if (array_key_exists('email', $fields)) {
-                if (!$this->setEmail($fields['email'])) {
-                    throw new Exception("Email can't be empty", 1);
+            if (array_key_exists('img_name', $fields)) {
+                if (!$this->setImgName($fields['img_name'])) {
+                    throw new Exception("img_name can't be empty.", 1);
                 }
             }
-            if (array_key_exists('password', $fields)) {
-                if (!$this->setPassword($fields['password'])) {
-                    throw new Exception("Password can't be empty", 1);
+            if (array_key_exists('description', $fields)) {
+                if (!$this->setDescription($fields['description'])) {
+                    throw new Exception("description can't be empty.", 1);
                 }
             }
             return true;
         }
         return false;
-    }
-
-    /**
-     * Checks fields if they are valid. Returns 0 the moment it finds
-     * an invalid field.
-     *
-     * @param Array $fields       Fields to be validated.
-     * @param Array $class_fields Fields to validate against.
-     *
-     * @return Int number of valid fields.
-     */
-    public function validFields($fields, $class_fields)
-    {
-        $count = 0;
-        $checkedFields = [];
-
-        if (is_array($fields)) {
-            foreach ($fields as $field => $val) {
-                if (!in_array($field, $class_fields)) {
-                    return 0;
-                }
-                if (!in_array($field, $checkedFields)) {
-                    $checkedFields[] = $field;
-                    $count += 1;
-                }
-            }
-        }
-        return $count;
     }
 
     /**
@@ -385,23 +264,25 @@ class Post extends DbItem
         foreach ($fields as $field => $val) {
             if (isset($fields) && is_array($fields)) {
                 if (array_key_exists('id', $fields)) {
-                    if (!(isset($fields['id']) && !empty($fields['id']))) {
+                    if (!(isset($fields['id']) && $fields['id'] <= 0)) {
                         return false;
                     }
-                } else if (array_key_exists('first', $fields)) {
-                    if (!(isset($fields['first']) && !empty($fields['first']))) {
+                } else if (array_key_exists('author_id', $fields)) {
+                    if (!(isset($fields['author_id'])
+                        && $fields['author_id'] <= 0)
+                    ) {
                         return false;
                     }
-                } else if (array_key_exists('last', $fields)) {
-                    if (!(isset($fields['last']) && !empty($fields['last']))) {
+                } else if (array_key_exists('img_name', $fields)) {
+                    if (!(isset($fields['img_name'])
+                        && !empty($fields['img_name']))
+                    ) {
                         return false;
                     }
-                } else if (array_key_exists('email', $fields)) {
-                    if (!(isset($fields['email']) && !empty($fields['email']))) {
-                        return false;
-                    }
-                } else if (array_key_exists('password', $fields)) {
-                    if (!isset($fields['password']) || empty($fields['password'])) {
+                } else if (array_key_exists('description', $fields)) {
+                    if (!(isset($fields['description'])
+                        && !empty($fields['description']))
+                    ) {
                         return false;
                     }
                 }
@@ -412,75 +293,30 @@ class Post extends DbItem
     }
 
     /**
-     * Gets a db user object given the id. This is not the same instance of
-     * this User class. The object however will have all its fields accessible
-     * to the programmer.
+     * Adds a post to the database given a list of fields. Must have all 3 values.
      *
-     * @param Array $id ID of the user we're trying to get.
+     * @param Int $fields Valuess we're adding.
      *
-     * @return Null or an object of the user.
+     * @return Int number of posts added. Will be 1 or 0.
      */
-    public function getUserById($id)
+    public function add($fields)
     {
-        $stmt = $this->_db->prepare("select * from `user` where id=" . $id);
-        $stmt->execute();
-        $result = $stmt->fetchObject();
-        return $result;
-    }
-
-    /**
-     * Gets a db user object given the email. This is not the same instance of
-     * this User class. The object however will have all its fields accessible
-     * to the programmer.
-     *
-     * @param Array $email email of the user we're trying to get.
-     *
-     * @return Null or an object of the user.
-     */
-    public static function getUserByEmail($email)
-    {
-        $stmt = $this->_db->prepare("select * from `user` where email=" . $email);
-        $stmt->execute();
-        $result = $stmt->fetchObject();
-        return $result;
-    }
-
-    /**
-     * Removes a user from the database given the id;
-     *
-     * @param Int $id The id of the user to be removed.
-     *
-     * @return Int number of users removed. Will be 1 or 0.
-     */
-    public function removeUserById($id)
-    {
-        return $this->_db->exec("delete from `user` where id=" . $id);
-    }
-
-    /**
-     * Adds a user to the database given a list of fields. Must have all 4 values.
-     *
-     * @param Int $fields Values of the users we're adding.
-     *
-     * @return Int number of users added. Will be 1 or 0.
-     */
-    public function addUser($fields)
-    {
-        if ($this->validFields($fields, User::$_fields) == 4
+        if ($this->validFields($fields, Post::$_fields) == count(Post::$_fields) - 1
             && $this->setFields($fields)
         ) {
-            $stmt = $this->_db->prepare(
-                'insert into `user` (first, last, email, password)
-                values (:first, :last, :email, :password)'
+            $stmt = $this->db->prepare(
+                "insert into `{$this->table}` (author_id, title, img_name, description)
+                values (:author_id, :title, :img_name, :description)"
             );
-            return $stmt->execute(
+            $stmt->execute(
                 array(
-                    ":first" => $this->_first,
-                    ":last" => $this->_last,
-                    ":email" => $this->_email,
-                    ":password" => $this->_password
+                    ":author_id" => $this->_author_id,
+                    ":title" => $this->_title,
+                    ":img_name" => $this->_img_name,
+                    ":description" => $this->_description
                 )
             );
+            return $stmt->rowCount();
         }
         return 0;
     }

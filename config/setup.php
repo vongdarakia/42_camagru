@@ -52,8 +52,10 @@ try {
 
     $qry = "create table `post` (
         id int not null auto_increment primary key,
-        img_path varchar(128),
+        title varchar(32),
+        img_name varchar(128),
         author_id int not null,
+        description varchar(1024),
         foreign key (author_id)
             references `user`(id)
     )";
