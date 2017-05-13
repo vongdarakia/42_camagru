@@ -1,32 +1,29 @@
 <?php 
 /**
- * User class file
+ * Post class file
  *
  * PHP version 5.5.38
  *
- * @category  User
+ * @category  Post
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
  * @license   Akia's Public License
  * @link      localhost:8080
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-date_default_timezone_set('America/Los_Angeles');
-require 'DbItem.php';
 
 /**
- * User class that holds all its database operations.
+ * Post class that holds all its database operations. This is the
+ * image post by a user. Other users can like or comment on it.
  *
  * @category  Class
- * @package   User
+ * @package   Post
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
  * @license   Akia's Public License
  * @link      localhost:8080
  */
-class User extends DbItem
+class Post extends DbItem
 {
     private $_db;
     private $_id;
@@ -37,26 +34,54 @@ class User extends DbItem
     private static $_fields = ["id", "first", "last", "email", "password"];
     
     /**
-     * Constructs a user object given some values.
+     * Constructs a post object given some values.
      *
      * @param DBConnectionObject $db     Database object we'll be using
-                                         to access user data.
+                                         to access post data.
      * @param Array              $fields Fields we're setting for the object.
      */
     function __construct($db, $fields)
     {
-        parent::__construct($db, $fields);
-        $this->_first = "";
-        $this->_last = "";
-        $this->_email = "";
-        $this->_password = "";
+        if (!isset($db)) {
+            throw new Exception("Db must be set.", 1);
+        }
+        $this->_db = $db;
+        $this->_id = 0;
+        $this->_author_id = "";
+        $this->_img_path = "";
         if (isset($fields)) {
-            if ($this->validFields($fields, User::$_fields)) {
+            if ($this->validFields($fields, Post::$_fields)) {
                 $this->setFields($fields);
             } else {
                 throw new Exception("Invalid fields.", 1);
             }
         }
+    }
+
+    /**
+     * Sets the id of the user. Id must be greater than 0.
+     *
+     * @param String $value id of the user.
+     *
+     * @return Boolean whether set was successful or not.
+     */
+    public function setId($value)
+    {
+        if (isset($value) && $value > 0) {
+            $this->_id = $value;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the id of the user.
+     *
+     * @return String the id.
+     */
+    public function getId()
+    {
+        return $this->_id;
     }
 
     /**
@@ -161,32 +186,6 @@ class User extends DbItem
             return true;
         }
         return false;
-    }
-
-    /**
-     * Sets the id of the user. Id must be greater than 0.
-     *
-     * @param String $value id of the user.
-     *
-     * @return Boolean whether set was successful or not.
-     */
-    public function setId($value)
-    {
-        if (isset($value) && $value > 0) {
-            $this->_id = $value;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Gets the id of the user.
-     *
-     * @return String the id.
-     */
-    public function getId()
-    {
-        return $this->_id;
     }
     
     /**

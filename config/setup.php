@@ -81,6 +81,26 @@ try {
             references `post`(id)
     )";
     $dbh->exec($qry);
+
+    $dummyData = array(
+        array(
+            ":first" => "John",
+            ":last" => "Doe",
+            ":email" => "jdoe@gmail.com",
+            ":password" => hash('whirlpool', "john")
+        ),
+        array(
+            ":first" => "Akia",
+            ":last" => "Vongdara",
+            ":email" => "vongdarakia@gmail.com",
+            ":password" => hash('whirlpool', "password")
+        )
+    );
+    foreach ($dummyData as $value) {
+        $sth = $dbh->prepare('insert into `user` (first, last, email, password)
+            values (:first, :last, :email, :password)');
+        $sth->execute($value);
+    }
 }
 catch (PDOException $e) {
     echo 'Database setup failed: ' . $e->getMessage() . "\n";

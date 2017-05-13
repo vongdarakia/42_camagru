@@ -12,8 +12,79 @@
  * @link      localhost:8080
  */
 
-require 'config/database.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+date_default_timezone_set('America/Los_Angeles');
 
-$dbh = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+require 'config/database.php';
+require 'includes/classes/User.php';
+
+try {
+    $dbh = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $user = new User($dbh, array(
+            "id"           => 12,
+            "first"        => 13));
+    // $user->getUserById(1);
+    if ($user->loadById(2))
+    {
+        echo "loaded " . $user->getFirstName() . "\n";
+    }
+
+    // if ($user->remove())
+    // {
+    //     echo "user removed";
+    // }
+    // else {
+    //     echo "failed to remove";
+    // }
+    // $user->setFirstName("Kia");
+    // if ($user->save())
+    // {
+    //     echo "user saved";
+    // }
+    // else {
+    //     echo "failed to save";
+    // }
+    // $user->addUser(array(
+    //     "first" => "",
+    //     "last" => "",
+    //     "email" => "",
+    //     "password" => ""
+    // ));
+
+    if ($user->validEmail("z@us.42.fr")) {
+        echo "valid email\n";
+    }
+    else {
+        echo "invalid email\n";
+    }
+    // $sth = $dbh->prepare("select * from `user` where id = 5");
+    // $sth->execute();
+
+    // $result = $sth->setFetchMode(PDO::FETCH_ASSOC);
+    // $obj = $sth->fetchObject();
+    // foreach($result as $row) {
+
+    // }
+
+    // if ($obj) {
+    //     echo "found";
+    // }
+    // else {
+    //     echo "not found";
+    // }
+    
+
+
+}
+catch (PDOException $e) {
+    echo 'Connection failed: ' . $e->getMessage() . "\n";
+}
+catch (Exception $e) {
+    echo $e->getMessage() . "\n";
+}
+
 
 ?>
