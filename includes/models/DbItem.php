@@ -123,7 +123,6 @@ class DbItem
     {
         $count = 0;
         $checkedFields = [];
-        print("{$this->table} fields " . count($class_fields) ."\n");
         if (is_array($fields)) {
             foreach ($fields as $field => $val) {
                 if (!in_array($field, $class_fields)) {
@@ -135,7 +134,6 @@ class DbItem
                 }
             }
         }
-        print("Count: {$count}\n");
         return $count;
     }
 }

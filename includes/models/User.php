@@ -354,10 +354,10 @@ class User extends DbItem
      *
      * @return Null or an object of the user.
      */
-    public static function getUserByEmail($email)
+    public function getUserByEmail($email)
     {
-        $stmt = $this->db->prepare("select * from `user` where email=" . $email);
-        $stmt->execute();
+        $stmt = $this->db->prepare("select * from `user` where email=:email");
+        $stmt->execute(array(':email' => $email));
         return $stmt->fetchObject();
     }
 
@@ -388,6 +388,21 @@ class User extends DbItem
             return $stmt->rowCount();
         }
         return 0;
+    }
+
+    /**
+     * Gets whether or not the email and the password matches.
+     *
+     * @param String $email Email we're trying to find.
+     * @param String $password Password to check if it matches the given email.
+     *
+     * @return Boolean on if the password and email matches.
+     */
+    public function passwordMatchesLogin($email, $password) {
+        $qry = "select * from `user` where email=:email and password=:password";
+        $stmt = $this->db->prepare($qry);
+        $stmt->execute(array(':email' => $email, ':password' => $password));
+        return $stmt->rowCount() == 1;
     }
 }
 

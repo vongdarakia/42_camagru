@@ -1,10 +1,10 @@
 <?php 
 /**
- * Post class file
+ * Comment class file
  *
  * PHP version 5.5.38
  *
- * @category  Post
+ * @category  Comment
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
@@ -15,11 +15,11 @@
 require_once 'DbItem.php';
 
 /**
- * Post class that holds all its database operations. This is the
- * image post by a user. Other users can like or comment on it.
+ * Comment class that holds all its database operations. This is the
+ * comment created by a user on a post.
  *
  * @category  Class
- * @package   Post
+ * @package   Comment
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
  * @license   Akia's Public License
