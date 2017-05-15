@@ -17,34 +17,30 @@ ini_set('display_errors', 1);
 date_default_timezone_set('America/Los_Angeles');
 
 require_once 'config/database.php';
-require_once 'includes/classes/User.php';
-require_once 'includes/classes/Post.php';
-require_once 'includes/classes/Like.php';
-require_once 'includes/classes/Comment.php';
+require_once 'includes/models/User.php';
+require_once 'includes/models/Post.php';
+require_once 'includes/models/Like.php';
+require_once 'includes/models/Comment.php';
 
 try {
     $dbh = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $user = new User($dbh, array(
-            "id"           => 12,
-            "first"        => 13));
+    $user = new User($dbh);
 
-    $post = new Post($dbh, array(
-            "id"           => 1,
-            "author_id"        => 1));
+    $post = new Post($dbh);
 
     $like = new Like($dbh);
     $comment = new Comment($dbh);
 
 
-    if ($comment->add(array(
-        "author_id" => 1,
-        "post_id" => 3,
-        "comment" => "Hello comment"
-    ))) {
-        print("added a comment\n");
-    };
+    // if ($comment->add(array(
+    //     "author_id" => 1,
+    //     "post_id" => 3,
+    //     "comment" => "Hello comment"
+    // ))) {
+    //     print("added a comment\n");
+    // };
 
  //    if ($like->add(array(
  //        "author_id" => 1,
@@ -91,12 +87,14 @@ try {
     // else {
     //     echo "failed to save";
     // }
-    // $user->add(array(
-    //     "first" => "Ho",
-    //     "last" => "jo",
-    //     "email" => "Mnad@gmail.com",
-    //     "password" => hash("whirlpool", "hope")
-    // ));
+    $count = $user->add(array(
+        "first" => "a",
+        "last" => "jo",
+        "username" => "hjo",
+        "email" => "Mnad@gmail.com",
+        "password" => "hope"
+    ));
+    echo $count;
 
     // if ($user->validEmail("z@us.42.fr")) {
     //     echo "valid email\n";

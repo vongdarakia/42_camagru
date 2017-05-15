@@ -26,16 +26,16 @@ require_once 'includes/models/Like.php';
 require_once 'includes/models/Comment.php';
 
 try {
-    $user = new User($dbh, array(
-            "id"           => 12,
-            "first"        => 13));
+    // $user = new User($dbh, array(
+    //         "id"           => 12,
+    //         "first"        => 13));
 
-    $post = new Post($dbh, array(
-            "id"           => 1,
-            "author_id"        => 1));
+    // $post = new Post($dbh, array(
+    //         "id"           => 1,
+    //         "author_id"        => 1));
 
-    $like = new Like($dbh);
-    $comment = new Comment($dbh);
+    // $like = new Like($dbh);
+    // $comment = new Comment($dbh);
 
 }
 catch (Exception $e) {

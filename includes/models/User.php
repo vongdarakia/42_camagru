@@ -28,9 +28,12 @@ class User extends DbItem
 {
     private $_first;
     private $_last;
+    private $_username;
     private $_email;
     private $_password;
-    private static $_fields = ["id", "first", "last", "email", "password"];
+    private static $_fields = array(
+        "id", "first", "last", "username", "email", "password"
+    );
     
     /**
      * Constructs a user object given some values.
@@ -44,6 +47,7 @@ class User extends DbItem
         parent::__construct($db, 'user');
         $this->_first = "";
         $this->_last = "";
+        $this->_username = "";
         $this->_email = "";
         $this->_password = "";
         if (isset($fields)) {
@@ -74,7 +78,7 @@ class User extends DbItem
      */
     public function setFirstName($value)
     {
-        if (isset($value) && !empty($value)) {
+        if (DbItem::validNonEmptyString($value)) {
             $this->_first = $value;
             return true;
         }
@@ -82,9 +86,9 @@ class User extends DbItem
     }
 
     /**
-     * Gets the first name.
+     * Gets the last name.
      *
-     * @return String the first name.
+     * @return String the last name.
      */
     public function getLastName()
     {
@@ -100,8 +104,34 @@ class User extends DbItem
      */
     public function setLastName($value)
     {
-        if (isset($value) && !empty($value)) {
+        if (DbItem::validNonEmptyString($value)) {
             $this->_last = $value;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the username.
+     *
+     * @return String the username.
+     */
+    public function getUsername()
+    {
+        return $this->_username;
+    }
+
+    /**
+     * Sets the username.
+     *
+     * @param String $value username.
+     *
+     * @return Boolean whether set was successful or not.
+     */
+    public function setUsername($value)
+    {
+        if (DbItem::validNonEmptyString($value)) {
+            $this->_username = $value;
             return true;
         }
         return false;
@@ -126,7 +156,7 @@ class User extends DbItem
      */
     public function setEmail($value)
     {
-        if (isset($value) && !empty($value) && $this->validEmail($value)) {
+        if (DbItem::validNonEmptyString($value) && $this->validEmail($value)) {
             $this->_email = $value;
             return true;
         }
@@ -152,8 +182,8 @@ class User extends DbItem
      */
     public function setPassword($value)
     {
-        if (isset($value) && !empty($value)) {
-            $this->_password = $value;
+        if (DbItem::validNonEmptyString($value)) {
+            $this->_password = hash('whirlpool', $value);
             return true;
         }
         return false;
@@ -205,6 +235,7 @@ class User extends DbItem
             set
                 first=:first,
                 last=:last,
+                username=:username,
                 email=:email,
                 password=:password
             where id=:id";
@@ -213,12 +244,68 @@ class User extends DbItem
             array(
                 ":first" => $this->_first,
                 ":last" => $this->_last,
+                ":username" => $this->_username,
                 ":email" => $this->_email,
                 ":password" => $this->_password,
                 ":id" => $this->id
             )
         );
         return $stmt->rowCount();
+    }
+
+    /**
+     * Gets a db user object given the email. This is not the same instance of
+     * this User class. The object however will have all its fields accessible
+     * to the programmer.
+     *
+     * @param String $email email of the user we're trying to get.
+     *
+     * @return Null or an object of the user.
+     */
+    public function getUserByEmail($email)
+    {
+        $stmt = $this->db->prepare("select * from `user` where email=:email");
+        $stmt->execute(array(':email' => $email));
+        return $stmt->fetchObject();
+    }
+
+    /**
+     * Gets a db user object given the username. This is not the same instance of
+     * this User class. The object however will have all its fields accessible
+     * to the programmer.
+     *
+     * @param String $username username of the user we're trying to get.
+     *
+     * @return Null or an object of the user.
+     */
+    public function getUserByUsername($username)
+    {
+        $stmt = $this->db->prepare("select * from `user` where username=:username");
+        $stmt->execute(array(':username' => $username));
+        return $stmt->fetchObject();
+    }
+
+    /**
+     * Sets the instance with the database object retrieved from
+     * PDO.
+     *
+     * @param Int $obj DB object with all the field values.
+     *
+     * @return Boolean whether or not there is a db obj.
+     */
+    private function _setWithObj($obj)
+    {
+        if ($obj) {
+            $this->id = $obj->id;
+            $this->_first = $obj->first;
+            $this->_last = $obj->last;
+            $this->_username = $obj->username;
+            $this->_email = $obj->email;
+            $this->_password = $obj->password;
+            unset($result);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -231,16 +318,7 @@ class User extends DbItem
     public function loadById($id)
     {
         $result = $this->getById($id);
-        if ($result) {
-            $this->id = $result->id;
-            $this->_first = $result->first;
-            $this->_last = $result->last;
-            $this->_email = $result->email;
-            $this->_password = $result->password;
-            unset($result);
-            return true;
-        }
-        return false;
+        return _setWithObj($result);
     }
 
     /**
@@ -253,15 +331,20 @@ class User extends DbItem
     public function loadByEmail($email)
     {
         $result = $this->getUserByEmail($email);
-        if ($result) {
-            $this->_first = $result->first;
-            $this->_last = $result->last;
-            $this->_email = $result->email;
-            $this->_password = $result->password;
-            unset($result);
-            return true;
-        }
-        return false;
+        return _setWithObj($result);
+    }
+
+    /**
+     * Loads the user data to this object given the username.
+     *
+     * @param String $username Username of the user we're trying to get.
+     *
+     * @return Boolean on whether it was successful or not.
+     */
+    public function loadByUsername($username)
+    {
+        $result = $this->getUserByUsername($username);
+        return _setWithObj($result);
     }
 
     /**
@@ -291,6 +374,11 @@ class User extends DbItem
                     throw new Exception("last name can't be empty.", 1);
                 }
             }
+            if (array_key_exists('username', $fields)) {
+                if (!$this->setUsername($fields['username'])) {
+                    throw new Exception("username can't be empty.", 1);
+                }
+            }
             if (array_key_exists('email', $fields)) {
                 if (!$this->setEmail($fields['email'])) {
                     throw new Exception("email is invalid.", 1);
@@ -307,66 +395,11 @@ class User extends DbItem
     }
 
     /**
-     * Checks fields values if they are valid. Returns 0 the moment it finds
-     * an invalid field value.
-     *
-     * @param Array $fields Field values to be validated.
-     *
-     * @return Boolean whether all fields have valid values or not.
-     */
-    public function validFieldValues($fields)
-    {
-        foreach ($fields as $field => $val) {
-            if (isset($fields) && is_array($fields)) {
-                if (array_key_exists('id', $fields)) {
-                    if (!(isset($fields['id']) && !empty($fields['id']))) {
-                        return false;
-                    }
-                } else if (array_key_exists('first', $fields)) {
-                    if (!(isset($fields['first']) && !empty($fields['first']))) {
-                        return false;
-                    }
-                } else if (array_key_exists('last', $fields)) {
-                    if (!(isset($fields['last']) && !empty($fields['last']))) {
-                        return false;
-                    }
-                } else if (array_key_exists('email', $fields)) {
-                    if (!(isset($fields['email']) && !empty($fields['email']))) {
-                        return false;
-                    }
-                } else if (array_key_exists('password', $fields)) {
-                    if (!isset($fields['password']) || empty($fields['password'])) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Gets a db user object given the email. This is not the same instance of
-     * this User class. The object however will have all its fields accessible
-     * to the programmer.
-     *
-     * @param String $email email of the user we're trying to get.
-     *
-     * @return Null or an object of the user.
-     */
-    public function getUserByEmail($email)
-    {
-        $stmt = $this->db->prepare("select * from `user` where email=:email");
-        $stmt->execute(array(':email' => $email));
-        return $stmt->fetchObject();
-    }
-
-    /**
      * Adds a user to the database given a list of fields. Must have all 4 values.
      *
      * @param Array $fields Values of the users we're adding.
      *
-     * @return Int number of users added. Will be 1 or 0.
+     * @return Boolean if add was successful.
      */
     public function add($fields)
     {
@@ -374,18 +407,20 @@ class User extends DbItem
             && $this->setFields($fields)
         ) {
             $stmt = $this->db->prepare(
-                "insert into `{$this->table}` (first, last, email, password)
-                values (:first, :last, :email, :password)"
+                "insert into `{$this->table}`
+                (first, last, username, email, password)
+                values (:first, :last, :username, :email, :password)"
             );
             $stmt->execute(
                 array(
                     ":first" => $this->_first,
                     ":last" => $this->_last,
+                    ":username" => $this->_username,
                     ":email" => $this->_email,
                     ":password" => $this->_password
                 )
             );
-            return $stmt->rowCount();
+            return $stmt->rowCount() == 1;
         }
         return 0;
     }
@@ -393,15 +428,17 @@ class User extends DbItem
     /**
      * Gets whether or not the email and the password matches.
      *
-     * @param String $email Email we're trying to find.
+     * @param String $email    Email we're trying to find.
      * @param String $password Password to check if it matches the given email.
      *
      * @return Boolean on if the password and email matches.
      */
-    public function passwordMatchesLogin($email, $password) {
+    public function passwordMatchesLogin($email, $password)
+    {
+        $hashedPass = hash('whirlpool', $password);
         $qry = "select * from `user` where email=:email and password=:password";
         $stmt = $this->db->prepare($qry);
-        $stmt->execute(array(':email' => $email, ':password' => $password));
+        $stmt->execute(array(':email' => $email, ':password' => $hashedPass));
         return $stmt->rowCount() == 1;
     }
 }

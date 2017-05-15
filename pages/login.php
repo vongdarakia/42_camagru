@@ -1,10 +1,10 @@
 <?php 
 /**
- * Home page to view people's posts.
+ * Login page.
  *
  * PHP version 5.5.38
  *
- * @category  Home
+ * @category  Page
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
@@ -13,8 +13,7 @@
  */
 
 require_once '../config/paths.php';
-
-require_once(TEMPLATES_PATH . "/header.php");
+require_once TEMPLATES_PATH . "/header.php";
 ?>
 
 <div id="container">
@@ -25,4 +24,4 @@ require_once(TEMPLATES_PATH . "/header.php");
     </form>
 </div>
 
-<?php require_once(TEMPLATES_PATH . "/footer.php"); ?>
+<?php require_once TEMPLATES_PATH . "/footer.php"; ?>

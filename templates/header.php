@@ -11,7 +11,7 @@
 
 <body>
 <div id="header">
-    <h1>Hello <?php echo $_SESSION["user_email"] ?></h1>
+    <h1>Hello <?php if (isset($_SESSION["user_email"])) { echo $_SESSION["user_email"]; } ?></h1>
     <ul class="nav global">
         <li><a href="#">Home</a></li>
         <li><a href="#">Articles</a></li>

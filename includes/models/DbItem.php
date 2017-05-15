@@ -12,6 +12,20 @@
  * @link      localhost:8080
  */
 
+defined("DB_UINT")
+or define("DB_UINT", 'Unsigned Int');
+
+defined("DB_INT")
+or define("DB_INT", 'Int');
+
+defined("DB_INT_ID")
+or define("DB_INT_ID", 'Integer ID');
+
+defined("DB_STRING")
+or define("DB_STRING", 'String');
+
+
+
 /**
  * A generic class to hold general data and methods.
  *
@@ -135,6 +149,32 @@ class DbItem
             }
         }
         return $count;
+    }
+
+    /**
+     * Checks if the value is a positive non-zero number.
+     * This is used for fields like IDs.
+     *
+     * @param Array $val value to be checked.
+     *
+     * @return Boolean if valid.
+     */
+    public static function validPositiveInt($val)
+    {
+        return is_numeric($val) && $val > 0;
+    }
+
+    /**
+     * Checks if the value is a non-empty string.
+     * This is used for fields like emails and passwords.
+     *
+     * @param Array $val value to be checked.
+     *
+     * @return Boolean if valid.
+     */
+    public static function validNonEmptyString($val)
+    {
+        return is_string($val) && $val != "";
     }
 }
 
