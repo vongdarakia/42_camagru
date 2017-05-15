@@ -29,6 +29,15 @@ function auth($email, $pass)
     global $dbh;
     $user = new User($dbh);
     if ($user->passwordMatchesLogin($email, $pass)) {
+        $user->loadByEmail($email);
+        initSession(
+            array(
+                "first" => $user->getFirstName(),
+                "last" => $user->getLastName(),
+                "username" => $user->getUsername(),
+                "email" => $user->getEmail()
+            )
+        );
         return true;
     }
     return false;
@@ -66,5 +75,31 @@ function signUp($first, $last, $username, $email, $password)
             "password" => $password
         )
     );
+}
+
+/**
+ * Sets the session info when user logs in.
+ *
+ * @param Array $info Dictionary of the user info (first, last, username, email)
+ */
+function initSession($info)
+{
+    $_SESSION['user_first'] = $info['first'];
+    $_SESSION['user_last'] = $info['last'];
+    $_SESSION['user_login'] = $info['username'];
+    $_SESSION['user_email'] = $info['email'];
+}
+
+/**
+ * Clears the session info when user logs out.
+ *
+ * @param Array $info Dictionary of the user info (first, last, username, email)
+ */
+function clearSession()
+{
+    $_SESSION['user_first'] = "";
+    $_SESSION['user_last'] = "";
+    $_SESSION['user_login'] = "";
+    $_SESSION['user_email'] = "";
 }
 ?>

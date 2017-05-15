@@ -1,9 +1,23 @@
 <?php 
-ini_set('display_errors', 1);
-error_reporting(E_ALL|E_STRICT);
-date_default_timezone_set('America/Los_Angeles');
+/**
+ * Signs up the user given some credentials. Will log you in after and 
+ * take you to the home page if successful, otherwise back to the 
+ * signup page with an error message.
+ *
+ * If the user's already signed in,
+ *
+ * PHP version 5.5.38
+ *
+ * @category  Action
+ * @package   Camagru
+ * @author    Akia Vongdara <vongdarakia@gmail.com>
+ * @copyright 2017 Akia Vongdara
+ * @license   Akia's Public License
+ * @link      localhost:8080
+ */
 
 require_once '../includes/lib/auth.php';
+
 session_start();
 
 try {
@@ -16,10 +30,12 @@ try {
             $_POST["password"]
         )
     ) {
-        echo "Signed up";
+        initSession($_POST);
+        header("Location: ../index.php");
     }
 } catch (Exception $e) {
-    echo $e->getMessage();
+    $_SESSION["error_msg"] = $e->getMessage();
+    header("Location: ../pages/signup.php");
 }
 
 ?>

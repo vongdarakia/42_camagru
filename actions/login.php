@@ -19,14 +19,16 @@ require_once '../includes/lib/auth.php';
 session_start();
 
 if (auth($_POST["email"], $_POST["password"])) {
-    $_SESSION["user_email"] = $_POST["email"];
-} else {
-    $_SESSION["user_email"] = "";
-}
-
-if (isset($_SESSION["user_email"]) && !empty($_SESSION["user_email"])) {
     header("Location: ../index.php");
 } else {
+    clearSession();
+    $_SESSION['error_msg'] = "Invalid login credentials";
     header("Location: ../pages/login.php");
 }
+
+// if (isset($_SESSION["user_email"]) && !empty($_SESSION["user_email"])) {
+    
+// } else {
+    
+// }
 ?>

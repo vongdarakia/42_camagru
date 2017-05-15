@@ -318,7 +318,7 @@ class User extends DbItem
     public function loadById($id)
     {
         $result = $this->getById($id);
-        return _setWithObj($result);
+        return $this->_setWithObj($result);
     }
 
     /**
@@ -331,7 +331,7 @@ class User extends DbItem
     public function loadByEmail($email)
     {
         $result = $this->getUserByEmail($email);
-        return _setWithObj($result);
+        return $this->_setWithObj($result);
     }
 
     /**
@@ -344,7 +344,7 @@ class User extends DbItem
     public function loadByUsername($username)
     {
         $result = $this->getUserByUsername($username);
-        return _setWithObj($result);
+        return $this->_setWithObj($result);
     }
 
     /**

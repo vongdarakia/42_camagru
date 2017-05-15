@@ -17,6 +17,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL|E_STRICT);
 date_default_timezone_set('America/Los_Angeles');
 
+session_start();
 require_once 'config/database.php';
 require_once 'config/paths.php';
 require_once 'config/connect.php';
@@ -42,7 +43,16 @@ catch (Exception $e) {
     echo $e->getMessage() . "\n";
 }
 
-require_once(TEMPLATES_PATH . "/header.php");
-require_once(TEMPLATES_PATH . "/footer.php");
+require_once TEMPLATES_PATH . "/header.php";
 ?>
 
+<div id="container">
+    <h2>Home</h2>
+    <?php 
+        echo "Hello " . $_SESSION["user_first"] . " " . $_SESSION["user_last"] . ", " 
+        . $_SESSION["user_login"] . " - " . $_SESSION["user_email"];
+    ?>
+</div>
+
+
+<?php require_once TEMPLATES_PATH . "/footer.php"; ?>

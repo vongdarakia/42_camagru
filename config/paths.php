@@ -23,6 +23,9 @@
 
     defined("ACTIONS_DIR")
     or define("ACTIONS_DIR", '/camagru/actions/');
+
+    defined("PAGES_DIR")
+    or define("PAGES_DIR", '/camagru/pages/');
     // echo substr(__DIR__, strlen($_SERVER['DOCUMENT_ROOT'])) . PHP_EOL;
     // echo realpath(dirname(__DIR__)) . $PHP_EOL;
     // echo $_SERVER['DOCUMENT_ROOT'];
