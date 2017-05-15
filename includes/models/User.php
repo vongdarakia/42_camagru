@@ -302,8 +302,15 @@ class User extends DbItem
             $this->_username = $obj->username;
             $this->_email = $obj->email;
             $this->_password = $obj->password;
-            unset($result);
+            unset($obj);
             return true;
+        } else {
+            $this->id = 0;
+            $this->_first = "";
+            $this->_last = "";
+            $this->_username = "";
+            $this->_email = "";
+            $this->_password = "";
         }
         return false;
     }

@@ -31,7 +31,13 @@ class Post extends DbItem
     private $_img_name;
     private $_title;
     private $_description;
-    private static $_fields = ["id", "author_id", "img_name", "title", "description"];
+    private static $_fields = [
+        "id",
+        "author_id",
+        "img_name",
+        "title",
+        "description"
+    ];
     
     /**
      * Constructs a post object given some values.
@@ -75,7 +81,7 @@ class Post extends DbItem
      */
     public function setAuthorId($value)
     {
-        if (isset($value) && $value > 0) {
+        if (DbItem::validPositiveInt($value)) {
             $this->_author_id = $value;
             return true;
         }
@@ -101,7 +107,7 @@ class Post extends DbItem
      */
     public function setImgName($value)
     {
-        if (isset($value) && !empty($value)) {
+        if (DbItem::validNonEmptyString($value)) {
             $this->_img_name = $value;
             return true;
         }
@@ -127,7 +133,7 @@ class Post extends DbItem
      */
     public function setTitle($value)
     {
-        if (isset($value) && !empty($value)) {
+        if (DbItem::validNonEmptyString($value)) {
             $this->_title = $value;
             return true;
         }
@@ -153,7 +159,7 @@ class Post extends DbItem
      */
     public function setDescription($value)
     {
-        if (isset($value) && !empty($value)) {
+        if (is_string($value)) {
             $this->_description = $value;
             return true;
         }
@@ -297,7 +303,7 @@ class Post extends DbItem
      *
      * @param Int $fields Valuess we're adding.
      *
-     * @return Int number of posts added. Will be 1 or 0.
+     * @return Boolean whether the add was successful or not.
      */
     public function add($fields)
     {
@@ -305,7 +311,8 @@ class Post extends DbItem
             && $this->setFields($fields)
         ) {
             $stmt = $this->db->prepare(
-                "insert into `{$this->table}` (author_id, title, img_name, description)
+                "insert into `{$this->table}`
+                (author_id, title, img_name, description)
                 values (:author_id, :title, :img_name, :description)"
             );
             $stmt->execute(
@@ -316,9 +323,9 @@ class Post extends DbItem
                     ":description" => $this->_description
                 )
             );
-            return $stmt->rowCount();
+            return $stmt->rowCount() == 1;
         }
-        return 0;
+        return false;
     }
 }
 

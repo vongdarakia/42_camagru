@@ -21,10 +21,10 @@ session_start();
 require_once 'config/database.php';
 require_once 'config/paths.php';
 require_once 'config/connect.php';
-require_once 'includes/models/User.php';
-require_once 'includes/models/Post.php';
-require_once 'includes/models/Like.php';
-require_once 'includes/models/Comment.php';
+// require_once 'includes/models/User.php';
+// require_once 'includes/models/Post.php';
+// require_once 'includes/models/Like.php';
+// require_once 'includes/models/Comment.php';
 
 try {
     // $user = new User($dbh, array(

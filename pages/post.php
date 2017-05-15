@@ -1,6 +1,6 @@
 <?php 
 /**
- * Login page. If user's already signed in. Will take user to home page.
+ * Post page. User post their images. This is a test page for now. Probably won't use.
  *
  * PHP version 5.5.38
  *
@@ -15,7 +15,12 @@
 session_start();
 require_once '../config/paths.php';
 
-if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
+// Maybe use this.
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//     // …
+// }
+
+if (!(isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "")) {
     header("Location: ../index.php");
 }
 
@@ -23,17 +28,19 @@ require_once TEMPLATES_PATH . "/header.php";
 ?>
 
 <div id="container">
-    <h2>Login</h2>
+    <h2>Post</h2>
     <?php  
     if (isset($_SESSION["error_msg"]) && $_SESSION["error_msg"] != "") {
         echo "Error: " . $_SESSION["error_msg"];
         $_SESSION["error_msg"] = "";
     }
     ?>
-    <form action="<?php echo ACTIONS_DIR ?>login.php" method="post">
-        <input type="email" name="email">
-        <input type="password" name="password">
-        <button>Login</button>
+    <form action="<?php echo ACTIONS_DIR ?>post.php" method="post">
+        <input type="email" name="email" value="<?php echo $_SESSION["user_email"]; ?>">
+        <input type="text" name="title" placeholder="title">
+        <input type="text" name="description" placeholder="description">
+        <input type="text" name="img_name" placeholder="image name">
+        <button>Post</button>
     </form>
 </div>
 

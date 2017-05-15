@@ -4,8 +4,6 @@
  * take you to the home page if successful, otherwise back to the 
  * signup page with an error message.
  *
- * If the user's already signed in,
- *
  * PHP version 5.5.38
  *
  * @category  Action
@@ -21,14 +19,13 @@ require_once '../includes/lib/auth.php';
 session_start();
 
 try {
-    if (
-        signUp(
-            $_POST["first"],
-            $_POST["last"],
-            $_POST["username"],
-            $_POST["email"],
-            $_POST["password"]
-        )
+    if (signUp(
+        $_POST["first"],
+        $_POST["last"],
+        $_POST["username"],
+        $_POST["email"],
+        $_POST["password"]
+    )
     ) {
         initSession($_POST);
         header("Location: ../index.php");

@@ -81,6 +81,8 @@ function signUp($first, $last, $username, $email, $password)
  * Sets the session info when user logs in.
  *
  * @param Array $info Dictionary of the user info (first, last, username, email)
+ *
+ * @return void
  */
 function initSession($info)
 {
@@ -93,7 +95,7 @@ function initSession($info)
 /**
  * Clears the session info when user logs out.
  *
- * @param Array $info Dictionary of the user info (first, last, username, email)
+ * @return void
  */
 function clearSession()
 {

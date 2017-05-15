@@ -13,5 +13,6 @@
         <li><a href="<?php echo PAGES_DIR; ?>signup.php">Sign Up</a></li>
         <li><a href="<?php echo PAGES_DIR; ?>login.php">Login</a></li>
         <li><a href="<?php echo ACTIONS_DIR; ?>logout.php">Logout</a></li>
+        <li><a href="<?php echo PAGES_DIR; ?>post.php">Post</a></li>
     </ul>
 </div>
