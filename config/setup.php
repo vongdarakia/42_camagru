@@ -57,10 +57,10 @@ try {
 
     $qry = "create table `post` (
         id int not null auto_increment primary key,
-        title varchar(32) not null,
-        img_name varchar(128) not null,
         author_id int not null,
-        description varchar(1024),
+        title varchar(60) not null,
+        img_name varchar(75) not null,
+        description varchar(1024) not null default '',
         foreign key (author_id)
             references `user`(id)
     )";
@@ -105,16 +105,40 @@ try {
             ":password" => hash('whirlpool', "password")
         )
     );
+    $sth = $dbh->prepare(
+        'insert into `user` (first, last, username, email, password)
+        values (:first, :last, :username, :email, :password)'
+    );
     foreach ($dummyData as $value) {
-        $sth = $dbh->prepare(
-            'insert into `user` (first, last, username, email, password)
-            values (:first, :last, :username, :email, :password)'
-        );
+        
         $sth->execute($value);
     }
+
+    $sth = $dbh->prepare(
+        'insert into `post` (title, img_name, author_id)
+        values (:title, :img_name, :author_id)'
+    );
+    $sth->execute(array(
+        ":title" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz",
+        ":img_name" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz_20170515165608",
+        ":author_id" => 2
+    ));
+    // $sth->execute(array(
+    //     ":title" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxy1z",
+    //     ":img_name" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz_201705151656081",
+    //     ":author_id" => 2
+    // ));
+    // $sth->execute(array(
+    //     ":title" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxdyz",
+    //     ":img_name" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz_20170515165608d",
+    //     ":author_id" => 2
+    // ));
 }
 catch (PDOException $e) {
     echo 'Database setup failed: ' . $e->getMessage() . "\n";
+    if (strpos($e->getMessage(), 'SQLSTATE[22001]') !== false) {
+        print("String is too long");
+    }
     exit(1);
 }
 

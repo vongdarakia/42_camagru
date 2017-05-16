@@ -39,7 +39,6 @@ require_once TEMPLATES_PATH . "/header.php";
         <input type="email" name="email" value="<?php echo $_SESSION["user_email"]; ?>">
         <input type="text" name="title" placeholder="title">
         <input type="text" name="description" placeholder="description">
-        <input type="text" name="img_name" placeholder="image name">
         <button>Post</button>
     </form>
 </div>

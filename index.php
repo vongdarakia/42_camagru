@@ -18,6 +18,10 @@ error_reporting(E_ALL|E_STRICT);
 date_default_timezone_set('America/Los_Angeles');
 
 session_start();
+
+if (!isset($_SESSION["user_email"])) {
+    header("location: pages/login.php");
+}
 require_once 'config/database.php';
 require_once 'config/paths.php';
 require_once 'config/connect.php';
