@@ -25,7 +25,7 @@
  * @link      localhost:8080
  */
 
-require 'config/database.php';
+require 'database.php';
 
 try {
     $dbh = new PDO($DB_DSN_HOST_ONLY, $DB_USER, $DB_PASSWORD);
@@ -49,8 +49,8 @@ try {
         id int not null auto_increment primary key,
         first varchar(35) not null,
         last varchar(35) not null,
-        username varchar(40) not null,
-        email varchar(40) not null,
+        username varchar(40) not null unique,
+        email varchar(40) not null unique,
         password varchar(128) not null
     )";
     $dbh->exec($qry);
@@ -113,14 +113,23 @@ try {
         
         $sth->execute($value);
     }
+    for ($i=0; $i < 1000000; $i++) { 
+        $sth->execute(array(
+            ":first" => "Akia" . $i,
+            ":last" => "Vongdara" . $i,
+            ":username" => "avongdar" . $i,
+            ":email" => "vongdarakia".$i."@gmail.com",
+            ":password" => hash('whirlpool', "password")
+        ));
+    }
 
     $sth = $dbh->prepare(
         'insert into `post` (title, img_name, author_id)
         values (:title, :img_name, :author_id)'
     );
     $sth->execute(array(
-        ":title" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz",
-        ":img_name" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz_20170515165608",
+        ":title" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx",
+        ":img_name" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx_20170515165608",
         ":author_id" => 2
     ));
     // $sth->execute(array(

@@ -28,6 +28,8 @@ try {
 
     $user = new User($dbh);
 
+    $user->getDataByPage("select * from `user`");
+
     $post = new Post($dbh);
 
     $like = new Like($dbh);
@@ -87,14 +89,14 @@ try {
     // else {
     //     echo "failed to save";
     // }
-    $count = $user->add(array(
-        "first" => "a",
-        "last" => "jo",
-        "username" => "hjo",
-        "email" => "Mnad@gmail.com",
-        "password" => "hope"
-    ));
-    echo $count;
+    // $count = $user->add(array(
+    //     "first" => "a",
+    //     "last" => "jo",
+    //     "username" => "hjo",
+    //     "email" => "Mnad@gmail.com",
+    //     "password" => "hope"
+    // ));
+    // echo $count;
 
     // if ($user->validEmail("z@us.42.fr")) {
     //     echo "valid email\n";

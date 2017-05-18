@@ -12,9 +12,11 @@
  * @link      localhost:8080
  */
 
-    $DB_DSN = 'mysql:dbname=Camagru;host=localhost';
-    $DB_USER = 'root';
-    $DB_PASSWORD = 'password';
-    $DB_NAME = 'Camagru';
-    $DB_DSN_HOST_ONLY = 'mysql:host=localhost';
+	$DB_NAME = "Camagru";
+	$DB_HOST = "localhost";
+    $DB_DSN_HOST_ONLY = "mysql:host={$DB_HOST}";
+    $DB_DSN = "mysql:dbname={$DB_NAME};host={$DB_HOST}";
+    $DB_USER = "root";
+    $DB_PASSWORD = "password";
+    
 ?>

@@ -176,6 +176,51 @@ class DbItem
     {
         return is_string($val) && $val != "";
     }
+
+
+    public function getDataByPage($query, $page = 1, $limit = 10)
+    {
+        $start = microtime(true);
+        // $stmt = $this->db->prepare("select count(id) as 'count' from `user`");
+        // $stmt->execute();
+        // $obj = $stmt->fetchObject();
+        // if ($obj)
+        //     $result->total = $obj->count;
+        // else
+        //     $result->total = 0;
+        // $result->total  = $this->_totalRows;
+        
+        $countQuery = "select count(1) from $this->table";
+        
+        $rows = $this->db->query($countQuery);
+        $count = $rows->fetchColumn();
+        echo "total " . $rows->fetchColumn() . PHP_EOL;
+
+        if ($limit != 'all') {
+            $query = "$query limit ". ($limit * ($page - 1)) .", $limit";
+        }
+        $rows = $this->db->query($query);
+        // $stmt->execute();
+
+        // $stmt = $this->db->prepare();
+
+        $end = microtime(true);
+        $diff = $end - $start;
+        echo "time: " . $diff . PHP_EOL;
+
+        // $results = $this->_conn->query($query);
+
+        $result         = new stdClass();
+        $result->page   = $page;
+        $result->limit  = $limit;
+        $result->total  = $count;
+        $result->rows   = $rows;
+
+        foreach ($rows as $value) {
+            echo $value['first'] . PHP_EOL;
+        }
+        return 0;
+    }
 }
 
 ?>
