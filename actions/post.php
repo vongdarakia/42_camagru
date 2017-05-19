@@ -29,10 +29,7 @@ function saveFileFromUpload($imgName)
 {
     $validImg = getimagesize($_FILES["file"]["tmp_name"]);
     if ($validImg !== false) {
-        $ext = strtolower(strrchr($_FILES["file"]["name"], "."));
-        $targetFile = POSTS_DIR . $imgName . $ext;
-        $_SESSION["err_msg"] = "File is good: " . $validImg["mime"];
-        move_uploaded_file($_FILES["file"]["tmp_name"], $targetFile);
+        move_uploaded_file($_FILES["file"]["tmp_name"], POSTS_DIR . $imgName);
         return true;
     } else {
         $_SESSION["err_msg"] = "File is not an image";
@@ -56,8 +53,7 @@ function saveFileFromCapture($imgName, $data)
             . " Please contact vongdarakia@gmail.com";
         return false;
     }
-    $targetFile = POSTS_DIR . $imgName . ".png";
-    file_put_contents($targetFile, $data);
+    file_put_contents(POSTS_DIR . $imgName, $data);
     return true;
 }
 
@@ -85,6 +81,17 @@ try {
         $title = $_POST["title"];
     }
 
+    // Gives the image name an extension based on the type of imaged being posted.
+    if (isset($_FILES["file"]) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+        $imgName = $imgName . strtolower(strrchr($_FILES["file"]["name"], "."));
+    } else if (isset($_POST["base64img"]) && $_POST["base64img"] != "") {
+        $imgName = $imgName . ".png";
+    } else {
+        $_SESSION["err_msg"] = "No image source was given to upload.";
+        header("Location: ../pages/post.php");
+        return;
+    }
+
     // Records the post to the database, and if successful, saves the image.
     if (post(
         $_POST["email"],
@@ -95,10 +102,8 @@ try {
     ) {
         if (isset($_FILES["file"]) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
             saveFileFromUpload($imgName);
-        } else if (isset($_POST["base64img"]) && $_POST["base64img"] != "") {
-            saveFileFromCapture($imgName, $_POST["base64img"]);
         } else {
-            $_SESSION["err_msg"] = "No image source was given to upload.";    
+            saveFileFromCapture($imgName, $_POST["base64img"]);
         }
     } else {
         $_SESSION["err_msg"] = "Failed to save post.";
