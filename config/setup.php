@@ -21,55 +21,50 @@
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
- * @license   Akia's Public License
+ * @license   No License
  * @link      localhost:8080
  */
 
 require 'database.php';
 
-try {
-    $dbh = new PDO($DB_DSN_HOST_ONLY, $DB_USER, $DB_PASSWORD);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $success = $dbh->exec("create database if not exists `{$DB_NAME}`")
-    or die(print_r($dbh->errorInfo(), true));
-    $dbh->query("use `{$DB_NAME}`");
-}
-catch (PDOException $e) {
-    echo 'Connection failed: ' . $e->getMessage() . "\n";
-    exit(1);
-}
-
-try {
+function dropTables($dbh) {
     $dbh->exec("drop table if exists `comment`");
     $dbh->exec("drop table if exists `like`");
     $dbh->exec("drop table if exists `post`");
     $dbh->exec("drop table if exists `user`");
+}
 
+function createTables($dbh) {
     $qry = "create table `user` (
-        id int not null auto_increment primary key,
-        first varchar(35) not null,
-        last varchar(35) not null,
-        username varchar(40) not null unique,
-        email varchar(40) not null unique,
-        password varchar(128) not null
+        id              int not null auto_increment primary key,
+        first           varchar(35) not null,
+        last            varchar(35) not null,
+        username        varchar(40) not null unique,
+        email           varchar(40) not null unique,
+        password        varchar(128) not null,
+        creation_date   datetime default current_timestamp,
+        update_date     datetime on update current_timestamp
     )";
     $dbh->exec($qry);
 
     $qry = "create table `post` (
-        id int not null auto_increment primary key,
-        author_id int not null,
-        title varchar(60) not null,
-        img_name varchar(75) not null,
-        description varchar(1024) not null default '',
+        id              int not null auto_increment primary key,
+        author_id       int not null,
+        title           varchar(60) not null,
+        img_name        varchar(80) not null,
+        description     varchar(1024) not null default '',
+        creation_date   datetime default current_timestamp,
+        update_date     datetime on update current_timestamp,
         foreign key (author_id)
             references `user`(id)
     )";
     $dbh->exec($qry);
 
     $qry = "create table `like` (
-        id int not null auto_increment primary key,
-        post_id int not null,
-        author_id int not null,
+        id              int not null auto_increment primary key,
+        post_id         int not null,
+        author_id       int not null,
+        creation_date   datetime default current_timestamp,
         foreign key (author_id)
             references `user`(id),
         foreign key (post_id)
@@ -78,17 +73,21 @@ try {
     $dbh->exec($qry);
 
     $qry = "create table `comment` (
-        id int not null auto_increment primary key,
-        post_id int not null,
-        author_id int not null,
-        comment varchar(1024) not null,
+        id              int not null auto_increment primary key,
+        post_id         int not null,
+        author_id       int not null,
+        comment         varchar(1024) not null,
+        creation_date   datetime default current_timestamp,
+        update_date     datetime on update current_timestamp,
         foreign key (author_id)
             references `user`(id),
         foreign key (post_id)
             references `post`(id)
     )";
     $dbh->exec($qry);
+}
 
+function insertDummyUsers($dbh) {
     $dummyData = array(
         array(
             ":first" => "John",
@@ -110,19 +109,21 @@ try {
         values (:first, :last, :username, :email, :password)'
     );
     foreach ($dummyData as $value) {
-        
         $sth->execute($value);
     }
-    for ($i=0; $i < 1000000; $i++) { 
+    $password = hash('whirlpool', "password");
+    for ($i=0; $i < 10000; $i++) { 
         $sth->execute(array(
             ":first" => "Akia" . $i,
             ":last" => "Vongdara" . $i,
             ":username" => "avongdar" . $i,
             ":email" => "vongdarakia".$i."@gmail.com",
-            ":password" => hash('whirlpool', "password")
+            ":password" => $password
         ));
     }
+}
 
+function insertDummyPosts($dbh) {
     $sth = $dbh->prepare(
         'insert into `post` (title, img_name, author_id)
         values (:title, :img_name, :author_id)'
@@ -132,16 +133,27 @@ try {
         ":img_name" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx_20170515165608",
         ":author_id" => 2
     ));
-    // $sth->execute(array(
-    //     ":title" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxy1z",
-    //     ":img_name" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz_201705151656081",
-    //     ":author_id" => 2
-    // ));
-    // $sth->execute(array(
-    //     ":title" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxdyz",
-    //     ":img_name" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz_20170515165608d",
-    //     ":author_id" => 2
-    // ));
+}
+
+// Creates a database if it doesn't exist, then connects to it.
+try {
+    $dbh = new PDO($DB_DSN_HOST_ONLY, $DB_USER, $DB_PASSWORD);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $success = $dbh->exec("create database if not exists `{$DB_NAME}`")
+    or die(print_r($dbh->errorInfo(), true));
+    $dbh->query("use `{$DB_NAME}`");
+}
+catch (PDOException $e) {
+    echo 'Connection failed: ' . $e->getMessage() . "\n";
+    exit(1);
+}
+
+// Sets up the database.
+try {
+    dropTables($dbh);
+    createTables($dbh);
+    insertDummyUsers($dbh);
+    insertDummyPosts($dbh);
 }
 catch (PDOException $e) {
     echo 'Database setup failed: ' . $e->getMessage() . "\n";

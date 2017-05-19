@@ -8,7 +8,7 @@
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
- * @license   Akia's Public License
+ * @license   No License
  * @link      localhost:8080
  */
 
@@ -33,7 +33,7 @@ or define("DB_STRING", 'String');
  * @package   DbItem
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
- * @license   Akia's Public License
+ * @license   No License
  * @link      localhost:8080
  */
 class DbItem
@@ -41,6 +41,7 @@ class DbItem
     protected $db;
     protected $id;
     protected $table;
+    protected $creation_date;
     
     /**
      * Constructs a user object given some values.
@@ -60,15 +61,15 @@ class DbItem
     }
 
     /**
-     * Sets the id of the user. Id must be greater than 0.
+     * Sets the id of the item. Id must be greater than 0.
      *
-     * @param String $value id of the user.
+     * @param String $value id of the item.
      *
      * @return Boolean whether set was successful or not.
      */
     public function setId($value)
     {
-        if (isset($value) && $value > 0) {
+        if (validPositiveInt($value)) {
             $this->id = $value;
             return true;
         }
@@ -76,13 +77,36 @@ class DbItem
     }
 
     /**
-     * Gets the id of the user.
+     * Gets the id of the item.
      *
      * @return String the id.
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Sets the creation_date of the item.
+     *
+     * @param String $value creation_date of the item.
+     *
+     * @return Boolean whether set was successful or not.
+     */
+    public function setCreationDate($value)
+    {
+        $this->creation_date = $value;
+        return true;
+    }
+
+    /**
+     * Gets the creation_date of the item.
+     *
+     * @return String the creation_date.
+     */
+    public function getCreationDate()
+    {
+        return $this->creation_date;
     }
 
     /**
@@ -177,49 +201,47 @@ class DbItem
         return is_string($val) && $val != "";
     }
 
-
-    public function getDataByPage($query, $page = 1, $limit = 10)
+    /**
+     * Gets an object containing information on the given query. The information
+     * has a list of items depending on the limit (x items per page) and the page
+     * number. If limit is set to 'all', it will not apply a limit and will grab
+     * all data available.
+     *
+     * @param Int    $page  Which page of items we're trying to get.
+     * @param Int    $limit How many items per page we want to see.
+     * @param String $query Query we're applying a limit to.
+     *
+     * @return Object
+     *      $page  -> Page number
+     *      $limit -> Number of items per page
+     *      $total -> Total items from table
+     *      $rows  -> List of items retrieved for the page.
+     */
+    public function getDataByPage($page=1, $limit=10, $query=null)
     {
-        $start = microtime(true);
-        // $stmt = $this->db->prepare("select count(id) as 'count' from `user`");
-        // $stmt->execute();
-        // $obj = $stmt->fetchObject();
-        // if ($obj)
-        //     $result->total = $obj->count;
-        // else
-        //     $result->total = 0;
-        // $result->total  = $this->_totalRows;
-        
+        if ($page <= 0 || $limit <= 0) {
+            throw new Exception("Error: page and limit must be positive number", 1);
+        }
+        if ($query === null) {
+            $query = "select * from $this->table";
+        }
+
         $countQuery = "select count(1) from $this->table";
-        
         $rows = $this->db->query($countQuery);
         $count = $rows->fetchColumn();
-        echo "total " . $rows->fetchColumn() . PHP_EOL;
 
         if ($limit != 'all') {
             $query = "$query limit ". ($limit * ($page - 1)) .", $limit";
         }
+
         $rows = $this->db->query($query);
-        // $stmt->execute();
 
-        // $stmt = $this->db->prepare();
-
-        $end = microtime(true);
-        $diff = $end - $start;
-        echo "time: " . $diff . PHP_EOL;
-
-        // $results = $this->_conn->query($query);
-
-        $result         = new stdClass();
-        $result->page   = $page;
-        $result->limit  = $limit;
-        $result->total  = $count;
-        $result->rows   = $rows;
-
-        foreach ($rows as $value) {
-            echo $value['first'] . PHP_EOL;
-        }
-        return 0;
+        $info         = new stdClass();
+        $info->page   = $page;
+        $info->limit  = $limit;
+        $info->total  = $count;
+        $info->rows   = $rows;
+        return $info;
     }
 }
 

@@ -8,7 +8,7 @@
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
- * @license   Akia's Public License
+ * @license   No License
  * @link      localhost:8080
  */
 
@@ -28,12 +28,17 @@ try {
 
     $user = new User($dbh);
 
-    $user->getDataByPage("select * from `user`");
+    $go = strrchr("asdfpicjpg", ".");
+    echo $go;
+    // $obj = $user->getDataByPage(10, 10000);
 
-    $post = new Post($dbh);
+    // foreach ($obj->rows as $row) {
+    //     echo $row["first"] . PHP_EOL;
+    // }
+    // $post = new Post($dbh);
 
-    $like = new Like($dbh);
-    $comment = new Comment($dbh);
+    // $like = new Like($dbh);
+    // $comment = new Comment($dbh);
 
 
     // if ($comment->add(array(
