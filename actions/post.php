@@ -92,6 +92,12 @@ try {
         return;
     }
 
+    if (!is_writable(POSTS_DIR . $imgName)) {
+        $_SESSION["err_msg"] = "Can't write to posts folder.";
+        header("Location: ../pages/post.php");
+        return;
+    }
+
     // Records the post to the database, and if successful, saves the image.
     if (post(
         $_POST["email"],
