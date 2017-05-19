@@ -8,7 +8,7 @@
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
- * @license   Akia's Public License
+ * @license   No License
  * @link      localhost:8080
  */
 
@@ -25,7 +25,7 @@ if (!isset($_SESSION["user_email"])) {
 require_once 'config/database.php';
 require_once 'config/paths.php';
 require_once 'config/connect.php';
-// require_once 'includes/models/User.php';
+require_once 'includes/models/User.php';
 // require_once 'includes/models/Post.php';
 // require_once 'includes/models/Like.php';
 // require_once 'includes/models/Comment.php';
@@ -55,7 +55,19 @@ require_once TEMPLATES_PATH . "/header.php";
     <?php 
         echo "Hello " . $_SESSION["user_first"] . " " . $_SESSION["user_last"] . ", " 
         . $_SESSION["user_login"] . " - " . $_SESSION["user_email"];
+
+        if (isset($_SESSION["user_email"])) {
+            $user = new User($dbh);
+            if ($user->loadByEmail($_SESSION["user_email"])) {
+                $info = $user->getDataByPage(10, 10);
+                foreach ($info->rows as $row) {
+                    // echo $row["first"];
+                    include 'templates/user_post_box.php';
+                }
+            }
+        }
     ?>
+
 </div>
 
 

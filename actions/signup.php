@@ -10,7 +10,7 @@
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
- * @license   Akia's Public License
+ * @license   No License
  * @link      localhost:8080
  */
 
@@ -31,7 +31,7 @@ try {
         header("Location: ../index.php");
     }
 } catch (Exception $e) {
-    $_SESSION["error_msg"] = $e->getMessage();
+    $_SESSION["err_msg"] = $e->getMessage();
     header("Location: ../pages/signup.php");
 }
 

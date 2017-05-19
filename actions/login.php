@@ -8,7 +8,7 @@
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
- * @license   Akia's Public License
+ * @license   No License
  * @link      localhost:8080
  */
 error_reporting(E_ALL);

@@ -8,7 +8,7 @@
  * @package   Camagru
  * @author    Akia Vongdara <vongdarakia@gmail.com>
  * @copyright 2017 Akia Vongdara
- * @license   Akia's Public License
+ * @license   No License
  * @link      localhost:8080
  */
 
@@ -25,9 +25,9 @@ require_once TEMPLATES_PATH . "/header.php";
 <div id="container">
     <h2>Login</h2>
     <?php  
-    if (isset($_SESSION["error_msg"]) && $_SESSION["error_msg"] != "") {
-        echo "Error: " . $_SESSION["error_msg"];
-        $_SESSION["error_msg"] = "";
+    if (isset($_SESSION["err_msg"]) && $_SESSION["err_msg"] != "") {
+        echo "Error: " . $_SESSION["err_msg"];
+        $_SESSION["err_msg"] = "";
     }
     ?>
     <form action="<?php echo ACTIONS_DIR ?>login.php" method="post">
