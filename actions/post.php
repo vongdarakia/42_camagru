@@ -1,9 +1,7 @@
 <?php 
 /**
- * User posts their image to the server. The image's name is generated
- * here.
- * take you to the home page if successful, otherwise back to the 
- * signup page with an error message.
+ * User posts their image to the server. The image's name is
+ * generated here.
  *
  * PHP version 5.5.38
  *
@@ -75,19 +73,18 @@ try {
         $_SESSION["err_msg"] = "Submission error";
         header("Location: ../pages/post.php");
     }
-    // Sets title
-    $title = "";
-    if (!isset($_POST["title"]) || $_POST["title"] == "") {
-        $title = $_SESSION["user_login"];
-    } else {
-        $title = $_POST["title"];
-    }
 
     // Sets image name without an extension. That will be set in the
     // saveFileFromUpload and saveFileFromCapture functions.
-    $imgName = str_replace(" ", "_", strtolower(trim($title)));
+    $imgName = str_replace(" ", "_", strtolower(trim($_SESSION["user_login"])));
     $imgName = $imgName . "_" . date('YmdHis');
     
+    // Sets title image name unless title was specified.
+    $title = $imgName;
+    if (isset($_POST["title"]) && $_POST["title"] !== "") {
+        $title = $_POST["title"];
+    }
+
     // Records the post to the database, and if successful, saves the image.
     if (post(
         $_POST["email"],

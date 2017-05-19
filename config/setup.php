@@ -27,14 +27,33 @@
 
 require 'database.php';
 
-function dropTables($dbh) {
+/**
+ * Drops all tables from the database. The order is crucial. Need to drop
+ * tables that has foreign keys first because if you delete the foriegn key
+ * table like "user", then the tables "comment", "like" and "post" will be
+ * faulty since they all require "author_id" to work.
+ *
+ * @param String $dbh PDO Database handler.
+ *
+ * @return void
+ */
+function dropTables($dbh)
+{
     $dbh->exec("drop table if exists `comment`");
     $dbh->exec("drop table if exists `like`");
     $dbh->exec("drop table if exists `post`");
     $dbh->exec("drop table if exists `user`");
 }
 
-function createTables($dbh) {
+/**
+ * Creates all tables to be used for Camagru.
+ *
+ * @param String $dbh PDO Database handler.
+ *
+ * @return void
+ */
+function createTables($dbh)
+{
     $qry = "create table `user` (
         id              int not null auto_increment primary key,
         first           varchar(35) not null,
@@ -87,7 +106,15 @@ function createTables($dbh) {
     $dbh->exec($qry);
 }
 
-function insertDummyUsers($dbh) {
+/**
+ * Inserts dummy data for users.
+ *
+ * @param String $dbh PDO Database handler.
+ *
+ * @return void
+ */
+function insertDummyUsers($dbh)
+{
     $dummyData = array(
         array(
             ":first" => "John",
@@ -113,26 +140,38 @@ function insertDummyUsers($dbh) {
     }
     $password = hash('whirlpool', "password");
     for ($i=0; $i < 10000; $i++) { 
-        $sth->execute(array(
-            ":first" => "Akia" . $i,
-            ":last" => "Vongdara" . $i,
-            ":username" => "avongdar" . $i,
-            ":email" => "vongdarakia".$i."@gmail.com",
-            ":password" => $password
-        ));
+        $sth->execute(
+            array(
+                ":first" => "Akia" . $i,
+                ":last" => "Vongdara" . $i,
+                ":username" => "avongdar" . $i,
+                ":email" => "vongdarakia".$i."@gmail.com",
+                ":password" => $password
+            )
+        );
     }
 }
 
-function insertDummyPosts($dbh) {
+/**
+ * Inserts dummy data for posts.
+ *
+ * @param String $dbh PDO Database handler.
+ *
+ * @return void
+ */
+function insertDummyPosts($dbh)
+{
     $sth = $dbh->prepare(
         'insert into `post` (title, img_name, author_id)
         values (:title, :img_name, :author_id)'
     );
-    $sth->execute(array(
-        ":title" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx",
-        ":img_name" => "1234567890abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx_20170515165608",
-        ":author_id" => 2
-    ));
+    $sth->execute(
+        array(
+            ":title" => "dummy1",
+            ":img_name" => "dummy1.php",
+            ":author_id" => 2
+        )
+    );
 }
 
 // Creates a database if it doesn't exist, then connects to it.
@@ -142,8 +181,7 @@ try {
     $success = $dbh->exec("create database if not exists `{$DB_NAME}`")
     or die(print_r($dbh->errorInfo(), true));
     $dbh->query("use `{$DB_NAME}`");
-}
-catch (PDOException $e) {
+} catch (PDOException $e) {
     echo 'Connection failed: ' . $e->getMessage() . "\n";
     exit(1);
 }
@@ -154,8 +192,7 @@ try {
     createTables($dbh);
     insertDummyUsers($dbh);
     insertDummyPosts($dbh);
-}
-catch (PDOException $e) {
+} catch (PDOException $e) {
     echo 'Database setup failed: ' . $e->getMessage() . "\n";
     if (strpos($e->getMessage(), 'SQLSTATE[22001]') !== false) {
         print("String is too long");

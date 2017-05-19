@@ -1,6 +1,6 @@
 <?php 
 /**
- * Post page. User post their images. This is a test page for now. Probably won't use.
+ * Post page. User post their images.
  *
  * PHP version 5.5.38
  *
@@ -19,8 +19,8 @@ require_once '../config/paths.php';
 // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //     // …
 // }
-
-if (!(isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "")) {
+$email = $_SESSION["user_email"];
+if (!(isset($email) && $email != "")) {
     header("Location: ../index.php");
 }
 
@@ -36,14 +36,16 @@ require_once TEMPLATES_PATH . "/header.php";
     }
     ?>
     
-    <form action="<?php echo ACTIONS_DIR ?>post.php" method="post" enctype="multipart/form-data">
+    <form action="<?php echo ACTIONS_DIR ?>post.php"
+        method="post"
+        enctype="multipart/form-data">
         <div id="booth">
             <video id="camera" width="400" height="300"></video>
             <a href="#" id="btn-capture">Take Photo</a>
             <canvas id="canvas" width="400" height="300"></canvas>
             <img src="" id="photo">
         </div>
-        <input type="email" name="email" value="<?php echo $_SESSION["user_email"]; ?>">
+        <input type="email" name="email" value="<?php echo $email; ?>">
         <input type="text" name="title" placeholder="title">
         <input type="text" name="description" placeholder="description">
         <input type="file" name="file" id="file">
