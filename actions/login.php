@@ -15,10 +15,14 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 date_default_timezone_set('America/Los_Angeles');
 
+require_once '../config/paths.php';
 require_once '../includes/lib/auth.php';
 session_start();
 
-if (auth($_POST["email"], $_POST["password"])) {
+if (isset($_POST["email"])
+    && isset($_POST["password"])
+    && auth($_POST["email"], $_POST["password"])
+) {
     header("Location: ../index.php");
 } else {
     clearSession();

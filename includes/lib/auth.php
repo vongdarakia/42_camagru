@@ -12,8 +12,8 @@
  * @link      localhost:8080
  */
 
-require_once '../config/connect.php';
-require_once '../includes/models/User.php';
+require_once CONFIG_PATH .'/connect.php';
+require_once MODELS_PATH .'/User.php';
 
 /**
  * Return if the email and password matches an account. This hashes the password
@@ -103,5 +103,35 @@ function clearSession()
     $_SESSION['user_last'] = "";
     $_SESSION['user_login'] = "";
     $_SESSION['user_email'] = "";
+}
+
+/**
+ * Checks session to see if user is logged in. If not,
+ * send the user to a login page.
+ *
+ * @return void
+ */
+function checkUserAuthentication($errMsg="You must be logged in first.")
+{
+    if(isset($_SESSION['user_email']) && $_SESSION['user_email'] !== "") {
+        return;
+    }
+    $_SESSION["err_msg"] = $errMsg;
+    header("location: /camagru/pages/login.php");
+    exit(0);
+}
+
+/**
+ * Displays error message if it exists for the session, then clears it.
+ * So, it should only display once.
+ *
+ * @return void
+ */
+function displayError()
+{
+    if (isset($_SESSION["err_msg"]) && $_SESSION["err_msg"] != "") {
+        echo "Error: " . $_SESSION["err_msg"];
+        $_SESSION["err_msg"] = "";
+    }
 }
 ?>

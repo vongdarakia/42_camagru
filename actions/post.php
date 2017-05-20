@@ -13,11 +13,6 @@
  * @link      localhost:8080
  */
 
-require_once '../config/paths.php';
-require_once '../includes/lib/features.php';
-
-session_start();
-
 /**
  * Saves a file from a file upload.
  *
@@ -57,15 +52,23 @@ function saveFileFromCapture($imgName, $data)
     return true;
 }
 
-$okayImageTypes = [
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-    "image/pjpeg"
-];
+session_start();
+
+require_once '../config/paths.php';
+require_once '../includes/lib/auth.php';
+require_once '../includes/lib/features.php';
+
+checkUserAuthentication();
+
+// $okayImageTypes = [
+//     "image/jpeg",
+//     "image/png",
+//     "image/gif",
+//     "image/pjpeg"
+// ];
 
 try {
-    if (isset($_POST["submit"])) {
+    if (!isset($_POST["submit"]) || $_POST["submit"] != "Post") {
         $_SESSION["err_msg"] = "Submission error";
         header("Location: ../pages/post.php");
     }
@@ -92,7 +95,7 @@ try {
         return;
     }
 
-    if (!is_writable(POSTS_DIR . $imgName)) {
+    if (!is_writable(POSTS_DIR)) {
         $_SESSION["err_msg"] = "Can't write to posts folder.";
         header("Location: ../pages/post.php");
         return;

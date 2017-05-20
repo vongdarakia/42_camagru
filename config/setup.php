@@ -70,7 +70,7 @@ function createTables($dbh)
         id              int not null auto_increment primary key,
         author_id       int not null,
         title           varchar(60) not null,
-        img_name        varchar(80) not null,
+        img_file        varchar(80) not null,
         description     varchar(1024) not null default '',
         creation_date   datetime default current_timestamp,
         update_date     datetime on update current_timestamp,
@@ -162,13 +162,13 @@ function insertDummyUsers($dbh)
 function insertDummyPosts($dbh)
 {
     $sth = $dbh->prepare(
-        'insert into `post` (title, img_name, author_id)
-        values (:title, :img_name, :author_id)'
+        'insert into `post` (title, img_file, author_id)
+        values (:title, :img_file, :author_id)'
     );
     $sth->execute(
         array(
             ":title" => "dummy1",
-            ":img_name" => "dummy1.php",
+            ":img_file" => "dummy1.php",
             ":author_id" => 2
         )
     );

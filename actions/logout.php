@@ -12,16 +12,11 @@
  * @link      localhost:8080
  */
 
+
+require_once '../config/paths.php';
 require_once '../includes/lib/auth.php';
+
 session_start();
-
-if (isset($_SESSION["user_email"]) && !empty($_SESSION["user_email"])) {
-    // echo $_SESSION["user_email"] . " was logged out" . PHP_EOL;
-    clearSession();
-
-} else {
-    // echo "No one is logged in." . PHP_EOL;
-}
-// header("Location: ../pages/login.php");
+clearSession();
 header("Location: ../index.php");
 ?>

@@ -14,15 +14,15 @@
 
 session_start();
 require_once '../config/paths.php';
+require_once '../includes/lib/auth.php';
+
 
 // Maybe use this.
 // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //     // …
 // }
+checkUserAuthentication();
 $email = $_SESSION["user_email"];
-if (!(isset($email) && $email != "")) {
-    header("Location: ../index.php");
-}
 
 require_once TEMPLATES_PATH . "/header.php";
 ?>
@@ -50,7 +50,8 @@ require_once TEMPLATES_PATH . "/header.php";
         <input type="text" name="description" placeholder="description">
         <input type="file" name="file" id="file">
         <input type="hidden" name="base64img" value="" id="hidden-img">
-        <button>Post</button>
+        <input type="submit" name="submit" value="Post">
+        <!-- <button>Post</button> -->
     </form>
 </div>
 

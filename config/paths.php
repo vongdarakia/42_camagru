@@ -21,6 +21,9 @@
     defined("CONFIG_PATH")
     or define("CONFIG_PATH", dirname(__DIR__) . '/config');
 
+    defined("MODELS_PATH")
+    or define("MODELS_PATH", dirname(__DIR__) . '/includes/models');
+
     defined("CSS_DIR")
     or define("CSS_DIR",  '/camagru/resources/css/');
 
