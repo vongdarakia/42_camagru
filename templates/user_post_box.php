@@ -21,14 +21,29 @@
  * @license   No License
  * @link      localhost:8080
  */
-    echo "<h5> {$row['author_fn']} </h5>";
-    $img = POSTS_DIR_NAME . "/" . $row["img_file"];
+    $img_path = POSTS_DIR_NAME . "/" . $row["img_file"];
+    if (!file_exists($img_path))
+        return 0;
+    $size = getimagesize($img_path);
+    $width = $size[0];
+    $height = $size[1];
+    $boxSize = 150;
+    // echo $width;
+    if ($height < $width) {
+        $class = "short-height";
+        $offset = -($width * $boxSize / $height - $boxSize) / 2;
+        $style = "left: " . $offset . "px;";
+    } else if ($width < $height) {
+        $class = "short-width";
+        $offset =  -($height * $boxSize / $width - $boxSize) / 2;
+        $style = "top: " . $offset . "px;";
+    } else {
+        $class = "proportional";
+    }
 ?>
 
 <div class="user-post-box">
     <div class="crop">
-        <img src="<?php echo $img; ?>">
+        <img src="<?php echo $img_path; ?>" class="<?php echo $class; ?>" style="<?php echo $style; ?>">
     </div>
-    <!-- <img src="<?php echo $img; ?>"> -->
-   <!--  <div style="width: 100px; height: 100px; background-image: url(<?php echo $img; ?>); background-repeat: no-repeat;"></div> -->
 </div>

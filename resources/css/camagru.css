@@ -1,6 +1,61 @@
 body {
     background-color: white;
     font-family: helvetica;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    font-weight: 100;
+    background-color: #F2F1EF;
+}
+
+#header {
+    overflow: auto;
+    background-color: #EC644B;
+    padding-bottom: 10px;
+}
+
+#header li {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+#header .left-col {
+    float: left;
+    padding: 0 10px;
+    font-family: 'Pacifico', cursive;
+    font-size: 2.5em;
+}
+
+#header .right-col {
+    float: right;
+    padding: 0 10px;
+}
+
+#header .left-col a {
+    text-decoration: none;
+}
+
+#header .nav {
+    margin-top: 32px;
+    margin-bottom: 0;
+}
+
+#header .nav a {
+    /*font-style: normal;*/
+    color: white;
+    text-decoration: none;
+}
+
+#footer {
+    /*background-color: #2C3E50;*/
+    padding: 10px;
+    text-align: center;
+    /*color: #F2F1EF;*/
+    color: black;
+    font-size: 0.8em;
+}
+
+#public-posts {
+    text-align: center;
 }
 
 #booth {
@@ -25,10 +80,14 @@ body {
 }
 
 .user-post-box {
-    width: 100px;
-    height: 100px;
-    border: 1px solid black;
+    /*width: 200px;
+    height: 200px;*/
+    /*border: 1px solid black;*/
     text-align: center;
+    /*margin-left: 100px;*/
+    display: inline-block;
+    /*position: relative;*/
+    box-shadow: 0px 2px 7px #ddd;
 }
 
 .user-post-box img {
@@ -37,24 +96,64 @@ body {
 }
 
 .crop {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     overflow: hidden;
+    position: relative;
 }
 
-.crop img {
-    /*max-width: 100%;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
+img.short-height, img.short-width {
+    position: absolute;
 }
 
 img.short-height {
     max-height: 100%;
-    /*max-width: 100%;*/
-    /*padding: 10px;*/
 }
 
 img.short-width {
     max-width: 100%;
-    /*max-height: 100%;*/
+    left: 0;
+}
+
+img.proportional {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.white {
+    color: #F2F1EF;
+}
+
+.black {
+    color: #2C3E50;
+}
+
+.pagination {
+    text-align: center;
+    overflow: auto;
+}
+
+.pagination .page-box, .pagination .page-dots {
+    display: inline-block;
+    /*padding: 5px;*/
+    min-width: 32px;
+    min-height: 32px;
+    border: 1px solid black;
+    float: left;
+}
+
+.pagination .page-box p {
+    margin: 6px 0 0 0;
+    /*display: table-cell; */
+    /*vertical-align: middle;*/
+    /*height: 200px;*/
+}
+
+.pagination .page-dots p {
+    margin: 1px 0 0 0;
+}
+
+.pagination .wrapper {
+    overflow: auto;
+    display: inline-block;
 }

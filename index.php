@@ -2,6 +2,10 @@
 /**
  * Home page to view people's posts.
  *
+ * Resources:
+ *      Best Pagination Practices
+ *      https://uxplanet.org/pagination-best-practices-76fbd3f5a78d
+ *
  * PHP version 5.5.38
  *
  * @category  Home
@@ -54,16 +58,16 @@ require_once TEMPLATES_PATH . "/header.php";
 ?>
 
 <div id="container">
-    <h2>Home</h2>
-    <?php  
-    displayError();
-    ?>
-    <?php 
-        echo "Hello " . $_SESSION["user_first"] . " " . $_SESSION["user_last"] . ", " 
-        . $_SESSION["user_login"] . " - " . $_SESSION["user_email"];
+    <!-- <h2>Home</h2> -->
+    <?php displayError(); ?>
 
-        if (isset($_SESSION["user_email"])) {
-            $user = new User($dbh);
+    <div id="public-posts">
+        <?php 
+            // echo "<h3>Hello " . $_SESSION["user_first"] . " " . $_SESSION["user_last"] . ", " 
+            // . $_SESSION["user_login"] . " - " . $_SESSION["user_email"] . "</h3>";
+
+
+            // $user = new User($dbh);
             $post = new Post($dbh);
             $query = "select
                 u.first 'author_fn',
@@ -75,26 +79,14 @@ require_once TEMPLATES_PATH . "/header.php";
                 p.creation_date 'post_creation_date'
             from `user` u inner join `post` p on p.author_id = u.id";
 
-
-            // include 'templates/user_post_box.php';
-            // if ($user->loadByEmail($_SESSION["user_email"])) {
-            //     $info = $post->getDataByPage(1, 10, $query);
-            //     foreach ($info->rows as $row) {
-            //         include 'templates/user_post_box.php';
-            //     }
-            // }
-        }
-    ?>
-    <div class="user-post-box">
-        <div class="crop">
-            <img src="posts/avongdar_20170519165411.jpg" class="short-width">
-        </div>
+            $info = $post->getDataByPage(1, 10, $query);
+            foreach ($info->rows as $row) {
+                include 'templates/user_post_box.php';
+            }
+        ?>
+        <?php require_once TEMPLATES_PATH . "/pagination.php"; ?>
     </div>
-    <div class="user-post-box">
-        <div class="crop">
-            <img src="posts/avongdar_20170519164827.jpg" class="short-height">
-        </div>
-    </div>
+    
 </div>
 
 

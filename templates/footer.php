@@ -1,5 +1,5 @@
 <div id="footer">
-    Footer content...
+    &copy; 2017 Akia Vongdara
 </div>
 </body>
 </html>

@@ -130,7 +130,7 @@ function checkUserAuthentication($errMsg="You must be logged in first.")
 function displayError()
 {
     if (isset($_SESSION["err_msg"]) && $_SESSION["err_msg"] != "") {
-        echo "Error: " . $_SESSION["err_msg"];
+        echo "<h4>Error: " . $_SESSION["err_msg"]."</h4>";
         $_SESSION["err_msg"] = "";
     }
 }
