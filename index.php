@@ -18,10 +18,6 @@ date_default_timezone_set('America/Los_Angeles');
 
 session_start();
 
-if (!isset($_SESSION["user_email"])) {
-    header("location: pages/login.php");
-}
-
 require_once 'config/paths.php';
 require_once 'config/database.php';
 require_once 'config/connect.php';
@@ -34,7 +30,7 @@ require_once 'includes/lib/auth.php';
 
 
 $page  = 1; // Page that we're trying to get.
-$limit = 10; // How many post to show per page
+$limit = 5; // How many post to show per page
 
 if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
     $page = $_GET["page"];
