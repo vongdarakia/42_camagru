@@ -7,6 +7,8 @@ body {
     background-color: #F2F1EF;
 }
 
+/**************** Header ****************/
+
 #header {
     overflow: auto;
     background-color: #EC644B;
@@ -45,18 +47,18 @@ body {
     text-decoration: none;
 }
 
+/**************** Footer ****************/
+
 #footer {
     /*background-color: #2C3E50;*/
     padding: 10px;
     text-align: center;
     /*color: #F2F1EF;*/
-    color: black;
+    color: #2C3E50;
     font-size: 0.8em;
 }
 
-#public-posts {
-    text-align: center;
-}
+/**************** Web Cam ****************/
 
 #booth {
     width: 400px;
@@ -77,6 +79,13 @@ body {
 
 #canvas {
     display: none;
+}
+
+/**************** Image Post ****************/
+
+#public-posts {
+    text-align: center;
+    padding-top: 20px;
 }
 
 .user-post-box {
@@ -115,10 +124,12 @@ img.short-width {
     left: 0;
 }
 
-img.proportional {
+img.perfect-box {
     max-width: 100%;
     max-height: 100%;
 }
+
+/**************** Colors ****************/
 
 .white {
     color: #F2F1EF;
@@ -128,7 +139,14 @@ img.proportional {
     color: #2C3E50;
 }
 
+.red {
+    color: #EC644B;
+}
+
+/**************** Pagination ****************/
+
 .pagination {
+    padding: 12px 0;
     text-align: center;
     overflow: auto;
 }
@@ -138,15 +156,29 @@ img.proportional {
     /*padding: 5px;*/
     min-width: 32px;
     min-height: 32px;
-    border: 1px solid black;
     float: left;
+    margin: 0 4px;
+    border-radius: 5px;
+    color: #2C3E50;
+}
+
+.pagination .page-box {
+    border: 1px solid #2C3E50;
+
+    -webkit-transition: color .3s;
+    transition: color .3s;
+
+    -webkit-transition: border-color .3s;
+    transition: border-color .3s;
+}
+
+.pagination .page-box:hover {
+    border-color:   #EC644B;
+    color:          #EC644B;
 }
 
 .pagination .page-box p {
     margin: 6px 0 0 0;
-    /*display: table-cell; */
-    /*vertical-align: middle;*/
-    /*height: 200px;*/
 }
 
 .pagination .page-dots p {
@@ -156,4 +188,17 @@ img.proportional {
 .pagination .wrapper {
     overflow: auto;
     display: inline-block;
+}
+
+.page-box p {
+    padding: 0 10px;
+}
+
+.pagination a {
+    overflow: auto;
+}
+
+.pagination .current-page {
+    border-color:   #EC644B;
+    color:          #EC644B;
 }
