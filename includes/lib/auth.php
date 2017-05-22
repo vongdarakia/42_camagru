@@ -109,11 +109,13 @@ function clearSession()
  * Checks session to see if user is logged in. If not,
  * send the user to a login page.
  *
+ * @param String $errMsg Message to display about the error.
+ *
  * @return void
  */
 function checkUserAuthentication($errMsg="You must be logged in first.")
 {
-    if(isset($_SESSION['user_email']) && $_SESSION['user_email'] !== "") {
+    if (isset($_SESSION['user_email']) && $_SESSION['user_email'] !== "") {
         return;
     }
     $_SESSION["err_msg"] = $errMsg;

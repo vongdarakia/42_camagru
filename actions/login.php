@@ -15,15 +15,15 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 date_default_timezone_set('America/Los_Angeles');
 
+session_start();
 require_once '../config/paths.php';
 require_once '../includes/lib/auth.php';
-session_start();
 
 if (isset($_POST["email"])
     && isset($_POST["password"])
     && auth($_POST["email"], $_POST["password"])
 ) {
-    header("Location: ../index.php");
+    header("Location: " . SITE_DIR);
 } else {
     clearSession();
     $_SESSION['error_msg'] = "Invalid login credentials";

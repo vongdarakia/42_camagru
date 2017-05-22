@@ -18,5 +18,5 @@ require_once '../includes/lib/auth.php';
 
 session_start();
 clearSession();
-header("Location: ../index.php");
+header("Location: " . SITE_DIR);
 ?>
