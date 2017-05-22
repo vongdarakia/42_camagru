@@ -58,7 +58,7 @@ function pageDots()
     return '<div class="page-dots"><p>...</p></div>';
 }
 
-if ($info->page == $maxPages) {
+if ($maxPages == 1) {
     return;
 }
 
