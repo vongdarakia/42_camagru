@@ -21,29 +21,38 @@
  * @license   No License
  * @link      localhost:8080
  */
-    $img_path = POSTS_DIR_NAME . "/" . $row["img_file"];
-    if (!file_exists($img_path))
-        return 0;
-    $size = getimagesize($img_path);
-    $width = $size[0];
-    $height = $size[1];
-    $boxSize = 150;
-    // echo $width;
-    if ($height < $width) {
-        $class = "short-height";
-        $offset = -($width * $boxSize / $height - $boxSize) / 2;
-        $style = "left: " . $offset . "px;";
-    } else if ($width < $height) {
-        $class = "short-width";
-        $offset =  -($height * $boxSize / $width - $boxSize) / 2;
-        $style = "top: " . $offset . "px;";
-    } else {
-        $class = "proportional";
-    }
+
+$img_path = POSTS_DIR_NAME . "/" . $row["img_file"];
+if (!file_exists($img_path)) {
+    return 0;
+}
+
+$size = getimagesize($img_path);
+$width = $size[0];
+$height = $size[1];
+$boxSize = 150;
+
+// Makes sure to fill up the box when image sizes are not
+// a 1:1 ratio.
+if ($height < $width) {
+    $class = "short-height";
+    $offset = -($width * $boxSize / $height - $boxSize) / 2;
+    $style = "left: " . $offset . "px;";
+} else if ($width < $height) {
+    $class = "short-width";
+    $offset =  -($height * $boxSize / $width - $boxSize) / 2;
+    $style = "top: " . $offset . "px;";
+} else {
+    $class = "perfect-box";
+}
 ?>
 
 <div class="user-post-box">
     <div class="crop">
-        <img src="<?php echo $img_path; ?>" class="<?php echo $class; ?>" style="<?php echo $style; ?>">
+        <img
+            src="<?php echo $img_path; ?>"
+            class="<?php echo $class; ?>"
+            style="<?php echo $style; ?>"
+        >
     </div>
 </div>
