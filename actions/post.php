@@ -3,6 +3,10 @@
  * User posts their image to the server. The image's name is
  * generated here.
  *
+ * Resources:
+ *      Superimposing images on the server
+ *      https://stackoverflow.com/questions/6547784/superimpose-images-with-php
+ *
  * PHP version 5.5.38
  *
  * @category  Action
@@ -87,7 +91,7 @@ try {
     // Gives the image name an extension based on the type of imaged being posted.
     if (isset($_FILES["file"]) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
         $imgName = $imgName . strtolower(strrchr($_FILES["file"]["name"], "."));
-    } else if (isset($_POST["base64img"]) && $_POST["base64img"] != "") {
+    } else if (isset($_POST["camImg"]) && $_POST["camImg"] != "") {
         $imgName = $imgName . ".png";
     } else {
         $_SESSION["err_msg"] = "No image source was given to upload.";
@@ -112,7 +116,7 @@ try {
         if (isset($_FILES["file"]) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
             saveFileFromUpload($imgName);
         } else {
-            saveFileFromCapture($imgName, $_POST["base64img"]);
+            saveFileFromCapture($imgName, $_POST["camImg"]);
         }
     } else {
         $_SESSION["err_msg"] = "Failed to save post.";

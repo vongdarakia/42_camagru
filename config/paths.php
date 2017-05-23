@@ -30,6 +30,12 @@
     defined("CSS_DIR")
     or define("CSS_DIR",  SITE_DIR . '/resources/css/');
 
+    defined("JS_DIR")
+    or define("JS_DIR",  SITE_DIR . '/resources/js/');
+
+    defined("IMG_DIR")
+    or define("IMG_DIR",  SITE_DIR . '/resources/img/');
+
     defined("ACTIONS_DIR")
     or define("ACTIONS_DIR", SITE_DIR . '/actions/');
 
