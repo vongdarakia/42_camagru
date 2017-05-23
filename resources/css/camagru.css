@@ -57,6 +57,12 @@ body {
 
 /**************** Web Cam ****************/
 
+#camera {
+    transform: rotateY(180deg);
+    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:rotateY(180deg); /* Firefox */
+}
+
 #booth {
     width: 400px;
     background-color: #ccc;
@@ -74,7 +80,7 @@ body {
     text-decoration: none;
 }
 
-#canvas {
+#camera-canvas, #sticker-canvas {
     display: none;
 }
 
@@ -83,8 +89,9 @@ body {
     overflow: auto;
 }
 
-#sticker-photo {
+#sticker-img {
     position: absolute;
+    z-index: 2;
 }
 
 /**************** Image Post ****************/

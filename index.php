@@ -30,7 +30,7 @@ require_once 'includes/lib/auth.php';
 
 
 $page  = 1; // Page that we're trying to get.
-$limit = 5; // How many post to show per page
+$limit = 20; // How many post to show per page
 
 if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
     $page = $_GET["page"];

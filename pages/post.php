@@ -2,6 +2,11 @@
 /**
  * Post page. User post their images.
  *
+ * Resources:
+ *      Flipping image: Googled "getmedia html5 mirror"
+ *      https://www.christianheilmann.com/2013/07/19/
+ *      flipping-the-image-when-accessing-the-laptop-camera-with-getusermedia/
+ *
  * PHP version 5.5.38
  *
  * @category  Page
@@ -45,24 +50,23 @@ require_once TEMPLATES_PATH . "/header.php";
         enctype="multipart/form-data">
         <div id="booth">
             <div class="video-wrapper">
-                <img src="" id="sticker-photo">
+                <img src="" id="sticker-img">
                 <video id="camera" width="400" height="300"></video>
             </div>
             
             <a href="#" id="btn-capture">Take Photo</a>
 
-            <canvas id="canvas" width="400" height="300"></canvas>
-            <img src="" id="cam-photo">
+            <canvas id="camera-canvas" width="400" height="300"></canvas>
+            <img src="" id="cam-img">
 
-            <canvas id="canvas2" width="400" height="300"></canvas>
-            
+            <canvas id="sticker-canvas" width="400" height="300"></canvas>
         </div>
         <input type="email" name="email" value="<?php echo $email; ?>">
         <input type="text" name="title" placeholder="title">
         <input type="text" name="description" placeholder="description">
         <input type="file" name="file" id="file">
-        <input type="hidden" name="camImg" value="" id="cam-img">
-        <input type="hidden" name="stickerImg" value="" id="sticker-img">
+        <input type="hidden" name="camImg" value="" id="cam-photo">
+        <input type="hidden" name="stickerImg" value="" id="sticker-photo">
         <input type="submit" name="submit" value="Post">
         <!-- <button>Post</button> -->
     </form>
