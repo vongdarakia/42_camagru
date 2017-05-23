@@ -18,7 +18,7 @@
  */
 
 /**
- * Checks if the base 64 data is an image.
+ * Checks if the base 64 data is an image (jpg or png).
  *
  * @param String $base64 Base 64 data of an image.
  *
@@ -209,7 +209,7 @@ try {
         if (!checkBase64Image($cam64)) {
             $_SESSION["err_msg"] = "Invalid image. Must be based 64."
                 . " Please contact vongdarakia@gmail.com";
-            // header("Location: ../pages/post.php");
+            header("Location: ../pages/post.php");
             return false;
         }
         $imgName = $imgName . ".png";
