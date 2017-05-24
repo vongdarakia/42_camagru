@@ -28,24 +28,26 @@
 </head>
 <body>
 <div id="header">
-    <div class="left-col">
-        <a href="<?php echo SITE_DIR; ?>">
-            <span class="white">Cam</span><span class="black">agru</span>
-        </a>
-    </div>
-    <div class="right-col">
-        <ul class="nav global">
-            <?php
-            if (isset($_SESSION["user_email"])
-                && $_SESSION["user_email"] !== ""
-            ) {
-                echo '<li><a href="'.ACTIONS_DIR.'logout.php">Log Out</a></li>';
-                echo '<li><a href="'.PAGES_DIR.'post.php">Account</a></li>';
-            } else {
-                echo '<li><a href="'.PAGES_DIR.'login.php">Log In</a></li>';
-                echo '<li><a href="'.PAGES_DIR.'signup.php">Sign up</a></li>';
-            }
-            ?>
-        </ul>
+    <div class="container">
+        <div class="left-col">
+            <a href="<?php echo SITE_DIR; ?>">
+                <span class="white">Cam</span><span class="black">agru</span>
+            </a>
+        </div>
+        <div class="right-col">
+            <ul class="nav global">
+                <?php
+                if (isset($_SESSION["user_email"])
+                    && $_SESSION["user_email"] !== ""
+                ) {
+                    echo '<li><a href="'.ACTIONS_DIR.'logout.php">Log Out</a></li>';
+                    echo '<li><a href="'.PAGES_DIR.'post.php">Account</a></li>';
+                } else {
+                    echo '<li><a href="'.PAGES_DIR.'login.php">Log In</a></li>';
+                    echo '<li><a href="'.PAGES_DIR.'signup.php">Sign up</a></li>';
+                }
+                ?>
+            </ul>
+        </div>
     </div>
 </div>

@@ -165,13 +165,32 @@ function insertDummyPosts($dbh)
         'insert into `post` (title, img_file, author_id)
         values (:title, :img_file, :author_id)'
     );
+
     $sth->execute(
         array(
-            ":title" => "dummy1",
-            ":img_file" => "dummy1.php",
+            ":title" => "chilling",
+            ":img_file" => "chilling.gif",
             ":author_id" => 2
         )
     );
+    for ($i=1; $i <= 4; $i++) { 
+        $sth->execute(
+            array(
+                ":title" => "dummy". $i,
+                ":img_file" => "dummy" . $i . ".jpg",
+                ":author_id" => 2
+            )
+        );
+    }
+    for ($j=1; $j <= 2; $j++) { 
+        $sth->execute(
+            array(
+                ":title" => "dummy". ($i + $j),
+                ":img_file" => "dummy" . ($i + $j) . ".jpg",
+                ":author_id" => 2 + $j
+            )
+        );
+    }
 }
 
 // Creates a database if it doesn't exist, then connects to it.

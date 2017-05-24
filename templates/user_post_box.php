@@ -22,7 +22,7 @@
  * @link      localhost:8080
  */
 
-$img_path = POSTS_DIR_NAME . "/" . $row["img_file"];
+$img_path = $relative_path . POSTS_DIR_NAME . "/" . $row["img_file"];
 if (!file_exists($img_path)) {
     return 0;
 }
@@ -31,6 +31,9 @@ $size = getimagesize($img_path);
 $width = $size[0];
 $height = $size[1];
 $boxSize = 150;
+
+// Change for html img to work.
+$img_path = SITE_DIR . "/" . POSTS_DIR_NAME . "/" . $row["img_file"];
 
 // Makes sure to fill up the box when image sizes are not
 // a 1:1 ratio.

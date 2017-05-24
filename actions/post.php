@@ -165,18 +165,21 @@ require_once '../includes/lib/features.php';
 checkUserAuthentication();
 
 $pattern = '#^data:image/\w+;base64,#i';
+$backUrl = "../pages/post.php"; // Url to go back to.
 
 try {
-    if (!isset($_POST["submit"]) || $_POST["submit"] != "Post") {
-        $_SESSION["err_msg"] = "Submission error";
-        header("Location: ../pages/post.php");
-    }
+    // if (!isset($_POST["submit"]) || $_POST["submit"] != "Post") {
+    //     $msg = "Submission error";
+    //     header("Location: ../pages/post.php");
+        // relocateError($msg, $backUrl);
+        // sendError($msg, 200);
+    // }
 
     // Check is post directory is writable first before posting anything.
     if (!is_writable(POSTS_DIR)) {
-        $_SESSION["err_msg"] = "Can't write to posts folder.";
-        header("Location: ../pages/post.php");
-        return;
+        $msg = "Can't write to posts folder.";
+        // relocateError($msg, $backUrl);
+        sendError($msg, 200);
     }
 
     // Sets image name without an extension. That will be set in the
@@ -197,9 +200,9 @@ try {
         if ($validImg === false
             || !($validImg[2] == IMG_JPG || $validImg[2] == IMG_PNG)
         ) {
-            $_SESSION["err_msg"] = "File is not an image. Must be png or jpg.";
-            header("Location: ../pages/post.php");
-            return;
+            $msg = "File is not an image. Must be png or jpg.";
+            // relocateError("File is not an image. Must be png or jpg.", $backUrl);
+            sendError($msg, 200);
         }
         $imgName = $imgName . strtolower(strrchr($_FILES["file"]["name"], "."));
     } else if (isset($_POST["camImg"]) && $_POST["camImg"] != "") {
@@ -207,31 +210,31 @@ try {
         // Checks if base 64 image is valid
         $cam64 = preg_replace($pattern, '', $_POST["camImg"]);
         if (!checkBase64Image($cam64)) {
-            $_SESSION["err_msg"] = "Invalid image. Must be based 64."
+            $msg = "Invalid image. Must be based 64."
                 . " Please contact vongdarakia@gmail.com";
-            header("Location: ../pages/post.php");
-            return false;
+            // relocateError($msg, $backUrl);
+                sendError($msg, 200);
         }
         $imgName = $imgName . ".png";
     } else {
-        $_SESSION["err_msg"] = "No image source was given to upload.";
-        header("Location: ../pages/post.php");
-        return;
+        $msg = "No image source was given to upload.";
+        // relocateError($msg, $backUrl);
+        sendError($msg, 200);
     }
 
     // Check for sticker image
     if (!(isset($_POST["stickerImg"]) && $_POST["stickerImg"] != "")) {
-        $_SESSION["err_msg"] = "Sticker image was not found";
-        header("Location: ../pages/post.php");
-        return;
+        $msg = "Sticker image was not found";
+        // relocateError($msg, $backUrl);
+        sendError($msg, 200);
     }
 
     // Checks if image is valid
     $stkr64 = preg_replace($pattern, '', $_POST["stickerImg"]);
     if (!checkBase64Image($stkr64)) {
-        $_SESSION["err_msg"] = "Sticker is not an image";
-        header("Location: ../pages/post.php");
-        return;
+        $msg = "Sticker is not an image";
+        // relocateError($msg, $backUrl);
+        sendError($msg, 200);
     }
 
     // Records the post to the database, and if successful, saves the image.
@@ -248,15 +251,17 @@ try {
             saveFileFromCapture($imgName);
         }
     } else {
-        $_SESSION["err_msg"] = "Failed to save post.";
+        $msg = "Failed to save post.";
     }
 } catch (Exception $e) {
     if (strpos($e->getMessage(), 'SQLSTATE[22001]') !== false) {
-        $_SESSION["err_msg"] = "Title must be less than or equal to 60 characters.";
+        $msg = "Title must be less than or equal to 60 characters.";
     } else {
-        $_SESSION["err_msg"] = $e->getMessage();
+        $msg = $e->getMessage();
     }
 }
-header("Location: ../pages/post.php");
+header_status(200);
+echo "OK";
+// header("Location: ../pages/post.php");
 
 ?>

@@ -7,10 +7,19 @@ body {
     background-color:   #F2F1EF;
 }
 
+.container {
+    max-width: 1024px;
+    min-width: 512px;
+    margin: auto;
+    padding: 0 20px;
+    overflow-y: auto;
+}
+
 /**************** Header ****************/
 
 #header {
     overflow:           auto;
+    overflow-x:         hidden;
     background-color:   #EC644B;
     padding-bottom:     10px;
 }
@@ -22,14 +31,12 @@ body {
 
 #header .left-col {
     float:          left;
-    padding:        0 10px;
     font-family:    'Pacifico', cursive;
     font-size:      2.5em;
 }
 
 #header .right-col {
-    float: right;
-    padding: 0 10px;
+    float:      right;
 }
 
 #header .left-col a {
@@ -37,61 +44,112 @@ body {
 }
 
 #header .nav {
-    margin-top: 32px;
-    margin-bottom: 0;
+    margin-top:     32px;
+    margin-bottom:  0;
 }
 
 #header .nav a {
-    color: white;
-    text-decoration: none;
+    color:              white;
+    text-decoration:    none;
+    -webkit-transition: color .3s;
+    transition:         color .3s;
+}
+
+#header .nav a:hover {
+    color: #2C3E50;
 }
 
 /**************** Footer ****************/
 
 #footer {
-    padding: 10px;
+    padding:    10px;
     text-align: center;
-    color: #2C3E50;
-    font-size: 0.8em;
+    color:      #2C3E50;
+    font-size:  0.8em;
 }
 
+/**************** Main Section ****************/
+
+.main {
+    width: 65%;
+    display: inline-block;
+    float: left;
+}
+
+.main .wrapper {
+    border: 1px solid black;
+    margin-right: 5px;
+}
+
+/**************** Side Section ****************/
+
+.side {
+    width: 35%;
+    display: inline-block;
+    float: left;
+}
+
+.side .wrapper {
+    border: 1px solid black;margin-left: 5px;
+}
+
+.side iframe {
+    border: none;
+    width: 100%;
+    height: 800px
+}
 /**************** Web Cam ****************/
 
 #camera {
-    transform: rotateY(180deg);
-    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-    -moz-transform:rotateY(180deg); /* Firefox */
+    transform:          rotateY(180deg);
+    -webkit-transform:  rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:     rotateY(180deg); /* Firefox */
 }
 
 #booth {
-    width: 400px;
-    background-color: #ccc;
-    border: 10px solid #ddd;
-    margin: 0 auto;
+    width:              400px;
+    background-color:   #ccc;
+    border:             10px solid #ddd;
+    margin:             0 auto;
+    overflow: auto;
 }
 
 #btn-capture {
-    display: block;
-    margin: 10px 0;
-    padding: 10px 20px;
-    background-color: cornflowerblue;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
+    display:            block;
+    margin:             10px 0;
+    padding:            10px 20px;
+    background-color:   cornflowerblue;
+    color:              #fff;
+    text-align:         center;
+    text-decoration:    none;
 }
 
 #camera-canvas, #sticker-canvas {
     display: none;
 }
 
-.video-wrapper {
+.video-wrapper, .preview-wrapper {
     position: relative;
     overflow: auto;
+    /*height: 300px;*/
+}
+
+.preview-wrapper {
+    height: 300px;
 }
 
 #sticker-img {
+    position:   absolute;
+    z-index:    2;
+}
+
+#preview-cam-img, #preview-sticker-img {
     position: absolute;
-    z-index: 2;
+    height: 300px;
+}
+
+#upload {
+    display: none;
 }
 
 /**************** Image Post ****************/
@@ -119,17 +177,17 @@ img.short-height, img.short-width {
 }
 
 img.short-height {
-    max-height: 100%;
+    height: 100%;
 }
 
 img.short-width {
-    max-width:  100%;
-    left:       0;
+    width:  100%;
+    left:   0;
 }
 
 img.perfect-box {
-    max-width:  100%;
-    max-height: 100%;
+    width:  100%;
+    height: 100%;
 }
 
 /**************** Colors ****************/
@@ -189,7 +247,7 @@ img.perfect-box {
 
 .pagination .wrapper {
     overflow: auto;
-    display: inline-block;
+    display:  inline-block;
 }
 
 .page-box p {
@@ -208,3 +266,8 @@ img.perfect-box {
 #canvas2 {
     border: 1px solid black;
 }
+
+#form-sticker input {
+    display: inline-block;
+}
+

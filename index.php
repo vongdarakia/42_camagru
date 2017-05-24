@@ -31,6 +31,7 @@ require_once 'includes/lib/auth.php';
 
 $page  = 1; // Page that we're trying to get.
 $limit = 20; // How many post to show per page
+$relative_path = "./"; // Path to root;
 
 if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
     $page = $_GET["page"];
@@ -47,7 +48,8 @@ $query = "select
     p.title 'title',
     p.img_file 'img_file',
     p.creation_date 'post_creation_date'
-from `user` u inner join `post` p on p.author_id = u.id";
+from `user` u inner join `post` p on p.author_id = u.id
+order by p.creation_date desc";
 
 // Pagination info
 $info     = $post->getDataByPage($page, $limit, $query);
