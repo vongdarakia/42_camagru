@@ -23,3 +23,17 @@ body {
 #canvas {
     display: none;
 }
+
+.crop {
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+    overflow: hidden;
+    text-align: center;
+    /*position: relative;*/
+}
+
+.crop img {
+    max-height: 100%;
+    /*position: absolute;*/
+}
