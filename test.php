@@ -64,7 +64,7 @@ try {
     // $post->add(array(
     //     "author_id" => 1,
     //     "title" => "Title",
-    //     "img_name" => "image_name",
+    //     "img_file" => "image_name",
     //     "description" => "Some comment about the post"
     // ));
     // print("posted\n");

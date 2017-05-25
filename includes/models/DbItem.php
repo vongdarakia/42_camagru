@@ -219,7 +219,7 @@ class DbItem
      */
     public function getDataByPage($page=1, $limit=10, $query=null)
     {
-        if ($page <= 0 || $limit <= 0) {
+        if ($page <= 0 || ($limit !== 'all' && $limit <= 0)) {
             throw new Exception("Error: page and limit must be positive number", 1);
         }
         if ($query === null) {

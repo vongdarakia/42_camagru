@@ -1,6 +1,6 @@
 <?php 
 /**
- * Home page to view people's posts.
+ * Home page. Has people's public posts.
  *
  * PHP version 5.5.38
  *
@@ -12,63 +12,68 @@
  * @link      localhost:8080
  */
 
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL|E_STRICT);
 date_default_timezone_set('America/Los_Angeles');
 
 session_start();
 
-if (!isset($_SESSION["user_email"])) {
-    header("location: pages/login.php");
-}
-require_once 'config/database.php';
 require_once 'config/paths.php';
+require_once 'config/database.php';
 require_once 'config/connect.php';
 require_once 'includes/models/User.php';
+require_once 'includes/models/Post.php';
+require_once 'includes/lib/auth.php';
 // require_once 'includes/models/Post.php';
 // require_once 'includes/models/Like.php';
 // require_once 'includes/models/Comment.php';
 
-try {
-    // $user = new User($dbh, array(
-    //         "id"           => 12,
-    //         "first"        => 13));
 
-    // $post = new Post($dbh, array(
-    //         "id"           => 1,
-    //         "author_id"        => 1));
+$page  = 1; // Page that we're trying to get.
+$limit = 20; // How many post to show per page
+$relative_path = "./"; // Path to root;
 
-    // $like = new Like($dbh);
-    // $comment = new Comment($dbh);
-
+if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
+    $page = $_GET["page"];
+} else if (isset($_GET["page"]) && !is_numeric($_GET["page"])) {
+    "echo wtf are you trying to do?";
 }
-catch (Exception $e) {
-    echo $e->getMessage() . "\n";
+
+$post  = new Post($dbh);
+$query = "select
+    u.first 'author_fn',
+    u.last 'author_ln',
+    u.username 'author_login',
+    u.email 'author_email',
+    p.title 'title',
+    p.img_file 'img_file',
+    p.creation_date 'post_creation_date'
+from `user` u inner join `post` p on p.author_id = u.id
+order by p.creation_date desc";
+
+// Pagination info
+$info     = $post->getDataByPage($page, $limit, $query);
+$maxPages = ceil($info->total / $info->limit);
+
+// Limits the user to the max page if they try to exceed it.
+if ($page > $maxPages) {
+    $info = $post->getDataByPage($maxPages, $limit, $query);
 }
 
 require_once TEMPLATES_PATH . "/header.php";
 ?>
 
 <div id="container">
-    <h2>Home</h2>
-    <?php 
-        echo "Hello " . $_SESSION["user_first"] . " " . $_SESSION["user_last"] . ", " 
-        . $_SESSION["user_login"] . " - " . $_SESSION["user_email"];
+    <?php displayError(); ?>
 
-        if (isset($_SESSION["user_email"])) {
-            $user = new User($dbh);
-            if ($user->loadByEmail($_SESSION["user_email"])) {
-                $info = $user->getDataByPage(10, 10);
-                foreach ($info->rows as $row) {
-                    // echo $row["first"];
-                    include 'templates/user_post_box.php';
-                }
-            }
+    <div id="public-posts">
+        <?php 
+        foreach ($info->rows as $row) {
+            include 'templates/user_post_box.php';
         }
-    ?>
-
+        ?>
+        <?php require_once TEMPLATES_PATH . "/pagination.php"; ?>
+    </div>
 </div>
-
 
 <?php require_once TEMPLATES_PATH . "/footer.php"; ?>

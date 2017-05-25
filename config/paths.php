@@ -15,20 +15,32 @@
     defined("SITE_ROOT")
     or define('SITE_ROOT', realpath(dirname(__DIR__)));
 
+    defined("SITE_DIR")
+    or define('SITE_DIR', "/camagru");
+
     defined("TEMPLATES_PATH")
     or define("TEMPLATES_PATH", dirname(__DIR__) . '/templates');
 
     defined("CONFIG_PATH")
     or define("CONFIG_PATH", dirname(__DIR__) . '/config');
 
+    defined("MODELS_PATH")
+    or define("MODELS_PATH", dirname(__DIR__) . '/includes/models');
+
     defined("CSS_DIR")
-    or define("CSS_DIR",  '/camagru/resources/css/');
+    or define("CSS_DIR",  SITE_DIR . '/resources/css/');
+
+    defined("JS_DIR")
+    or define("JS_DIR",  SITE_DIR . '/resources/js/');
+
+    defined("IMG_DIR")
+    or define("IMG_DIR",  SITE_DIR . '/resources/img/');
 
     defined("ACTIONS_DIR")
-    or define("ACTIONS_DIR", '/camagru/actions/');
+    or define("ACTIONS_DIR", SITE_DIR . '/actions/');
 
     defined("PAGES_DIR")
-    or define("PAGES_DIR", '/camagru/pages/');
+    or define("PAGES_DIR", SITE_DIR . '/pages/');
 
     defined("POSTS_DIR_NAME")
     or define("POSTS_DIR_NAME", 'posts');

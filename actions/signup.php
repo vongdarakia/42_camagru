@@ -14,9 +14,9 @@
  * @link      localhost:8080
  */
 
-require_once '../includes/lib/auth.php';
-
 session_start();
+require_once '../config/paths.php';
+require_once '../includes/lib/auth.php';
 
 try {
     if (signUp(
@@ -28,7 +28,7 @@ try {
     )
     ) {
         initSession($_POST);
-        header("Location: ../index.php");
+        header("Location: " . SITE_DIR);
     }
 } catch (Exception $e) {
     $_SESSION["err_msg"] = $e->getMessage();

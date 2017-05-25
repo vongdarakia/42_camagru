@@ -16,7 +16,8 @@ session_start();
 require_once '../config/paths.php';
 
 if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
-    header("Location: ../index.php");
+    header("Location: " . SITE_DIR);
+    exit(0);
 }
 
 require_once TEMPLATES_PATH . "/header.php";

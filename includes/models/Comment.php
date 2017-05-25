@@ -28,9 +28,8 @@ require_once 'DbItem.php';
 class Comment extends DbItem
 {
     private $_author_id;
-    private $_img_name;
-    private $_title;
-    private $_description;
+    private $_post_id;
+    private $_comment;
     private static $_fields = ["id", "author_id", "post_id", "comment"];
     
     /**

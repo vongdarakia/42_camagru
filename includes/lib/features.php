@@ -21,12 +21,12 @@ require_once '../includes/models/Post.php';
  *
  * @param String $email       Email of the author.
  * @param String $title       Title of post.
- * @param String $img_name    File name of image.
+ * @param String $img_file    File name of image.
  * @param String $description Description of the post.
  *
  * @return Boolean if post was successful.
  */
-function post($email, $title, $img_name, $description="")
+function post($email, $title, $img_file, $description="")
 {
     global $dbh;
     $user = new User($dbh);
@@ -37,7 +37,7 @@ function post($email, $title, $img_name, $description="")
             array(
                 "author_id" => $user->getId(),
                 "title" => $title,
-                "img_name" => $img_name,
+                "img_file" => $img_file,
                 "description" => $description
             )
         );

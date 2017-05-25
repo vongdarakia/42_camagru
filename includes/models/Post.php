@@ -28,13 +28,13 @@ require_once 'DbItem.php';
 class Post extends DbItem
 {
     private $_author_id;
-    private $_img_name;
+    private $_img_file;
     private $_title;
     private $_description;
     private static $_fields = [
         "id",
         "author_id",
-        "img_name",
+        "img_file",
         "title",
         "description"
     ];
@@ -50,7 +50,7 @@ class Post extends DbItem
     {
         parent::__construct($db, 'post');
         $this->_author_id = 0;
-        $this->_img_name = "";
+        $this->_img_file = "";
         $this->_title = "";
         $this->_description = "";
         if (isset($fields)) {
@@ -95,7 +95,7 @@ class Post extends DbItem
      */
     public function getImgName()
     {
-        return $this->_img_name;
+        return $this->_img_file;
     }
 
     /**
@@ -108,7 +108,7 @@ class Post extends DbItem
     public function setImgName($value)
     {
         if (DbItem::validNonEmptyString($value)) {
-            $this->_img_name = $value;
+            $this->_img_file = $value;
             return true;
         }
         return false;
@@ -177,7 +177,7 @@ class Post extends DbItem
             set
                 author_id=:author_id,
                 title=:title,
-                img_name=:img_name,
+                img_file=:img_file,
                 description=:description,
             where id=:id";
         $stmt = $this->db->prepare($qry);
@@ -185,7 +185,7 @@ class Post extends DbItem
             array(
                 ":author_id" => $this->_author_id,
                 ":title" => $this->_title,
-                ":img_name" => $this->_img_name,
+                ":img_file" => $this->_img_file,
                 ":description" => $this->_description,
                 ":id" => $this->id
             )
@@ -207,7 +207,7 @@ class Post extends DbItem
             $this->id = $result->id;
             $this->_author_id = $result->author_id;
             $this->_title = $result->title;
-            $this->_img_name = $result->img_name;
+            $this->_img_file = $result->img_file;
             $this->_description = $result->description;
             unset($result);
             return true;
@@ -242,9 +242,9 @@ class Post extends DbItem
                     throw new Exception("title can't be empty.", 1);
                 }
             }
-            if (array_key_exists('img_name', $fields)) {
-                if (!$this->setImgName($fields['img_name'])) {
-                    throw new Exception("img_name can't be empty.", 1);
+            if (array_key_exists('img_file', $fields)) {
+                if (!$this->setImgName($fields['img_file'])) {
+                    throw new Exception("img_file can't be empty.", 1);
                 }
             }
             if (array_key_exists('description', $fields)) {
@@ -279,9 +279,9 @@ class Post extends DbItem
                     ) {
                         return false;
                     }
-                } else if (array_key_exists('img_name', $fields)) {
-                    if (!(isset($fields['img_name'])
-                        && !empty($fields['img_name']))
+                } else if (array_key_exists('img_file', $fields)) {
+                    if (!(isset($fields['img_file'])
+                        && !empty($fields['img_file']))
                     ) {
                         return false;
                     }
@@ -312,14 +312,14 @@ class Post extends DbItem
         ) {
             $stmt = $this->db->prepare(
                 "insert into `{$this->table}`
-                (author_id, title, img_name, description)
-                values (:author_id, :title, :img_name, :description)"
+                (author_id, title, img_file, description)
+                values (:author_id, :title, :img_file, :description)"
             );
             $stmt->execute(
                 array(
                     ":author_id" => $this->_author_id,
                     ":title" => $this->_title,
-                    ":img_name" => $this->_img_name,
+                    ":img_file" => $this->_img_file,
                     ":description" => $this->_description
                 )
             );
