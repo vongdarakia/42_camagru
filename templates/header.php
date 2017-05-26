@@ -23,8 +23,8 @@
         href="https://fonts.googleapis.com/css?family=Pacifico|Lato:100"
         rel="stylesheet"
     >
-    <link rel="stylesheet" type="text/css" href="<?php echo CSS_DIR; ?>camagru.css">
     
+    <link rel="stylesheet" type="text/css" href="<?php echo CSS_DIR; ?>camagru.css">
 </head>
 <body>
 <div id="header">

@@ -47,7 +47,7 @@ $relative_path = "../"; // Path to root;
 require_once TEMPLATES_PATH . "/header.php";
 ?>
 
-<div class="container">
+<div class="container" id="post-container">
     <?php  
     if (isset($_SESSION["err_msg"]) && $_SESSION["err_msg"] != "") {
         echo "Error: " . $_SESSION["err_msg"];
@@ -61,26 +61,31 @@ require_once TEMPLATES_PATH . "/header.php";
                 value="<?php echo IMG_DIR ?>"
                 id="img-dir"
             >
+            <input
+                type="hidden" 
+                value="<?php echo POSTS_DIR ?>"
+                id="post-dir"
+            >
             <form id="form-sticker">
                 <label class="radio-inline">
-                    <input type="radio" name="optradio">Option 1
+                    <input checked type="radio" name="opt-sticker" onclick="changeSticker(this)" value="Mustache and Sunglasses">Mustache and Sunglasses
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="optradio">Option 2
+                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="Patrick Gasp">Patrick Gasp
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="optradio">Option 3
+                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="Doge">Doge
                 </label>
             </form>
             <div id="booth">
-                <div class="video-wrapper">
+                <div id="video-wrapper">
                     <img src="" id="sticker-img">
                     <video id="camera" width="400" height="300"></video>
                 </div>
                 
                 <a href="#" id="btn-capture">Take Photo</a>
 
-                <div class="preview-wrapper">
+                <div id="preview-wrapper" class="hidden">
                     <img src="" id="preview-cam-img">
                     <img src="" id="preview-sticker-img">
                 </div>
@@ -90,7 +95,7 @@ require_once TEMPLATES_PATH . "/header.php";
                 <canvas id="sticker-canvas" width="400" height="300"></canvas>
             </div>
             <form action="<?php echo ACTIONS_DIR ?>post.php"
-                method="post"
+                method="post" id="form-post"
                 enctype="multipart/form-data">
                 <input type="email" name="email" id="email" value="<?php echo $email; ?>">
                 <input type="text" name="title" id="title" placeholder="title">
@@ -98,21 +103,30 @@ require_once TEMPLATES_PATH . "/header.php";
                 <input type="file" name="file" id="file">
                 <input type="hidden" name="camImg" value="" id="cam-photo">
                 <input type="hidden" name="stickerImg" value="" id="sticker-photo">
-                <input type="button" name="btnSubmit" onClick="fileUpload(this.form,'../actions/post.php','upload'); return false;" value="Post">
+                <input type="button" name="btnSubmit" onClick="fileUpload(this.form,'../actions/post.php'); return false;" value="Post">
             </form>
         </div>
     </div>
     <div class="side">
         <div id="side-photos" class="wrapper">
-            <iframe id="photo-frame" src="/camagru/templates/photos.php">
-                
-            </iframe>
-            
+            <div id="photos-header">
+                <h3>Recent Photos</h3>
+                <hr class="style14">
+            </div>
+            <div id="photos">
+                <?php 
+                foreach ($info->rows as $row) {
+                    include '../templates/user_upload_box.php';
+                }
+                ?>
+            </div>
         </div>
     </div>
     <div id="upload"></div>
+    
 </div>
 
+<script src="<?php echo JS_DIR . "main.js" ?>"></script>
 <script src="<?php echo JS_DIR . "post.js" ?>">
     
 </script>

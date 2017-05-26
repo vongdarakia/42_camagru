@@ -120,9 +120,9 @@ function superimposeImages($img_name, $bg, $stkr, $is_file)
     $src_h = imagesy($stkr_img);
     imageCopyMergeAlpha($bg_img, $stkr_img, 0, 0, 0, 0, $src_w, $src_h, 100);
     if ($type === IMG_JPG) {
-        return imagejpeg($bg_img, POSTS_DIR . $img_name);
+        return imagejpeg($bg_img, POSTS_PATH . $img_name);
     }
-    return imagepng($bg_img, POSTS_DIR . $img_name);
+    return imagepng($bg_img, POSTS_PATH . $img_name);
 }
 
 /**
@@ -135,8 +135,8 @@ function superimposeImages($img_name, $bg, $stkr, $is_file)
 function saveFileFromUpload($img_name)
 {
     // superimposeGif($img_name, $_POST["stickerImg"]);
-    superimposeImages($img_name, null, $_POST["stickerImg"], true);
-    // move_uploaded_file($_FILES["file"]["tmp_name"], POSTS_DIR . $img_name);
+    superimposeImages($img_name, null, urldecode($_POST["stickerImg"]), true);
+    // move_uploaded_file($_FILES["file"]["tmp_name"], POSTS_PATH . $img_name);
     return false;
 }
 
@@ -149,10 +149,10 @@ function saveFileFromUpload($img_name)
  */
 function saveFileFromCapture($img_name)
 {
-    $cam_data = $_POST["camImg"];
-    $stker_data = $_POST["stickerImg"];
+    $cam_data = urldecode($_POST["camImg"]);
+    $stker_data = urldecode($_POST["stickerImg"]);
     $new_img = superimposeImages($img_name, $cam_data, $stker_data, false);
-    // file_put_contents(POSTS_DIR . $img_name, $new_img);
+    // file_put_contents(POSTS_PATH . $img_name, $new_img);
     return true;
 }
 
@@ -174,9 +174,10 @@ try {
         // relocateError($msg, $backUrl);
         // sendError($msg, 200);
     // }
+    // echo $_POST["email"];
 
     // Check is post directory is writable first before posting anything.
-    if (!is_writable(POSTS_DIR)) {
+    if (!is_writable(POSTS_PATH)) {
         $msg = "Can't write to posts folder.";
         // relocateError($msg, $backUrl);
         sendError($msg, 200);
@@ -189,8 +190,12 @@ try {
     
     // Sets title image name unless title was specified.
     $title = $imgName;
-    if (isset($_POST["title"]) && $_POST["title"] !== "") {
-        $title = $_POST["title"];
+    if (isset($_POST["title"])) {
+
+        $title = urldecode($_POST["title"]);
+        if ($title == null || $title == "") {
+            $title = $imgName;
+        }
     }
 
     // Gives the image name an extension based on the type of imaged being posted.
@@ -208,7 +213,7 @@ try {
     } else if (isset($_POST["camImg"]) && $_POST["camImg"] != "") {
         // Uses png if we're using web cam image.
         // Checks if base 64 image is valid
-        $cam64 = preg_replace($pattern, '', $_POST["camImg"]);
+        $cam64 = preg_replace($pattern, '', urldecode($_POST["camImg"]));
         if (!checkBase64Image($cam64)) {
             $msg = "Invalid image. Must be based 64."
                 . " Please contact vongdarakia@gmail.com";
@@ -230,7 +235,7 @@ try {
     }
 
     // Checks if image is valid
-    $stkr64 = preg_replace($pattern, '', $_POST["stickerImg"]);
+    $stkr64 = preg_replace($pattern, '', urldecode($_POST["stickerImg"]));
     if (!checkBase64Image($stkr64)) {
         $msg = "Sticker is not an image";
         // relocateError($msg, $backUrl);
@@ -238,11 +243,12 @@ try {
     }
 
     // Records the post to the database, and if successful, saves the image.
+    // echo urldecode($_POST["description"]);
     if (post(
-        $_POST["email"],
+        urldecode($_POST["email"]),
         $title,
         $imgName,
-        $_POST["description"]
+        urldecode($_POST["description"])
     )
     ) {
         if (isset($_FILES["file"]) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {

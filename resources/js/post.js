@@ -1,38 +1,43 @@
-function ajax(o){
-    var xmlhttp;
-    // compatible with IE7+, Firefox, Chrome, Opera, Safari
-    xmlhttp = new XMLHttpRequest();
 
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200) {
-            if (o.success)
-                o.success(xmlhttp.responseText);
-        } else if (o.error) {
-            o.error(xmlhttp.responseText);
-        }
-    }
-    let url = o.url;
-    if (o.data) {
-        url += "?";
-        let i = 0;
-        for (var k in o.data){
-            if (o.data.hasOwnProperty(k)) {
-                if (i > 0) url += "&";
-                url += k + '=' + encodeURIComponent(o.data[k]);
-                i++;
-            }
-        }
-    }
+function createUserUploadBox(imgFile, photosDiv) {
+    let img = new Image();
+    let postDir = document.getElementById('post-dir').getAttribute('value');
+    let boxSize = 150;
+    img.src = postDir + imgFile;
 
-    let method = "GET";
-    if (o.method) {
-        method = o.method.toUpperCase();
-    }
-    if (method == "GET" || method == "POST") {
-        xmlhttp.open(method, url, true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send();
-    }
+    img.onload = function() {
+        // console.log(this.width + " " + this.height);
+        let imgClass = "";
+
+        // Makes sure to fill up the box when image sizes are not
+        // a 1:1 ratio.
+        if (this.height < this.width) {
+            imgClass = "short-height";
+            offset = -(this.width * boxSize / this.height - boxSize) / 2;
+            style = "left: " + offset + "px;";
+        } else if (this.width < this.height) {
+            imgClass = "short-width";
+            offset =  -(this.height * boxSize / this.width - boxSize) / 2;
+            style = "top: " + offset + "px;";
+        } else {
+            imgClass = "perfect-box";
+        }
+
+        let box = document.createElement('div');
+        let crop = document.createElement('div');
+        let photo = document.createElement('img');
+
+        box.className = 'user-upload-box';
+        crop.className = 'crop';
+        photo.className = imgClass;
+        photo.style = style;
+        photo.src = img.src;
+
+        crop.appendChild(photo);
+        box.appendChild(crop);
+
+        photosDiv.prepend(box);
+    };
 }
 
 function b64EncodeUnicode(str) {
@@ -45,7 +50,10 @@ function b64EncodeUnicode(str) {
     }));
 }
 // http://viralpatel.net/blogs/ajax-style-file-uploading-using-hidden-iframe/
-function fileUpload(form, action_url, div_id) {
+function fileUpload(form, action_url) {
+    var file = document.querySelector('#files > input[type="file"]').files[0];
+    getBase64(file);
+    // console.log(form);
     // Create the iframe...
     var iframe = document.createElement("iframe");
     iframe.setAttribute("id", "upload_iframe");
@@ -57,7 +65,7 @@ function fileUpload(form, action_url, div_id) {
 
     // Add to document...
     // form.parentNode.appendChild(iframe);
-    document.getElementById(div_id).appendChild(iframe);
+    document.getElementById('upload').appendChild(iframe);
     window.frames['upload_iframe'].name = "upload_iframe";
 
     iframeId = document.getElementById("upload_iframe");
@@ -98,7 +106,7 @@ function fileUpload(form, action_url, div_id) {
                 console.log(err);
             }
             
-            // document.getElementById(div_id).innerHTML = content;
+            // document.getElementById('upload').innerHTML = content;
 
             // Del the iframe...
             setTimeout('iframeId.parentNode.removeChild(iframeId)', 250);
@@ -118,7 +126,40 @@ function fileUpload(form, action_url, div_id) {
     form.submit();
     
 
-    // document.getElementById(div_id).innerHTML = "Uploading...";
+    // document.getElementById('upload').innerHTML = "Uploading...";
+}
+
+function changeSticker(radio) {
+    if (radio.value == "Patrick Gasp") {
+        loadStickerImage("patrick-gasp.png", 20, 120, 150 * .75, 227 * .75);
+    } else if (radio.value == "Mustache and Sunglasses") {
+        loadStickerImage("mustache-glasses.png", 125, 75, 150, 150);
+    } else if (radio.value == "Doge") {
+        loadStickerImage("doge.png", 20, 140, 150, 150);
+    }
+}
+
+function loadStickerImage(imgFile, x, y, w, h) {
+    let stickerCanvas = document.getElementById('sticker-canvas');
+    let stickerContext = stickerCanvas.getContext('2d');
+    let stickerImg = document.getElementById('sticker-img');
+    let stickerPhoto = document.getElementById('sticker-photo');
+    let baseImg = new Image();
+    let imgDir = document.getElementById('img-dir').getAttribute('value');
+    
+    baseImg.src = imgDir + imgFile;
+    baseImg.onload = function() {
+        // console.log(this.width + " " + this.height);
+        stickerContext.clearRect(0, 0, 400, 300);
+        // Draws the sticker at this small size onto another canvas so that we can
+        // create an image out of it, which will be used to superimpose onto the
+        // camera image.
+        stickerContext.drawImage(baseImg, x, y, w, h);
+
+        let dataUrl = stickerCanvas.toDataURL('image/png');
+        stickerImg.setAttribute("src", dataUrl);
+        stickerPhoto.setAttribute('value', dataUrl);
+    };
 }
 
 (function() {
@@ -126,7 +167,6 @@ function fileUpload(form, action_url, div_id) {
     cameraCanvas = document.getElementById('camera-canvas'),
     stickerCanvas = document.getElementById('sticker-canvas'),
     cameraContext = cameraCanvas.getContext('2d'),
-    stickerContext = stickerCanvas.getContext('2d'),         
     prevCamImg = document.getElementById('preview-cam-img'),      // For preview
     prevStkrImg = document.getElementById('preview-sticker-img'), // For preview
     stickerImg = document.getElementById('sticker-img'),          // For view
@@ -153,24 +193,13 @@ function fileUpload(form, action_url, div_id) {
     cameraContext.translate(400, 0);
     cameraContext.scale(-1, 1);
 
-    let baseImg = new Image();
-    let imgDir = document.getElementById('img-dir').getAttribute('value');
-    
-    baseImg.src = imgDir + "mustache-glasses.png";
-    // console.log(baseImg.src);
-    baseImg.onload = function() {
-        // console.log(this.width + ' ' + this.height);
-        // Draws the sticker at this small size onto another canvas so that we can
-        // create an image out of it, which will be used to superimpose onto the
-        // camera image.
-        stickerContext.drawImage(baseImg, 125, 75, 150, 150);
-
-        let dataUrl = stickerCanvas.toDataURL('image/png');
-        stickerImg.setAttribute("src", dataUrl);
-        stickerPhoto.setAttribute('value', dataUrl);
-    };
+    loadStickerImage("mustache-glasses.png", 125, 75, 150, 150);
 
     document.getElementById("btn-capture").addEventListener('click', function() {
+        let previewWrapper = document.getElementById('preview-wrapper');
+        let formPost = document.getElementById('form-post');
+
+        previewWrapper.classList.remove("hidden");
         
         // Draws the camera onto the canvas.
         cameraContext.drawImage(camera, 0, 0, 400, 300);
@@ -183,6 +212,45 @@ function fileUpload(form, action_url, div_id) {
 
         dataUrl = stickerCanvas.toDataURL('image/png');
         prevStkrImg.setAttribute("src", dataUrl);
+        // fileUpload(formPost, '../actions/post.php');
+
+        let camData = document.getElementById('cam-photo').getAttribute("value");
+        let stkerData = document.getElementById('sticker-photo').getAttribute("value");
+        camData = camData;
+        stkerData = stkerData;
+
+        let description = document.getElementById('description').getAttribute("value");
+        if (description == null) {
+            description = "";
+        }
+
+        let title = document.getElementById('title').getAttribute("value");
+        if (title == null) {
+            title = "";
+        }
+        ajax({
+            url: "/camagru/actions/post.php",
+            data: {
+                email: document.getElementById('email').getAttribute("value"),
+                title: title,
+                description: description,
+                camImg: camData,
+                stickerImg: stkerData
+            },
+            method: "post",
+            success: function(res) {
+                console.log(res);
+                // console.log(stkerData);
+                console.log("SUCCESS");
+                createUserUploadBox("dummy1.jpg", document.getElementById('photos'));
+            },
+            error: function(err) {
+                // alert(err);
+                console.log("ERROR");
+            }
+        });
+//         var file = document.querySelector('#files > input[type="file"]').files[0];
+// getBase64(file);
         // console.log(document.getElementById('hidden-img'));
 
         // let camData = document.getElementById('cam-photo').getAttribute("value");

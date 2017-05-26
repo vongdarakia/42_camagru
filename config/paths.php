@@ -36,6 +36,9 @@
     defined("IMG_DIR")
     or define("IMG_DIR",  SITE_DIR . '/resources/img/');
 
+    defined("TEMPLATES_DIR")
+    or define("TEMPLATES_DIR",  SITE_DIR . '/templates/');
+
     defined("ACTIONS_DIR")
     or define("ACTIONS_DIR", SITE_DIR . '/actions/');
 
@@ -46,7 +49,10 @@
     or define("POSTS_DIR_NAME", 'posts');
 
     defined("POSTS_DIR")
-    or define("POSTS_DIR", SITE_ROOT . '/' . POSTS_DIR_NAME . '/');
+    or define("POSTS_DIR", SITE_DIR . '/' . POSTS_DIR_NAME . '/');
+
+    defined("POSTS_PATH")
+    or define("POSTS_PATH", SITE_ROOT . '/' . POSTS_DIR_NAME . '/');
 
     ini_set('display_errors', 1);
     error_reporting(E_ALL|E_STRICT);

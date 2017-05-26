@@ -36,44 +36,49 @@ $relative_path = "./"; // Path to root;
 if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
     $page = $_GET["page"];
 } else if (isset($_GET["page"]) && !is_numeric($_GET["page"])) {
-    "echo wtf are you trying to do?";
+    echo "wtf are you trying to do?";
 }
 
-$post  = new Post($dbh);
+$Post  = new Post($dbh);
 $query = "select
     u.first 'author_fn',
     u.last 'author_ln',
     u.username 'author_login',
     u.email 'author_email',
+    p.id 'post_id',
     p.title 'title',
     p.img_file 'img_file',
-    p.creation_date 'post_creation_date'
+    p.creation_date 'post_creation_date',
+    l.id 'like_id'
 from `user` u inner join `post` p on p.author_id = u.id
+left join `like` l on l.post_id = p.id
 order by p.creation_date desc";
 
 // Pagination info
-$info     = $post->getDataByPage($page, $limit, $query);
+$info     = $Post->getDataByPage($page, $limit, $query);
 $maxPages = ceil($info->total / $info->limit);
 
 // Limits the user to the max page if they try to exceed it.
 if ($page > $maxPages) {
-    $info = $post->getDataByPage($maxPages, $limit, $query);
+    $info = $Post->getDataByPage($maxPages, $limit, $query);
 }
 
 require_once TEMPLATES_PATH . "/header.php";
 ?>
 
-<div id="container">
+<div class="container">
     <?php displayError(); ?>
 
     <div id="public-posts">
         <?php 
-        foreach ($info->rows as $row) {
+        foreach ($info->rows as $post) {
             include 'templates/user_post_box.php';
         }
         ?>
-        <?php require_once TEMPLATES_PATH . "/pagination.php"; ?>
     </div>
+    <?php require_once TEMPLATES_PATH . "/pagination.php"; ?>
+    <input type="hidden" id="like-action" value="<?php echo ACTIONS_DIR ?>like.php">
 </div>
+<script src="<?php echo JS_DIR . "main.js" ?>"></script>
 
 <?php require_once TEMPLATES_PATH . "/footer.php"; ?>

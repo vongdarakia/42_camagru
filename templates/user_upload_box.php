@@ -1,15 +1,13 @@
 <?php 
 /**
- * A templated for the user uploads on the home page.
- * This require the object $post and $relative_path to be present.
+ * A templated for the user uploads on the post page.
+ * This require the object $row and $relative_path to be present.
  *
- * $post Fields
+ * $row Fields
  *      author_fn
  *      author_ln
  *      author_login
  *      author_email
- *      post_id
- *      like_id
  *      title
  *      img_file
  *      post_creation_date
@@ -24,9 +22,7 @@
  * @link      localhost:8080
  */
 
-// if (isset())
-
-$img_path = $relative_path . POSTS_DIR_NAME . "/" . $post["img_file"];
+$img_path = $relative_path . POSTS_DIR_NAME . "/" . $row["img_file"];
 if (!file_exists($img_path)) {
     return 0;
 }
@@ -37,7 +33,7 @@ $height = $size[1];
 $boxSize = 150;
 
 // Change for html img to work.
-$img_path = SITE_DIR . "/" . POSTS_DIR_NAME . "/" . $post["img_file"];
+$img_path = SITE_DIR . "/" . POSTS_DIR_NAME . "/" . $row["img_file"];
 
 // Makes sure to fill up the box when image sizes are not
 // a 1:1 ratio.
@@ -53,8 +49,8 @@ if ($height < $width) {
     $class = "perfect-box";
 }
 ?>
-<i class="btn-liked icon-heart-empty"></i>
-<div class="user-post-box">
+
+<div class="user-upload-box">
     <div class="crop">
         <img
             src="<?php echo $img_path; ?>"
@@ -62,15 +58,4 @@ if ($height < $width) {
             style="<?php echo $style; ?>"
         >
     </div>
-    <!-- <span class="btn-like">like</span> -->
-    <!-- <div class="heart"></div> -->
-    <!-- <i class="btn-liked fa fa-heart"></i> -->
-    <?php 
-    if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
-        echo '<i class="btn-like fa fa-heart-o" onclick="like(this)" id="' .$post['post_id'] . '"></i>';
-    }
-    ?>
-    
-    <input type="hidden" id="">
-    <!-- <i class="btn-comment fa fa-comment"></i> -->
 </div>
