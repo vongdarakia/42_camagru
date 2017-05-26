@@ -242,7 +242,7 @@ function loadStickerImage(imgFile, x, y, w, h) {
                 console.log(res);
                 // console.log(stkerData);
                 console.log("SUCCESS");
-                createUserUploadBox("dummy1.jpg", document.getElementById('photos'));
+                createUserUploadBox(res, document.getElementById('photos'));
             },
             error: function(err) {
                 // alert(err);

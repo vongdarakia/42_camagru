@@ -24,8 +24,6 @@
  * @link      localhost:8080
  */
 
-// if (isset())
-
 $img_path = $relative_path . POSTS_DIR_NAME . "/" . $post["img_file"];
 if (!file_exists($img_path)) {
     return 0;
@@ -62,15 +60,15 @@ if ($height < $width) {
             style="<?php echo $style; ?>"
         >
     </div>
-    <!-- <span class="btn-like">like</span> -->
-    <!-- <div class="heart"></div> -->
-    <!-- <i class="btn-liked fa fa-heart"></i> -->
+
     <?php 
+
     if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
-        echo '<i class="btn-like fa fa-heart-o" onclick="like(this)" id="' .$post['post_id'] . '"></i>';
+        if ($post['like_id'] != null) {
+            echo '<i class="btn-liked fa fa-heart" onclick="like(this)" id="' .$post['post_id'] . '"></i>';
+        } else {
+            echo '<i class="btn-like fa fa-heart-o" onclick="like(this)" id="' .$post['post_id'] . '"></i>';
+        }
     }
     ?>
-    
-    <input type="hidden" id="">
-    <!-- <i class="btn-comment fa fa-comment"></i> -->
 </div>

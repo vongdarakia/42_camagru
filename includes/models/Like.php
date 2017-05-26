@@ -215,7 +215,7 @@ class Like extends DbItem
     }
 
     /**
-     * Adds a post to the database given a list of fields. Must have all 3 values.
+     * Adds a like to the database given a list of fields. Must have all 3 values.
      *
      * @param Array $fields Values of the posts we're adding.
      *
@@ -226,7 +226,7 @@ class Like extends DbItem
         if ($this->validFields($fields, Like::$_fields) == count(Like::$_fields) - 1
             && $this->setFields($fields)
         ) {
-            print("valid");
+            
             $stmt = $this->db->prepare(
                 "insert into `{$this->table}` (author_id, post_id)
                 values (:author_id, :post_id)"
@@ -240,6 +240,52 @@ class Like extends DbItem
             return $stmt->rowCount();
         }
         return 0;
+    }
+
+    /**
+     * Removes like
+     *
+     * @param Int $post_id   Post ID
+     * @param Int $author_id Author ID
+     *
+     * @return Int How many removed.
+     */
+    public function removeByPostAndAuthor($post_id, $author_id)
+    {
+        $stmt = $this->db->prepare(
+            "delete from `{$this->table}`
+            where post_id=:post_id and author_id=:author_id"
+        );
+        return $stmt->execute(
+            array(
+                ":author_id" => $author_id,
+                ":post_id" => $post_id
+            )
+        );
+    }
+
+    /**
+     * Checks if a like already exists between the author and the post.
+     *
+     * @param Int $post_id   Post ID
+     * @param Int $author_id Author ID
+     *
+     * @return Boolean Exists or Int Like ID
+     */
+    public function exists($post_id, $author_id) {
+        $stmt = $this->db->prepare(
+            "select id from `{$this->table}`
+            where post_id=:post_id and author_id=:author_id");
+        $stmt->execute(
+            array(
+                ":author_id" => $author_id,
+                ":post_id" => $post_id
+            )
+        );
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetch();
+        }
+        return false;
     }
 }
 

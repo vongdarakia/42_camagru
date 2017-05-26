@@ -1,12 +1,51 @@
 <?php
-    $data = array(
-        'userID'      => 'a7664093-502e-4d2b-bf30-25a2b26d6021',
-        'itemKind'    => 0,
-        'value'       => 1,
-        'description' => 'Boa saudaÁ„o.',
-        'itemID'      => '03e76d0a-8bab-11e0-8250-000c29b481aa'
-    );
 
-    $json = json_encode($data);
-    echo ($json);
+session_start();
+require_once '../config/paths.php';
+require_once '../config/connect.php';
+require_once '../includes/lib/auth.php';
+require_once '../includes/models/User.php';
+require_once '../includes/models/Like.php';
+
+checkUserAuthentication();
+
+header_status(200);
+$Like = new Like($dbh);
+$User = new User($dbh);
+
+try {
+    if (isset($_POST["post_id"])) {
+        $User->loadByEmail($_SESSION["user_email"]);
+        $post_id = urldecode($_POST["post_id"]);
+        $is_liking = urldecode($_POST["is_liking"]);
+        $uid = $User->getId();
+
+        if ($User->getId() > 0) {
+            if ($is_liking == "true") {
+                $res = $Like->exists($post_id, $uid);
+                if (!$res) {
+                    $num_rows = $Like->add(
+                        array('post_id' => $post_id, 'author_id' => $uid)
+                    );
+                    if ($num_rows) {
+                        sendData($num_rows);
+                    } else {
+                        sendError("Can't add duplicate", 200);
+                    }
+                } else {
+                    // Return id
+                    sendData($res[0]);
+                }
+            } else {
+                sendData($Like->removeByPostAndAuthor($post_id, $uid));
+                exit(0);
+            }
+        }
+        else {
+            sendError("Can't find user", 200);
+        }
+    }
+} catch (Exception $e) {
+    sendError($e->getMessage(), 200);
+}
 ?>

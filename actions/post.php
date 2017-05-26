@@ -267,7 +267,7 @@ try {
     }
 }
 header_status(200);
-echo "OK";
+echo $imgName;
 // header("Location: ../pages/post.php");
 
 ?>

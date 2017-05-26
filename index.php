@@ -63,6 +63,11 @@ if ($page > $maxPages) {
     $info = $Post->getDataByPage($maxPages, $limit, $query);
 }
 
+$email = "";
+if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
+    $email = $_SESSION["user_email"];
+}
+
 require_once TEMPLATES_PATH . "/header.php";
 ?>
 
@@ -77,6 +82,7 @@ require_once TEMPLATES_PATH . "/header.php";
         ?>
     </div>
     <?php require_once TEMPLATES_PATH . "/pagination.php"; ?>
+    <input type="hidden" id="user-email" value="<?php echo $email; ?>like.php">
     <input type="hidden" id="like-action" value="<?php echo ACTIONS_DIR ?>like.php">
 </div>
 <script src="<?php echo JS_DIR . "main.js" ?>"></script>

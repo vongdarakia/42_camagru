@@ -208,6 +208,13 @@ function sendError($err_msg, $err_code)
     exit(0);
 }
 
+function sendData($data)
+{
+    header_status(200);
+    echo $data;
+    exit(0);
+}
+
 function relocateError($err_msg, $url)
 {
     $_SESSION["err_msg"] = $err_msg;

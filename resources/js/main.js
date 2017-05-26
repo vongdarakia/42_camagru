@@ -12,12 +12,13 @@ function ajax(o){
     //     }
     // }
     xmlhttp.onload = function() {
-        if (o.success) {
+        if (o.success && xmlhttp.responseText.indexOf('Error') == -1) {
             o.success(xmlhttp.responseText);
         } else if (o.error) {
             o.error(xmlhttp.responseText);
         }
     }
+
     let url = "";
     if (o.data) {
         let i = 0;
@@ -35,9 +36,13 @@ function ajax(o){
         method = o.method.toUpperCase();
     }
     if (method == "GET" || method == "POST") {
-        xmlhttp.open(method, o.url, true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(encodeURI(url));
+        try {
+            xmlhttp.open(method, o.url, true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(encodeURI(url));
+        } catch(err) {
+            console.log(err);
+        }
     }
 }
 
@@ -52,15 +57,38 @@ function getBase64(file) {
    };
 }
 
+function applyLike(heart) {
+    heart.classList.remove('btn-like');
+    heart.classList.remove('fa-heart-o');
+    heart.classList.add('btn-liked');
+    heart.classList.add('fa-heart');
+}
+
+function applyUnlike(heart) {
+    heart.classList.remove('btn-liked');
+    heart.classList.remove('fa-heart');
+    heart.classList.add('btn-like');
+    heart.classList.add('fa-heart-o');
+}
+
 function like(heart) {
     let url = document.getElementById("like-action").value;
-    // console.log(heart.classList);
-    // console.log(heart.classList.contains('fa-heart-o'));
+    let email = document.getElementById("user-email").value;
+    let isLiking = true;
+    
+    if (heart.classList.contains('btn-liked')) {
+        applyUnlike(heart);
+        isLiking = false;
+    } else {
+        applyLike(heart);
+    }
+
     ajax({
         method: 'post',
         url: url,
         data: {
-            id: heart.id
+            post_id: heart.id,
+            is_liking: isLiking
         },
         success: function(res) {
             console.log(res);
@@ -69,16 +97,4 @@ function like(heart) {
             console.log(err);
         }
     });
-    if (heart.classList.contains('btn-like')) {
-        heart.classList.remove('btn-like');
-        heart.classList.remove('fa-heart-o');
-        heart.classList.add('btn-liked');
-        heart.classList.add('fa-heart');
-    } else {
-        heart.classList.remove('btn-liked');
-        heart.classList.remove('fa-heart');
-        heart.classList.add('btn-like');
-        heart.classList.add('fa-heart-o');
-    }
-    console.log(heart.id);
 }
