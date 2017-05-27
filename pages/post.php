@@ -100,7 +100,7 @@ require_once TEMPLATES_PATH . "/header.php";
                 <input type="email" name="email" id="email" value="<?php echo $email; ?>">
                 <input type="text" name="title" id="title" placeholder="title">
                 <input type="text" name="description" id="description" placeholder="description">
-                <input type="file" name="file" id="file">
+                <input type="file" name="file" id="file" onchange="fileChange(this)">
                 <input type="hidden" name="camImg" value="" id="cam-photo">
                 <input type="hidden" name="stickerImg" value="" id="sticker-photo">
                 <input type="button" name="btnSubmit" onClick="fileUpload(this.form,'../actions/post.php'); return false;" value="Post">
