@@ -68,26 +68,34 @@ require_once TEMPLATES_PATH . "/header.php";
             >
             <form id="form-sticker">
                 <label class="radio-inline">
-                    <input checked type="radio" name="opt-sticker" onclick="changeSticker(this)" value="Mustache and Sunglasses">Mustache and Sunglasses
+                    <input checked type="radio" name="opt-sticker" onclick="changeSticker(this)" value="0">Mustache and Sunglasses
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="Patrick Gasp">Patrick Gasp
+                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="1">Patrick Gasp
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="Doge">Doge
+                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="2">Doge
                 </label>
             </form>
             <div id="booth">
+
+                <div id="preview-wrapper" class="hidden">
+                    <img src="" id="preview-cam-img">
+                    <img src="" id="preview-sticker-img">
+                </div>
+
                 <div id="video-wrapper">
                     <img src="" id="sticker-img">
+                    <img src="" id="camera-img">
                     <video id="camera" width="400" height="300"></video>
                 </div>
                 
                 <a href="#" id="btn-capture">Take Photo</a>
 
-                <div id="preview-wrapper" class="hidden">
-                    <img src="" id="preview-cam-img">
-                    <img src="" id="preview-sticker-img">
+                <div id="captured-wrapper" class="">
+                    <img src="" id="captured-cam-img">
+                    <img src="" id="captured-sticker-img">
+                    <p>Preview</p>
                 </div>
 
                 <!-- These are used for converting images to base64 -->
