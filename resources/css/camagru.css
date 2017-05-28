@@ -143,8 +143,14 @@ body {
 
 #video-wrapper, #preview-wrapper {
     position: relative;
-    overflow: auto;
+    /*overflow: auto;*/
     /*height: 300px;*/
+}
+
+#video-wrapper {
+    width: 400px;
+    height: 300px !important;
+    overflow: hidden;
 }
 
 #preview-wrapper {
@@ -393,6 +399,10 @@ img.perfect-box {
 
 .hidden {
     display: none;
+}
+
+.invisible {
+    visibility: hidden;
 }
 
 .fill-width {
