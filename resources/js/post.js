@@ -1,8 +1,9 @@
 var HEIGHT = 300;
 var WIDTH = 400;
+var flipped = false; // Whether camera is flipped
 var navigator;
 var localStream;
-
+var vendorUrl;
 
 var cameraCanvas;
 var cameraContext;
@@ -21,6 +22,8 @@ var capturedCamImg;
 var capturedStkrImg;
 
 var currentSticker;
+
+var imgDir;
 
 var stickers = [
     {
@@ -176,31 +179,46 @@ function changeSticker(radio) {
     }
 }
 
-function loadStickerImage(o, extra) {
+function loadStickerImage(o, extra, callback) {
     let baseImg = new Image();
-    let imgDir = document.getElementById('img-dir').getAttribute('value');
     
     baseImg.src = imgDir + o.imgFile;
     baseImg.onload = function() {
-        if (o.adjW == undefined)
-            o.adjW = WIDTH;
-        if (o.adjH == undefined)
-            o.adjH = HEIGHT;
+        let offsetW = 0;
+        let offsetH = 0;
+        let adjW = WIDTH;
+        let adjH = HEIGHT;
+        
+        if (extra) {
+            if (extra.adjW)
+                adjW = extra.adjW;
+            if (extra.adjH)
+                adjH = extra.adjH;
+            if (extra.offsetW) {
+                offsetW = extra.offsetW;
+            }
+            if (extra.offsetH) {
+                offsetH = extra.offsetH;
+            }
+        }
 
-        stickerCanvas.width = o.adjW;
-        stickerCanvas.height = o.adjH;
+        console.log(adjW + " Width");
+        console.log(adjH + " Height");
+
+        stickerCanvas.width = adjW;
+        stickerCanvas.height = adjH;
         // stickerContext = stickerCanvas.getContext('2d');
-        stickerContext.clearRect(0, 0, WIDTH, HEIGHT);
+        stickerContext.clearRect(0, 0, adjW, adjH);
         // Draws the sticker at this small size onto another canvas so that we can
         // create an image out of it, which will be used to superimpose onto the
         // camera image.
-        stickerContext.drawImage(baseImg, o.x, o.y, o.w, o.h);
+        stickerContext.drawImage(baseImg, o.x + offsetW, o.y + offsetH, o.w, o.h);
 
         let dataUrl = stickerCanvas.toDataURL('image/png');
         stickerImg.setAttribute("src", dataUrl);
         stickerPhoto.setAttribute('value', dataUrl);
-        if (o.callback) {
-            o.callback();
+        if (callback) {
+            callback();
         }
     };
 }
@@ -221,9 +239,8 @@ function fileChange(input) {
 
         reader.onload = function(e) {
             let dataUrl = e.target.result;
-
-
             let img = new Image();
+
             img.src = e.target.result;
             img.onload = function() {
                 console.log(this.width);
@@ -246,36 +263,38 @@ function fileChange(input) {
                     // imgClass = "fill-height";
                     adjustedWidth = this.width * boxHeight / this.height;
                     offsetW = -(adjustedWidth - boxWidth) / 2;
-                    style = "left: " + offset + "px;";
+                    style = "left: " + offsetW + "px;";
                     drawToCanvas(img, cameraCanvas, 0, 0, adjustedWidth, HEIGHT);
                 } else if (this.height < this.width) {
                     // imgClass = "fill-width";
                     adjustedHeight = this.height * boxWidth / this.width;
                     offsetH = -(adjustedHeight - boxHeight) / 2;
-                    style = "top: " + offset + "px;";
+                    style = "top: " + offsetH + "px;";
                     drawToCanvas(img, cameraCanvas, 0, 0, WIDTH, adjustedHeight);
                 }
 
                 // loadStickerImage("mustache-glasses.png", 125 * this.width / boxWidth, 75 * this.height / boxHeight, 150, 150);
                 // Readjust the image
-                loadStickerImage({
-                    imgFile: currentSticker.imgFile,
-                    x: 125 * adjustedWidth / boxWidth,
-                    y: 75 * adjustedHeight / boxHeight, 
-                    w: 150,
-                    h: 150,
-                    adjW: adjustedWidth,
-                    adjH: adjustedHeight,
-                    callback: function() {
-                        capture(style);
-                    }
-                });
+                // loadStickerImage({
+                //     imgFile: currentSticker.imgFile,
+                //     x: 125 * adjustedWidth / boxWidth,
+                //     y: 75 * adjustedHeight / boxHeight, 
+                //     w: 150,
+                //     h: 150,
+                //     adjW: adjustedWidth,
+                //     adjH: adjustedHeight,
+                //     callback: function() {
+                //         capture(style);
+                //     }
+                // });
+                console.log((adjustedWidth +" "+ adjustedHeight));
                 loadStickerImage(currentSticker, {
-                    offsetW: offsetW,
-                    offsetH: offsetH,
+                    offsetW: -offsetW,
+                    offsetH: -offsetH,
                     adjW: adjustedWidth,
                     adjH: adjustedHeight
                 }, function() {
+                    console.log('captured');
                     capture(style);
                 });
                 // dataUrl = cameraCanvas.toDataURL();
@@ -307,8 +326,6 @@ function capture(style) {
     dataUrl = stickerCanvas.toDataURL('image/png');
     capturedStkrImg.style = style;
     capturedStkrImg.setAttribute("src", dataUrl);
-    
-    
 
     let camData = cameraPhoto.getAttribute("value");
     let stkerData = stickerPhoto.getAttribute("value");
@@ -354,24 +371,38 @@ function stopVideo() {
     vidWrapper.classList.add('invisible');
 }
 
-var flipped = false;
+function cameraCapture() {
+    let capturedWrapper = document.getElementById('captured-wrapper');
+    let formPost = document.getElementById('form-post');
 
-(function() {
-    camera = document.getElementById('camera');
-    cameraCanvas = document.getElementById('camera-canvas');
-    stickerCanvas = document.getElementById('sticker-canvas');
-    stickerContext = stickerCanvas.getContext('2d');
-    cameraContext = cameraCanvas.getContext('2d');
+    cameraCanvas.width = WIDTH;
+    cameraCanvas.height = HEIGHT;
+    stickerCanvas.width = WIDTH;
+    stickerCanvas.height = HEIGHT;
 
-    capturedWrapper = document.getElementById('captured-wrapper');
-    capturedCamImg = document.getElementById('captured-cam-img');      // For captured
-    capturedStkrImg = document.getElementById('captured-sticker-img'); // For captured
-    stickerImg = document.getElementById('sticker-img');          // For view
-    cameraPhoto = document.getElementById('cam-photo');              // For conversion
-    stickerPhoto = document.getElementById('sticker-photo');      // For conversion
+    if (!flipped) {
+        cameraContext.translate(WIDTH, 0);
+        cameraContext.scale(-1, 1);
+        flipped = !flipped;
+    }
+    // capturedWrapper.classList.remove("hidden");
     
-    vendorUrl = window.URL || window.webkitURL;
+    // Draws the camera onto the canvas.
+    cameraContext.drawImage(camera, 0, 0, WIDTH, HEIGHT);
 
+    // Manipulate canvas here
+    let dataUrl = cameraCanvas.toDataURL('image/png');
+    capturedCamImg.setAttribute("src", dataUrl);
+    cameraPhoto.setAttribute('value', dataUrl);
+
+    dataUrl = stickerCanvas.toDataURL('image/png');
+    capturedStkrImg.setAttribute("src", dataUrl);
+
+    capture();
+}
+
+function setupCamera() {
+    vendorUrl = window.URL || window.webkitURL;
     navigator.getMedia = navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
                          navigator.mozGetUserMedia ||
@@ -386,68 +417,28 @@ var flipped = false;
     }, function(error) {
         alert(error);
     });
+}
 
-    // Flips the canvas, because originally, the camera is reversed.
-    // cameraContext.translate(WIDTH, 0);
-    // cameraContext.scale(-1, 1);
-    // flipped = !flipped;
-    // currentSticker = stickers[0];
-    // loadStickerImage(currentSticker);
+function initVariables() {
+    camera = document.getElementById('camera');
+    cameraCanvas = document.getElementById('camera-canvas');
+    stickerCanvas = document.getElementById('sticker-canvas');
+    stickerContext = stickerCanvas.getContext('2d');
+    cameraContext = cameraCanvas.getContext('2d');
+
+    capturedWrapper = document.getElementById('captured-wrapper');
+    capturedCamImg = document.getElementById('captured-cam-img');      // For captured
+    capturedStkrImg = document.getElementById('captured-sticker-img'); // For captured
+    stickerImg = document.getElementById('sticker-img');          // For view
+    cameraPhoto = document.getElementById('cam-photo');              // For conversion
+    stickerPhoto = document.getElementById('sticker-photo');      // For conversion
+
+    imgDir = document.getElementById('img-dir').getAttribute('value');
+}
+
+(function() {
+    initVariables();
+    setupCamera();
     changeSticker({value: 0})
-
-    document.getElementById("btn-capture").addEventListener('click', function() {
-        let capturedWrapper = document.getElementById('captured-wrapper');
-        let formPost = document.getElementById('form-post');
-
-        if (!flipped) {
-            cameraContext.translate(WIDTH, 0);
-            cameraContext.scale(-1, 1);
-            flipped = !flipped;
-        }
-        capturedWrapper.classList.remove("hidden");
-        
-        // Draws the camera onto the canvas.
-        cameraContext.drawImage(camera, 0, 0, WIDTH, HEIGHT);
-
-        // Manipulate canvas here
-
-        let dataUrl = cameraCanvas.toDataURL('image/png');
-        capturedCamImg.setAttribute("src", dataUrl);
-        cameraPhoto.setAttribute('value', dataUrl);
-
-        dataUrl = stickerCanvas.toDataURL('image/png');
-        capturedStkrImg.setAttribute("src", dataUrl);
-
-        capture();
-        
-        // fileUpload(formPost, '../actions/post.php');
-
-        
-//         var file = document.querySelector('#files > input[type="file"]').files[0];
-// getBase64(file);
-        // console.log(document.getElementById('hidden-img'));
-
-        // let camData = document.getElementById('cam-photo').getAttribute("value");
-        // let stkerData = document.getElementById('sticker-photo').getAttribute("value");
-        // camData = b64EncodeUnicode(camData);
-        // stkerData = b64EncodeUnicode(stkerData);
-        // ajax({
-        //     url: "/camagru/actions/post.php",
-        //     data: {
-        //         email: document.getElementById('email').getAttribute("value"),
-        //         title: document.getElementById('title').getAttribute("value"),
-        //         description: document.getElementById('description').getAttribute("value"),
-        //         camImg: camData,
-        //         stickerImg: stkerData
-        //     },
-        //     success: function(res) {
-        //         // console.log(res);
-        //         console.log("SUCCESS");
-        //     },
-        //     error: function(err) {
-        //         // alert(err);
-        //         console.log("ERROR");
-        //     }
-        // });
-    });
+    document.getElementById("btn-capture").addEventListener('click', cameraCapture);
 })();
