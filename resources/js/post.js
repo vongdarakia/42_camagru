@@ -256,7 +256,8 @@ function fileChange(input) {
                 if (flipped) {
                     cameraContext.translate(WIDTH, 0);
                     cameraContext.scale(-1, 1);
-                    flipped = !flipped;
+                    flipped = false;
+                    console.log("flipping to reverse");
                 }
 
                 if (this.width < this.height || this.width == this.height) {
@@ -377,28 +378,32 @@ function cameraCapture() {
 
     cameraCanvas.width = WIDTH;
     cameraCanvas.height = HEIGHT;
-    stickerCanvas.width = WIDTH;
-    stickerCanvas.height = HEIGHT;
 
-    if (!flipped) {
-        cameraContext.translate(WIDTH, 0);
-        cameraContext.scale(-1, 1);
-        flipped = !flipped;
-    }
-    // capturedWrapper.classList.remove("hidden");
-    
+    // Needs to flip because camera is actually mirrored.
+    // Also needs to be flipped every time the canvas width
+    // and height are changed
+    cameraContext.translate(WIDTH, 0);
+    cameraContext.scale(-1, 1);
+    flipped = true;
+
     // Draws the camera onto the canvas.
     cameraContext.drawImage(camera, 0, 0, WIDTH, HEIGHT);
 
-    // Manipulate canvas here
-    let dataUrl = cameraCanvas.toDataURL('image/png');
-    capturedCamImg.setAttribute("src", dataUrl);
-    cameraPhoto.setAttribute('value', dataUrl);
+    stickerCanvas.width = WIDTH;
+    stickerCanvas.height = HEIGHT;
+    loadStickerImage(currentSticker, null, function() {
+        
 
-    dataUrl = stickerCanvas.toDataURL('image/png');
-    capturedStkrImg.setAttribute("src", dataUrl);
 
-    capture();
+        let dataUrl = cameraCanvas.toDataURL('image/png');
+        capturedCamImg.setAttribute("src", dataUrl);
+        cameraPhoto.setAttribute('value', dataUrl);
+
+        dataUrl = stickerCanvas.toDataURL('image/png');
+        capturedStkrImg.setAttribute("src", dataUrl);
+
+        capture();
+    });
 }
 
 function setupCamera() {
