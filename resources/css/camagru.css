@@ -441,3 +441,40 @@ img.perfect-box {
 .fa-heart-o:before {
   content: "\f08a";
 }
+
+#form-sticker {
+    /*overflow: hidden;*/
+}
+
+.sticker-box {
+    width: 80px;
+    /*height: 80px;*/
+    display: inline-block;
+    margin-right: 24px;
+    float: left;
+}
+
+#form-sticker input {
+    visibility: hidden;
+    position: absolute;
+}
+
+#form-sticker img {
+    /*visibility: hidden;*/
+    /*position: absolute;*/
+    max-width: 100%;
+    padding: 8px;
+    border: 1px solid black;
+}
+
+
+input.active + div img { /* (RADIO CHECKED) IMAGE STYLES */
+  /*border: 2px solid #f00;*/
+  box-shadow: 0px 0px 10px #888888;
+}
+
+#img-mustache {
+
+}
+
+/*#img-*/

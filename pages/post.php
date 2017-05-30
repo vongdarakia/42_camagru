@@ -44,6 +44,8 @@ where u.email = '".$email."'
 order by p.creation_date desc";
 $info = $user->getDataByPage(1, 10, $query);
 $relative_path = "../"; // Path to root;
+
+
 require_once TEMPLATES_PATH . "/header.php";
 ?>
 
@@ -67,15 +69,35 @@ require_once TEMPLATES_PATH . "/header.php";
                 id="post-dir"
             >
             <form id="form-sticker">
-                <label class="radio-inline">
-                    <input checked type="radio" name="opt-sticker" onclick="changeSticker(this)" value="0">Mustache and Sunglasses
+            <?php 
+            $stickers = ["patrick-gasp.png", "doge.png", "mustache-glasses.png"];
+            for ($i=0; $i < 3; $i++) {
+                echo '<label class="radio-inline">
+                <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="'.$i.'">
+                    <div class="sticker-box">
+                        <img src="'. IMG_DIR . $stickers[$i] .'">
+                    </div>
+                </label>';
+            }
+            ?>
+               <!--  <label class="radio-inline">
+                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="1">
+                    <div class="sticker-box">
+                        <img id="img-patrick" src="<?php echo IMG_DIR ?>patrick-gasp.png">
+                    </div>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="1">Patrick Gasp
+                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="2">
+                    <div class="sticker-box">
+                        <img id="img-doge" src="<?php echo IMG_DIR ?>doge.png">
+                    </div>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="2">Doge
-                </label>
+                    <input checked type="radio" name="opt-sticker" onclick="changeSticker(this)" value="0">
+                    <div class="sticker-box">
+                        <img id="img-mustache" src="<?php echo IMG_DIR ?>mustache-glasses.png">
+                    </div>
+                </label> -->
             </form>
             <div id="booth">
 
@@ -111,7 +133,7 @@ require_once TEMPLATES_PATH . "/header.php";
                 <input type="file" name="file" id="file" onchange="fileChange(this)">
                 <input type="hidden" name="camImg" value="" id="cam-photo">
                 <input type="hidden" name="stickerImg" value="" id="sticker-photo">
-                <input type="button" name="btnSubmit" onClick="fileUpload(this.form,'../actions/post.php'); return false;" value="Post">
+                <!-- <input type="button" name="btnSubmit" onClick="fileUpload(this.form,'../actions/post.php'); return false;" value="Post"> -->
             </form>
         </div>
     </div>
