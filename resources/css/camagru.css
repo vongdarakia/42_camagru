@@ -8,11 +8,12 @@ body {
 }
 
 .container {
-    max-width: 1024px;
-    min-width: 512px;
-    margin: auto;
-    padding: 0 20px;
+    max-width:  1024px;
+    min-width:  512px;
+    margin:     auto;
+    padding:    0 20px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /**************** Header ****************/
@@ -62,10 +63,11 @@ body {
 /**************** Footer ****************/
 
 #footer {
-    padding:    10px;
-    text-align: center;
-    color:      #2C3E50;
-    font-size:  0.8em;
+    padding-top:        30px;
+    padding-bottom:     30px;
+    text-align:         center;
+    color:              #2C3E50;
+    font-size:          0.8em;
 }
 
 /**************** Post ****************/
@@ -98,6 +100,7 @@ body {
     width: 35%;
     display: inline-block;
     float: left;
+    color: #2C3E50;
 }
 
 .side .wrapper {
@@ -129,14 +132,28 @@ body {
 
 #btn-capture {
     display:            block;
-    margin:             10px 0;
+    
     padding:            10px 20px;
-    background-color:   cornflowerblue;
+    background-color:   #2C3E50;
     color:              #fff;
     text-align:         center;
     text-decoration:    none;
+    border-top:      10px solid #ddd;
+    border-bottom:      10px solid #ddd;
+
+    -moz-transform:     background-color 0.3s, color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    transition:         background-color 0.3s, color 0.3s;
 }
 
+#btn-capture:hover {
+    /*color: #EC644B;*/
+    background-color: cornflowerblue;
+}
+
+#btn-capture:active {
+    background-color: #97C8FF;
+}
 #camera-canvas, #sticker-canvas {
     display: none;
 }
@@ -206,6 +223,8 @@ body {
 #photos-header h3 {
     margin: 0;
     padding: 12px;
+    /*font-weight: normal;*/
+    font-weight: 300;
     /*color: #F2F1EF;*/
 }
 
@@ -442,16 +461,23 @@ img.perfect-box {
   content: "\f08a";
 }
 
+/**************** Form Stickers ****************/
+
 #form-sticker {
-    /*overflow: hidden;*/
+    overflow: hidden;
+    padding: 8px;
+    /*overflow: auto;*/
 }
 
 .sticker-box {
     width: 80px;
-    /*height: 80px;*/
+    height: 80px;
     display: inline-block;
     margin-right: 24px;
     float: left;
+    text-align: center;
+    padding: 8px;
+    border-radius: 2px;
 }
 
 #form-sticker input {
@@ -462,19 +488,140 @@ img.perfect-box {
 #form-sticker img {
     /*visibility: hidden;*/
     /*position: absolute;*/
-    max-width: 100%;
-    padding: 8px;
-    border: 1px solid black;
+    /*max-width: 100%;*/
+    max-height: 100%;
+    
+    /*border: 1px solid black;*/
+}
+
+#form-sticker input + div {
+    -moz-transition:      background-color 0.3s;
+    -webkit-transition:   background-color 0.3s;
+    transition:           background-color 0.3s;
+}
+
+#form-sticker input.active + div { /* (RADIO CHECKED) IMAGE STYLES */
+    /*border: 2px solid #f00;*/
+    /*box-shadow: 0px 0px 10px #888888;*/
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    background-color: #ddd;
+
+    -moz-transition:      all 0.3s cubic-bezier(.25,.8,.25,1);
+    -webkit-transition:   all 0.3s cubic-bezier(.25,.8,.25,1);
+    transition:           all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+#form-sticker input + div:hover {
+    background-color: #ddd;
+}
+/**************** Modes ****************/
+
+#modes {
+    width:              420px;
+    /*background-color:   #ccc;*/
+    /*border:             10px solid #ddd;*/
+    margin:             0 auto;
+    overflow: auto;
+    
+}
+
+/*.mode {
+    display:            inline-block;
+    width:              50%;
+    padding:            10px 0;
+    float:              left;
+    text-align:         center;
+    background-color:   #ccc;
+    cursor:             pointer;
+
+    -moz-transform:     background-color 0.3s, color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    transition:         background-color 0.3s, color 0.3s;
+}*/
+
+.mode-radio + label {
+    /*font-size:          1.25em;*/
+    /*font-weight:        700;*/
+    width:              50%;
+    background-color:   #ccc;
+    float: left;
+    padding:            10px 0;
+}
+
+.mode-radio + label:hover {
+    color: white;
+}
+
+.mode-radio:checked + label {
+    background-color: #EC644B;
+    color: white;
+}
+
+#upload-mode:checked + #file-wrapper {
+    color: blue;
+}
+
+/**************** Upload File Input ****************/
+
+#file-wrapper {
+    width: 420px;
+    margin: auto;
+    height: 0px;
+    padding: 0px;
+
+    -webkit-transition: height 0.8s, padding 0.8s;
+}
+
+#file-wrapper.active {
+    height: 39px;
+}
+
+.file-input.active + label{
+    padding: 10px 0;
+    -webkit-transition: padding 0.8s;
+}
+
+.file-input, .mode-radio {
+    width:      0px;
+    height:     0px;
+    opacity:    0;
+    overflow:   hidden;
+    position:   absolute;
+    z-index:    -1;
+}
+
+.file-input + label, .mode-radio + label {
+    /*font-size:          1.25em;*/
+    /*font-weight:        700;*/
+    text-align: center;
+    
+    
+    display:            inline-block;
+    cursor:             pointer;
+
+    -moz-transform:     background-color 0.3s, color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    transition:         background-color 0.3s, color 0.3s;
+}
+
+.file-input + label {
+    width:              100%;
+    background-color:   #2C3E50;
+    color:              white;
+}
+
+.file-input:focus + label,
+.file-input + label:hover {
+    /*color: #EC644B;*/
+    background-color: cornflowerblue;
 }
 
 
-input.active + div img { /* (RADIO CHECKED) IMAGE STYLES */
-  /*border: 2px solid #f00;*/
-  box-shadow: 0px 0px 10px #888888;
+.file-input + label:active {
+    background-color: #97C8FF;
 }
 
-#img-mustache {
-
+.file-input:focus + label {
+    /*outline: 1px dotted #000;*/
+    outline: -webkit-focus-ring-color auto 5px;
 }
-
-/*#img-*/

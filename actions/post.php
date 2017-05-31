@@ -245,7 +245,7 @@ try {
     // Records the post to the database, and if successful, saves the image.
     // echo urldecode($_POST["description"]);
     if (post(
-        urldecode($_POST["email"]),
+        $_SESSION["user_email"],
         $title,
         $imgName,
         urldecode($_POST["description"])

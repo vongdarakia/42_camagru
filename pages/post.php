@@ -68,73 +68,69 @@ require_once TEMPLATES_PATH . "/header.php";
                 value="<?php echo POSTS_DIR ?>"
                 id="post-dir"
             >
+            <!-- <input type="hidden" name="email" id="email" value="<?php echo $email; ?>"> -->
+            <!-- <input type="hidden" name="camImg" value="" id="cam-photo">
+            <input type="hidden" name="stickerImg" value="" id="sticker-photo"> -->
+
             <form id="form-sticker">
             <?php 
             $stickers = ["patrick-gasp.png", "doge.png", "mustache-glasses.png"];
+            $stickerNames = ["Patrick Gasp", "Doge", "Mustache Glasses"];
             for ($i=0; $i < 3; $i++) {
                 echo '<label class="radio-inline">
-                <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="'.$i.'">
-                    <div class="sticker-box">
+                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="'.$i.'">
+                    <div class="sticker-box" title="'. $stickerNames[$i] .'">
                         <img src="'. IMG_DIR . $stickers[$i] .'">
                     </div>
                 </label>';
             }
             ?>
-               <!--  <label class="radio-inline">
-                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="1">
-                    <div class="sticker-box">
-                        <img id="img-patrick" src="<?php echo IMG_DIR ?>patrick-gasp.png">
-                    </div>
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="2">
-                    <div class="sticker-box">
-                        <img id="img-doge" src="<?php echo IMG_DIR ?>doge.png">
-                    </div>
-                </label>
-                <label class="radio-inline">
-                    <input checked type="radio" name="opt-sticker" onclick="changeSticker(this)" value="0">
-                    <div class="sticker-box">
-                        <img id="img-mustache" src="<?php echo IMG_DIR ?>mustache-glasses.png">
-                    </div>
-                </label> -->
             </form>
+            <div id="modes">
+                <!-- <div class="mode active">Camera Mode</div>
+                <div class="mode">Upload Mode</div> -->
+
+                <input class="mode-radio" type="radio" name="mode" id="camera-mode" value="camera" onchange="changeMode(this)" checked>
+                <label for="camera-mode">Camera Mode</label>
+
+                <input class="mode-radio" type="radio" name="mode" id="upload-mode" value="upload" onchange="changeMode(this)">
+                <label for="upload-mode">Upload Mode</label>
+            </div>
+
+            <div id="file-wrapper">
+                <input class="file-input" type="file" name="file" id="file" onchange="fileChange(this)">
+                <label for="file" id="file-label"></label>
+            </div>
+                
             <div id="booth">
 
-                <div id="preview-wrapper" class="hidden">
-                    <img src="" id="preview-cam-img">
-                    <img src="" id="preview-sticker-img">
-                </div>
 
                 <div id="video-wrapper">
                     <img src="" id="sticker-img">
                     <img src="" id="camera-img">
                     <video id="camera" width="400" height="300"></video>
                 </div>
-                
-                <a href="#" id="btn-capture">Take Photo</a>
 
-                <div id="captured-wrapper" class="">
+                <div id="preview-wrapper" class="hidden" title="Preview">
+                    <img src="" id="preview-cam-img">
+                    <img src="" id="preview-sticker-img">
+                    
+                </div>
+                
+
+                <a href="#" id="btn-capture">Capture</a>
+
+                <div id="captured-wrapper" class="" title="Captured Picture">
                     <img src="" id="captured-cam-img">
                     <img src="" id="captured-sticker-img">
-                    <p>Preview</p>
+                    
+                    <!-- <p>Captured</p> -->
                 </div>
 
                 <!-- These are used for converting images to base64 -->
                 <canvas id="camera-canvas" width="400" height="300"></canvas>
                 <canvas id="sticker-canvas" width="400" height="300"></canvas>
             </div>
-            <form action="<?php echo ACTIONS_DIR ?>post.php"
-                method="post" id="form-post"
-                enctype="multipart/form-data">
-                <input type="email" name="email" id="email" value="<?php echo $email; ?>">
-                <input type="text" name="title" id="title" placeholder="title">
-                <input type="text" name="description" id="description" placeholder="description">
-                <input type="file" name="file" id="file" onchange="fileChange(this)">
-                <input type="hidden" name="camImg" value="" id="cam-photo">
-                <input type="hidden" name="stickerImg" value="" id="sticker-photo">
-                <!-- <input type="button" name="btnSubmit" onClick="fileUpload(this.form,'../actions/post.php'); return false;" value="Post"> -->
-            </form>
         </div>
     </div>
     <div class="side">

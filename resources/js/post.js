@@ -20,6 +20,8 @@ var capturedWrapper;
 var capturedCamImg;
 var capturedStkrImg;
 
+var vidWrapper;
+
 var currentSticker;
 
 var imgDir;
@@ -110,6 +112,25 @@ function changeSticker(radio) {
         radio.classList.add('active');
         currentSticker = stickers[radio.value];
         loadStickerImage(currentSticker);
+    }
+}
+
+function changeMode(mode) {
+    if (mode.value == "camera") {
+        setTimeout(() => {
+            setupCamera();
+        }, 1000);
+        document.getElementById("file-wrapper").classList.remove("active");
+        document.getElementById("file").classList.remove("active");
+        document.getElementById("file-label").innerHTML = "";
+    } else if (mode.value == "upload") {
+        
+        setTimeout(() => {
+            stopVideo();
+        }, 1000);
+        document.getElementById("file-wrapper").classList.add("active");
+        document.getElementById("file").classList.add("active");
+        document.getElementById("file-label").innerHTML = "Choose a file";
     }
 }
 
@@ -223,7 +244,7 @@ function fileChange(input) {
                     adjW: adjustedWidth,
                     adjH: adjustedHeight
                 }, function() {
-                    capture(style);
+                    // capture(style);
                 });
             }
             capturedWrapper.classList.remove("hidden");
@@ -256,19 +277,23 @@ function capture(style) {
     camData = camData;
     stkerData = stkerData;
 
-    let description = document.getElementById('description').getAttribute("value");
-    if (description == null) {
+    let description = document.getElementById('description');
+    if (description) {
+        description = description.getAttribute("value");
+    } else {
         description = "";
     }
 
-    let title = document.getElementById('title').getAttribute("value");
-    if (title == null) {
+    let title = document.getElementById('title');
+    if (title) {
+        title = title.getAttribute("value");
+    } else {
         title = "";
     }
+
     ajax({
         url: "/camagru/actions/post.php",
         data: {
-            email: document.getElementById('email').getAttribute("value"),
             title: title,
             description: description,
             camImg: camData,
@@ -290,15 +315,15 @@ function capture(style) {
  */
 function stopVideo() {
     localStream.getTracks()[0].stop();
-    let vidWrapper = document.getElementById('video-wrapper');
     vidWrapper.classList.add('invisible');
 }
 
 /**
- * Turns off the camera.
+ * Captures the picture in camera mode
  * @return {void}
  */
 function cameraCapture() {
+
     let capturedWrapper = document.getElementById('captured-wrapper');
     let formPost = document.getElementById('form-post');
 
@@ -344,6 +369,7 @@ function setupCamera() {
         camera.src = vendorUrl.createObjectURL(stream);
         camera.play();
         localStream = stream; 
+        vidWrapper.classList.remove('invisible');
     }, function(error) {
         console.log(error);
     });
@@ -363,7 +389,7 @@ function initVariables() {
     capturedCamImg  = document.getElementById('captured-cam-img');      // For captured
     capturedStkrImg = document.getElementById('captured-sticker-img'); // For captured
     stickerImg      = document.getElementById('sticker-img');          // For view
-    
+    vidWrapper      = document.getElementById('video-wrapper');
 
     imgDir = document.getElementById('img-dir').getAttribute('value');
 }
