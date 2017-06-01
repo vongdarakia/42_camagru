@@ -8,7 +8,6 @@ var localStream;
 var cameraCanvas;
 var cameraContext;
 
-
 var stickerCanvas;
 var stickerContext;
 
@@ -21,10 +20,15 @@ var capturedCamImg;
 var capturedStkrImg;
 
 var vidWrapper;
+var previewWrapper;
 
 var currentSticker;
+var currentMode;
 
 var imgDir;
+
+var changingMode = false;
+var style = "";
 
 var stickers = [
     {
@@ -103,7 +107,6 @@ function createUserUploadBox(imgFile, photosDiv) {
  * @return {void}
  */
 function changeSticker(radio) {
-
     if (radio.value >= 0 && radio.value < stickers.length) {
         let radios = document.querySelectorAll('input[type=radio]');
         for (var i = 0; i < radios.length; i++) {
@@ -116,18 +119,58 @@ function changeSticker(radio) {
 }
 
 function changeMode(mode) {
-    if (mode.value == "camera") {
+    if (changingMode) {
+        mode.checked = false;
+        if (mode.value == "camera")
+            document.querySelectorAll('#modes input[type=radio]')[1].checked = true;
+        else
+            document.querySelectorAll('#modes input[type=radio]')[0].checked = true;
+    }
+    else if (mode.value == "camera") {
+        changingMode = true;
+        cameraImg.classList.add('invisible');
+        stickerImg.style = "";
+        cameraImg.style = "";
+        style = "";
+
+        stickerCanvas.width = WIDTH;
+        stickerCanvas.height = HEIGHT;
+
+        loadStickerImage(currentSticker);
+
+        camera.onloadeddata = function() {
+            camera.classList.remove('invisible');
+            changingMode = false;
+        }
         setTimeout(() => {
             setupCamera();
         }, 1000);
+
         document.getElementById("file-wrapper").classList.remove("active");
         document.getElementById("file").classList.remove("active");
         document.getElementById("file-label").innerHTML = "";
+
+        cameraCanvas.width = WIDTH;
+        cameraCanvas.height = HEIGHT;
+
+        // Needs to flip because camera is actually mirrored.
+        // Also needs to be flipped every time the canvas width
+        // and height are changed
+        cameraContext.translate(WIDTH, 0);
+        cameraContext.scale(-1, 1);
     } else if (mode.value == "upload") {
-        
+        changingMode = true;
+        cameraImg.classList.add('invisible');
+        camera.classList.add('invisible');
+        cameraImg.src = "";
+        style = "";
+
+        document.querySelector('#file').value = '';
         setTimeout(() => {
             stopVideo();
+            changingMode = false;
         }, 1000);
+
         document.getElementById("file-wrapper").classList.add("active");
         document.getElementById("file").classList.add("active");
         document.getElementById("file-label").innerHTML = "Choose a file";
@@ -198,6 +241,15 @@ function drawToCanvas(img, canvas, x, y, w, h) {
     canvas.getContext('2d').drawImage(img, x, y, w, h);
 }
 
+function getFileExtension(file) {
+    return file.substr((~-file.lastIndexOf(".") >>> 0) + 2);
+}
+
+function getFilenameFromInput(input) {
+    let str = input.value;
+    return str.split(/(\\|\/)/g).pop();
+}
+
 /**
  * When file changes, creates a preview of what the image will look like.
  * @param {DOM Element} input File input element.
@@ -214,7 +266,6 @@ function fileChange(input) {
             img.src = e.target.result;
             img.onload = function() {
                 let imgClass = "proportional";
-                let style = "";
                 let boxWidth = WIDTH;
                 let boxHeight = HEIGHT;
                 let adjustedWidth = WIDTH;
@@ -224,19 +275,18 @@ function fileChange(input) {
 
                 // Fills the image into a 400x300 div and centers it.
                 if (this.width < this.height || this.width == this.height) {
-                    // imgClass = "fill-height";
                     adjustedWidth = this.width * boxHeight / this.height;
                     offsetW = -(adjustedWidth - boxWidth) / 2;
                     style = "left: " + offsetW + "px;";
                     drawToCanvas(img, cameraCanvas, 0, 0, adjustedWidth, HEIGHT);
                 } else if (this.height < this.width) {
-                    // imgClass = "fill-width";
                     adjustedHeight = this.height * boxWidth / this.width;
                     offsetH = -(adjustedHeight - boxHeight) / 2;
                     style = "top: " + offsetH + "px;";
                     drawToCanvas(img, cameraCanvas, 0, 0, WIDTH, adjustedHeight);
                 }
-
+                let camData = cameraCanvas.toDataURL('image/png');
+                
                 // Reload sticker with offsets.
                 loadStickerImage(currentSticker, {
                     offsetW: -offsetW,
@@ -244,12 +294,29 @@ function fileChange(input) {
                     adjW: adjustedWidth,
                     adjH: adjustedHeight
                 }, function() {
-                    // capture(style);
+                    // Adjusts images styles on the offset
+                    stickerImg.style = style;
+                    cameraImg.style = style;
+
+                    cameraImg.setAttribute("src", camData);
+                    cameraImg.classList.remove('invisible');
                 });
             }
-            capturedWrapper.classList.remove("hidden");
         }
         reader.readAsDataURL(input.files[0]);
+
+        // MMMMMMMMMMMMMMMMMMMMWW.jpg
+        let filename = getFilenameFromInput(input);
+        if (filename.length > 26) {
+            let ext = getFileExtension(filename);
+            console.log(ext);
+            let start = filename.length - ext.length - 3 - (10 - ext.length);
+            start = Math.abs(start);
+            fileEnd = filename.substr(start, filename.length - start);
+            filename = filename.substr(0, 13);
+            filename += '...' + fileEnd;
+        }
+        document.getElementById('file-label').innerHTML = "File: " + filename;
     }
 }
 
@@ -258,24 +325,9 @@ function fileChange(input) {
  * @param {string} style Style to set the images to.
  * @return {void}
  */
-function capture(style) {
-    // Adjusts images styles on the offset
-    stickerImg.style = style;
-    capturedCamImg.style = style;
-    capturedStkrImg.style = style;
-
-    let camData = cameraCanvas.toDataURL('image/png');
-    capturedCamImg.setAttribute("src", camData);
-    // cameraPhoto.setAttribute('value', camData);
-
-    let stkerData = stickerImg.getAttribute("src");
-    // dataUrl = stickerCanvas.toDataURL('image/png');
-    capturedStkrImg.setAttribute("src", stkerData);
-
-    // let camData = cameraPhoto.getAttribute("value");
-    
-    camData = camData;
-    stkerData = stkerData;
+function captureImage() {
+    let camData = capturedCamImg.getAttribute('src');
+    let stkerData = capturedStkrImg.getAttribute("src");
 
     let description = document.getElementById('description');
     if (description) {
@@ -315,7 +367,6 @@ function capture(style) {
  */
 function stopVideo() {
     localStream.getTracks()[0].stop();
-    vidWrapper.classList.add('invisible');
 }
 
 /**
@@ -323,40 +374,56 @@ function stopVideo() {
  * @return {void}
  */
 function cameraCapture() {
-
-    let capturedWrapper = document.getElementById('captured-wrapper');
-    let formPost = document.getElementById('form-post');
-
-    cameraCanvas.width = WIDTH;
-    cameraCanvas.height = HEIGHT;
-
-    // Needs to flip because camera is actually mirrored.
-    // Also needs to be flipped every time the canvas width
-    // and height are changed
-    cameraContext.translate(WIDTH, 0);
-    cameraContext.scale(-1, 1);
+    capturedCamImg.style = "";
+    capturedStkrImg.style = "";
 
     // Draws the camera onto the canvas.
     cameraContext.drawImage(camera, 0, 0, WIDTH, HEIGHT);
 
-    stickerCanvas.width = WIDTH;
-    stickerCanvas.height = HEIGHT;
-    loadStickerImage(currentSticker, null, function() {
-        let dataUrl = cameraCanvas.toDataURL('image/png');
-        capturedCamImg.setAttribute("src", dataUrl);
+    let dataUrl = cameraCanvas.toDataURL('image/png');
+    capturedCamImg.setAttribute("src", dataUrl);
 
-        dataUrl = stickerCanvas.toDataURL('image/png');
-        capturedStkrImg.setAttribute("src", dataUrl);
+    dataUrl = stickerCanvas.toDataURL('image/png');
+    capturedStkrImg.setAttribute("src", dataUrl);
 
-        capture();
-    });
+    captureImage();
+}
+
+/**
+ * Captures the picture in camera mode
+ * @return {void}
+ */
+function fileCapture() {
+    capturedCamImg.style = style;
+    capturedStkrImg.style = style;
+
+    let dataUrl = cameraImg.getAttribute('src');
+    capturedCamImg.setAttribute("src", dataUrl);
+
+    dataUrl = stickerCanvas.toDataURL('image/png');
+    capturedStkrImg.setAttribute("src", dataUrl);
+
+    captureImage();
+}
+
+function capture() {
+    if (changingMode)
+        return;
+
+    let isCameraMode = document.querySelectorAll('#modes input[type=radio]')[0].checked;
+    
+    if (isCameraMode) {
+        cameraCapture();
+    } else {
+        fileCapture();
+    }
 }
 
 /**
  * Sets up the webcam.
  * @return {void}
  */
-function setupCamera() {
+function setupCamera(callback) {
     vendorUrl = window.URL || window.webkitURL;
     navigator.getMedia = navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
@@ -368,8 +435,10 @@ function setupCamera() {
     }, function(stream) {
         camera.src = vendorUrl.createObjectURL(stream);
         camera.play();
-        localStream = stream; 
-        vidWrapper.classList.remove('invisible');
+        localStream = stream;
+        if (callback) {
+            callback();
+        }
     }, function(error) {
         console.log(error);
     });
@@ -388,15 +457,16 @@ function initVariables() {
     capturedWrapper = document.getElementById('captured-wrapper');
     capturedCamImg  = document.getElementById('captured-cam-img');      // For captured
     capturedStkrImg = document.getElementById('captured-sticker-img'); // For captured
-    stickerImg      = document.getElementById('sticker-img');          // For view
+    stickerImg      = document.getElementById('sticker-img');
+    cameraImg       = document.getElementById('camera-img');        // For view
     vidWrapper      = document.getElementById('video-wrapper');
-
-    imgDir = document.getElementById('img-dir').getAttribute('value');
+    previewWrapper  = document.getElementById('preview-wrapper');
+    imgDir          = document.getElementById('img-dir').getAttribute('value');
 }
 
 (function() {
     initVariables();
-    setupCamera();
-    changeSticker(document.querySelector('input[type=radio]'))
-    document.getElementById("btn-capture").addEventListener('click', cameraCapture);
+    changeSticker(document.querySelector('#form-sticker input[type=radio]'));
+    changeMode(document.querySelector('#modes input[type=radio]'));
+    document.getElementById("btn-capture").addEventListener('click', capture);
 })();

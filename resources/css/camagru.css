@@ -37,7 +37,7 @@ body {
 }
 
 #header .right-col {
-    float:      right;
+    float: right;
 }
 
 #header .left-col a {
@@ -79,38 +79,36 @@ body {
 /**************** Main Section ****************/
 
 .main {
-    width: 65%;
-    display: inline-block;
-    float: left;
+    width:      65%;
+    display:    inline-block;
+    float:      left;
 }
 
 .main .wrapper {
-    /*border: 1px solid black;*/
     margin-right: 5px;
 }
 
 .main #form-sticker {
-    width: 420px;
+    width:  420px;
     margin: 10px auto;
 }
 
 /**************** Side Section ****************/
 
 .side {
-    width: 35%;
-    display: inline-block;
-    float: left;
-    color: #2C3E50;
+    width:      35%;
+    display:    inline-block;
+    float:      left;
+    color:      #2C3E50;
 }
 
 .side .wrapper {
-    /*border: 1px solid black;*/
     margin-left: 5px;
 }
 
 .side iframe {
     border: none;
-    width: 100%;
+    width:  100%;
     height: 840px;
 }
 
@@ -118,8 +116,8 @@ body {
 
 #camera {
     transform:          rotateY(180deg);
-    -webkit-transform:  rotateY(180deg); /* Safari and Chrome */
-    -moz-transform:     rotateY(180deg); /* Firefox */
+    -webkit-transform:  rotateY(180deg);
+    -moz-transform:     rotateY(180deg);
 }
 
 #booth {
@@ -132,13 +130,12 @@ body {
 
 #btn-capture {
     display:            block;
-    
     padding:            10px 20px;
     background-color:   #2C3E50;
     color:              #fff;
     text-align:         center;
     text-decoration:    none;
-    border-top:      10px solid #ddd;
+    border-top:         10px solid #ddd;
     border-bottom:      10px solid #ddd;
 
     -moz-transform:     background-color 0.3s, color 0.3s;
@@ -147,21 +144,19 @@ body {
 }
 
 #btn-capture:hover {
-    /*color: #EC644B;*/
     background-color: cornflowerblue;
 }
 
 #btn-capture:active {
     background-color: #97C8FF;
 }
+
 #camera-canvas, #sticker-canvas {
     display: none;
 }
 
 #video-wrapper, #captured-wrapper {
     position: relative;
-    /*overflow: auto;*/
-    /*height: 300px;*/
 }
 
 #video-wrapper {
@@ -177,15 +172,6 @@ body {
 
 #captured-cam-img, #captured-sticker-img {
     position: absolute;
-}
-
-#captured-cam-img {
-    /*width: 100%;*/
-    /*height: 100%;*/
-}
-
-#upload {
-    display: none;
 }
 
 #form-sticker input {
@@ -207,6 +193,11 @@ body {
     z-index:    2;
 }
 
+#camera-img {
+    position:   absolute;
+    z-index:    1;
+}
+
 /**************** Photos ****************/
 
 #photos {
@@ -217,25 +208,18 @@ body {
 
 #photos-header {
     text-align: center;
-    /*background-color: #2C3E50;*/
 }
 
 #photos-header h3 {
-    margin: 0;
-    padding: 12px;
-    /*font-weight: normal;*/
-    font-weight: 300;
-    /*color: #F2F1EF;*/
+    margin:         0;
+    padding:        12px;
+    font-weight:    300;
 }
 
 #photos-body {
     overflow: hidden;
-    /*background-color: white;*/
 }
 
-/*#photos hr {
-    color
-}*/
 #photos-header hr.style14 { 
   border: 0; 
   height: 1px; 
@@ -246,25 +230,25 @@ body {
 }
 
 #photos-header hr.style6 {
-    border: 0;
-    height: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border:         0;
+    height:         0;
+    border-top:     1px solid rgba(0, 0, 0, 0.1);
+    border-bottom:  1px solid rgba(255, 255, 255, 0.3);
 }
 
 #photos-header hr.style1 {
-    border: 0;
-    height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+    border:             0;
+    height:             1px;
+    background:         #333;
+    background-image:   linear-gradient(to right, #ccc, #333, #ccc);
 }
 
 /**************** Image Post ****************/
 
 #public-posts {
-    text-align: center;
-    padding-top: 20px;
-    overflow: auto;
+    text-align:     center;
+    padding-top:    20px;
+    overflow:       auto;
 
 }
 
@@ -273,8 +257,8 @@ body {
     display:    inline-block;
     box-shadow: 0px 2px 7px #ddd;
     position:   relative;
-    cursor: pointer;
-    margin: 2px;
+    cursor:     pointer;
+    margin:     2px;
 }
 
 .user-upload-box {
@@ -289,25 +273,24 @@ body {
 }
 
 .user-post-box .btn-comment {
-    position: absolute;
-    bottom: 10px;
-    right: 30px;
-    font-size: x-large;
-    padding: 1px 3px;
-    color: #F2F1EF;
+    position:   absolute;
+    bottom:     10px;
+    right:      30px;
+    font-size:  x-large;
+    padding:    1px 3px;
+    color:      #F2F1EF;
 }
 
 .user-post-box .btn-like, .user-post-box .btn-liked {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    font-size: x-large;
-    padding: 1px 3px;
+    position:   absolute;
+    bottom:     10px;
+    right:      10px;
+    font-size:  x-large;
+    padding:    1px 3px;
 }
 
 .user-post-box .btn-liked {
     color: #D91E18;
-    /*text-shadow: 0px 0px 2px #E08283;*/
 }
 
 .user-post-box .btn-like {
@@ -425,32 +408,32 @@ img.perfect-box {
 }
 
 .fill-width {
-    width: 100%;
+    width:  100%;
     height: auto;
 }
 
 .fill-height {
     height: 100%;
-    width: auto;
+    width:  auto;
 }
 
 /**************** Font ****************/
 
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../fonts/fontawesome-webfont.eot?v=4.7.0');
-  src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
+  src:          url('../fonts/fontawesome-webfont.eot?v=4.7.0');
+  src:          url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
+  font-weight:  normal;
+  font-style:   normal;
 }
 
 .fa {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  display:                  inline-block;
+  font:                     normal normal normal 14px/1 FontAwesome;
+  font-size:                inherit;
+  text-rendering:           auto;
+  -webkit-font-smoothing:   antialiased;
+  -moz-osx-font-smoothing:  grayscale;
 }
 
 .fa-heart:before {
@@ -464,34 +447,28 @@ img.perfect-box {
 /**************** Form Stickers ****************/
 
 #form-sticker {
-    overflow: hidden;
-    padding: 8px;
-    /*overflow: auto;*/
+    overflow:   hidden;
+    padding:    8px;
 }
 
 .sticker-box {
-    width: 80px;
-    height: 80px;
-    display: inline-block;
-    margin-right: 24px;
-    float: left;
-    text-align: center;
-    padding: 8px;
-    border-radius: 2px;
+    float:          left;
+    width:          80px;
+    height:         80px;
+    margin-right:   24px;
+    padding:        8px;
+    border-radius:  2px;
+    text-align:     center;
+    display:        inline-block;
 }
 
 #form-sticker input {
     visibility: hidden;
-    position: absolute;
+    position:   absolute;
 }
 
 #form-sticker img {
-    /*visibility: hidden;*/
-    /*position: absolute;*/
-    /*max-width: 100%;*/
     max-height: 100%;
-    
-    /*border: 1px solid black;*/
 }
 
 #form-sticker input + div {
@@ -500,11 +477,9 @@ img.perfect-box {
     transition:           background-color 0.3s;
 }
 
-#form-sticker input.active + div { /* (RADIO CHECKED) IMAGE STYLES */
-    /*border: 2px solid #f00;*/
-    /*box-shadow: 0px 0px 10px #888888;*/
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+#form-sticker input.active + div {
     background-color: #ddd;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
     -moz-transition:      all 0.3s cubic-bezier(.25,.8,.25,1);
     -webkit-transition:   all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -514,38 +489,21 @@ img.perfect-box {
 #form-sticker input + div:hover {
     background-color: #ddd;
 }
+
 /**************** Modes ****************/
 
 #modes {
-    width:              420px;
-    /*background-color:   #ccc;*/
-    /*border:             10px solid #ddd;*/
-    margin:             0 auto;
+    width:    420px;
+    margin:   0 auto;
     overflow: auto;
     
 }
 
-/*.mode {
-    display:            inline-block;
-    width:              50%;
-    padding:            10px 0;
-    float:              left;
-    text-align:         center;
-    background-color:   #ccc;
-    cursor:             pointer;
-
-    -moz-transform:     background-color 0.3s, color 0.3s;
-    -webkit-transition: background-color 0.3s, color 0.3s;
-    transition:         background-color 0.3s, color 0.3s;
-}*/
-
 .mode-radio + label {
-    /*font-size:          1.25em;*/
-    /*font-weight:        700;*/
+    float:              left;
     width:              50%;
-    background-color:   #ccc;
-    float: left;
     padding:            10px 0;
+    background-color:   #ccc;
 }
 
 .mode-radio + label:hover {
@@ -553,8 +511,8 @@ img.perfect-box {
 }
 
 .mode-radio:checked + label {
-    background-color: #EC644B;
-    color: white;
+    background-color:   #EC644B;
+    color:              white;
 }
 
 #upload-mode:checked + #file-wrapper {
@@ -564,16 +522,22 @@ img.perfect-box {
 /**************** Upload File Input ****************/
 
 #file-wrapper {
-    width: 420px;
-    margin: auto;
-    height: 0px;
-    padding: 0px;
+    width:      420px;
+    margin:     auto;
+    height:     0px;
+    padding:    0px;
 
     -webkit-transition: height 0.8s, padding 0.8s;
 }
 
 #file-wrapper.active {
     height: 39px;
+}
+
+#file-label {
+    -moz-transform:     background-color 0.3s;
+    -webkit-transition: background-color 0.3s;
+    transition:         background-color 0.3s;
 }
 
 .file-input.active + label{
@@ -591,11 +555,7 @@ img.perfect-box {
 }
 
 .file-input + label, .mode-radio + label {
-    /*font-size:          1.25em;*/
-    /*font-weight:        700;*/
-    text-align: center;
-    
-    
+    text-align:         center;
     display:            inline-block;
     cursor:             pointer;
 
@@ -612,10 +572,8 @@ img.perfect-box {
 
 .file-input:focus + label,
 .file-input + label:hover {
-    /*color: #EC644B;*/
     background-color: cornflowerblue;
 }
-
 
 .file-input + label:active {
     background-color: #97C8FF;
@@ -623,5 +581,5 @@ img.perfect-box {
 
 .file-input:focus + label {
     /*outline: 1px dotted #000;*/
-    outline: -webkit-focus-ring-color auto 5px;
+    /*outline: -webkit-focus-ring-color auto 5px;*/
 }

@@ -68,9 +68,6 @@ require_once TEMPLATES_PATH . "/header.php";
                 value="<?php echo POSTS_DIR ?>"
                 id="post-dir"
             >
-            <!-- <input type="hidden" name="email" id="email" value="<?php echo $email; ?>"> -->
-            <!-- <input type="hidden" name="camImg" value="" id="cam-photo">
-            <input type="hidden" name="stickerImg" value="" id="sticker-photo"> -->
 
             <form id="form-sticker">
             <?php 
@@ -87,9 +84,6 @@ require_once TEMPLATES_PATH . "/header.php";
             ?>
             </form>
             <div id="modes">
-                <!-- <div class="mode active">Camera Mode</div>
-                <div class="mode">Upload Mode</div> -->
-
                 <input class="mode-radio" type="radio" name="mode" id="camera-mode" value="camera" onchange="changeMode(this)" checked>
                 <label for="camera-mode">Camera Mode</label>
 
@@ -103,28 +97,17 @@ require_once TEMPLATES_PATH . "/header.php";
             </div>
                 
             <div id="booth">
-
-
                 <div id="video-wrapper">
                     <img src="" id="sticker-img">
                     <img src="" id="camera-img">
                     <video id="camera" width="400" height="300"></video>
                 </div>
 
-                <div id="preview-wrapper" class="hidden" title="Preview">
-                    <img src="" id="preview-cam-img">
-                    <img src="" id="preview-sticker-img">
-                    
-                </div>
-                
-
                 <a href="#" id="btn-capture">Capture</a>
 
                 <div id="captured-wrapper" class="" title="Captured Picture">
                     <img src="" id="captured-cam-img">
                     <img src="" id="captured-sticker-img">
-                    
-                    <!-- <p>Captured</p> -->
                 </div>
 
                 <!-- These are used for converting images to base64 -->
@@ -148,8 +131,6 @@ require_once TEMPLATES_PATH . "/header.php";
             </div>
         </div>
     </div>
-    <div id="upload"></div>
-    
 </div>
 
 <script src="<?php echo JS_DIR . "main.js" ?>"></script>
