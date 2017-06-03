@@ -32,6 +32,7 @@ var actionDir;
 var happyTriggerStopperOn = false;
 var changingMode = false;
 var style = "";
+var offsetExtra = null;
 
 var stickers = [
     {
@@ -104,21 +105,22 @@ function createUserUploadBox(postObj, photosDiv, pre=true) {
         img.onload = function() {
             let imgClass = "";
             let offset = 0;
+            let boxStyle = "";
 
             // Makes sure to fill up the box when image sizes are not
             // a 1:1 ratio.
             if (this.height < this.width) {
                 imgClass = "short-height";
                 offset = -(this.width * boxSize / this.height - boxSize) / 2;
-                style = "left: " + offset + "px;";
+                boxStyle = "left: " + offset + "px;";
             } else if (this.width < this.height) {
                 imgClass = "short-width";
                 offset =  -(this.height * boxSize / this.width - boxSize) / 2;
-                style = "top: " + offset + "px;";
+                boxStyle = "top: " + offset + "px;";
             } else {
                 imgClass = "perfect-box";
             }
-            let box = userUploadBox(postObj.postId, imgClass, style, img.src);
+            let box = userUploadBox(postObj.postId, imgClass, boxStyle, img.src);
             if (pre) {
                 photosDiv.prepend(box);
             } else {
@@ -144,7 +146,7 @@ function changeSticker(radio) {
         }
         radio.classList.add('active');
         currentSticker = stickers[radio.value];
-        loadStickerImage(currentSticker);
+        loadStickerImage(currentSticker, offsetExtra);
     }
 }
 
@@ -158,6 +160,7 @@ function changeMode(mode) {
     }
     else if (mode.value == "camera") {
         changingMode = true;
+        offsetExtra = null;
         document.querySelectorAll(".mode-radio")[0].classList.remove('inactive');
         
         cameraImg.classList.add('invisible');
@@ -168,7 +171,7 @@ function changeMode(mode) {
         stickerCanvas.width = WIDTH;
         stickerCanvas.height = HEIGHT;
 
-        loadStickerImage(currentSticker);
+        loadStickerImage(currentSticker, offsetExtra);
 
         camera.onloadeddata = function() {
             camera.classList.remove('invisible');
@@ -193,6 +196,7 @@ function changeMode(mode) {
         cameraContext.scale(-1, 1);
     } else if (mode.value == "upload") {
         changingMode = true;
+        offsetExtra = null;
         document.querySelectorAll(".mode-radio")[1].classList.remove('inactive');
 
         cameraImg.classList.add('invisible');
@@ -322,14 +326,14 @@ function fileChange(input) {
                     drawToCanvas(img, cameraCanvas, 0, 0, WIDTH, adjustedHeight);
                 }
                 let camData = cameraCanvas.toDataURL('image/png');
-                
-                // Reload sticker with offsets.
-                loadStickerImage(currentSticker, {
+                offsetExtra = {
                     offsetW: -offsetW,
                     offsetH: -offsetH,
                     adjW: adjustedWidth,
                     adjH: adjustedHeight
-                }, function() {
+                };
+                // Reload sticker with offsets.
+                loadStickerImage(currentSticker, offsetExtra, function() {
                     // Adjusts images styles on the offset
                     stickerImg.style = style;
                     cameraImg.style = style;
