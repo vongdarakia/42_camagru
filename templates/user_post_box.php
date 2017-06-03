@@ -65,7 +65,6 @@ if (file_exists($img_path)) {
     <?php 
     
     if ($email != "") {
-
         if ($post['liked'] == 1) {
             echo '<i class="btn-liked fa fa-heart" onclick="like(this)" id="' .$post['post_id'] . '"></i>';
         } else {
@@ -75,5 +74,6 @@ if (file_exists($img_path)) {
         echo '<i class="btn-like fa fa-heart-o" onclick="like(this)" id="' .$post['post_id'] . '"></i>';
     }
     echo '<span id="num-likes-'.$post['post_id'].'" class="num-likes">'.$post['num_likes'].'</span>';
+    echo '<span id="post-author-'.$post['post_id'].'" class="post-author">'.$post['author_login'].'</span>';
     ?>
 </div>

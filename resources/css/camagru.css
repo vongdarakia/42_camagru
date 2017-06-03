@@ -317,10 +317,17 @@ body {
 .user-post-box .num-likes {
     font-family:  'Lato', sans-serif;
     font-size: .6em;
-    /*padding-right: 5px;*/
     position: absolute;
     bottom: 10px;
     right: 37px;
+    color: white;
+}
+
+.user-post-box .post-author {
+    font-size: .6em;
+    position: absolute;
+    top: 10px;
+    left: 10px;
     color: white;
 }
 
@@ -418,9 +425,7 @@ body {
     transition:         color .3s;
 }
 
-.user-post-box .btn-like:hover,
-.user-post-box .btn-like:hover + span,
-.user-post-box .btn-liked:hover + span {
+.user-post-box .btn-like:hover {
     color: #D91E18;
 }
 
