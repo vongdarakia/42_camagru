@@ -39,8 +39,14 @@ if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
     echo "wtf are you trying to do?";
 }
 
+$email = "";
+if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
+    $email = $_SESSION["user_email"];
+}
+
 $Post  = new Post($dbh);
-$query = "select
+$query = "select DISTINCT
+    u.id 'author_id',
     u.first 'author_fn',
     u.last 'author_ln',
     u.username 'author_login',
@@ -49,10 +55,24 @@ $query = "select
     p.title 'title',
     p.img_file 'img_file',
     p.creation_date 'post_creation_date',
-    l.id 'like_id'
-from `user` u inner join `post` p on p.author_id = u.id
-left join `like` l on l.post_id = p.id
-order by p.creation_date desc";
+    ifnull(l.liked, 0) 'liked',
+    ifnull(c.count, 0) 'num_likes'
+from `user` u
+inner join `post` p on p.author_id = u.id
+left join (
+    select distinct 1 'liked', p.id 'post_id'
+    from `like` l
+    inner join `user` u on u.id = l.author_id 
+    inner join `post` p on p.id = l.post_id
+    where u.email = '".$email."'
+) l on l.post_id = p.id
+left join (
+    select p.id, count(p.id) 'count' from `post` p
+    inner join `like` l on l.post_id = p.id
+    inner join `user` u on u.id = l.author_id
+    group by p.id
+) c on c.id = p.id
+order by p.creation_date desc, p.id asc";
 
 // Pagination info
 $info     = $Post->getDataByPage($page, $limit, $query);
@@ -63,10 +83,7 @@ if ($page > $maxPages) {
     $info = $Post->getDataByPage($maxPages, $limit, $query);
 }
 
-$email = "";
-if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
-    $email = $_SESSION["user_email"];
-}
+
 
 require_once TEMPLATES_PATH . "/header.php";
 ?>
@@ -82,7 +99,7 @@ require_once TEMPLATES_PATH . "/header.php";
         ?>
     </div>
     <?php require_once TEMPLATES_PATH . "/pagination.php"; ?>
-    <input type="hidden" id="user-email" value="<?php echo $email; ?>like.php">
+    <input type="hidden" id="user-email" value="<?php echo $email; ?>">
     <input type="hidden" id="like-action" value="<?php echo ACTIONS_DIR ?>like.php">
 </div>
 <script src="<?php echo JS_DIR . "main.js" ?>"></script>

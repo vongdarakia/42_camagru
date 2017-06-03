@@ -247,7 +247,7 @@ body {
 
 #public-posts {
     text-align:     center;
-    padding-top:    20px;
+    padding:        40px 0;
     overflow:       auto;
 
 }
@@ -261,18 +261,82 @@ body {
 }
 
 .user-post-box {
+    width: 150px;
+    /*width: 150px;*/
+    background-color: black;
     cursor: pointer;
+
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+}
+
+.user-post-box .post-info {
+    /*display: none;*/
+    width: 100%;
+    background-color: #F2F1EF;
+    clear: both;
+    height: 100px;
+}
+
+.user-post-box img {
+    -webkit-transition: width .3s, height .3s;
+    -moz-transition: width .3s, height .3s;
+    -ms-transition: width .3s, height .3s;
+    -o-transition: width .3s, height .3s;
+    transition: width .3s, height .3s;
+}
+
+.user-post-box:hover {
+    transform: scale(1.2, 1.2);
+    z-index: 2;
+    /*background-color: black;*/
+}
+
+.user-post-box:hover img {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: auto;
+}
+
+.user-post-box:hover .post-info {
+    display: initial;
+}
+
+.user-post-box .num-likes {
+    font-family:  'Lato', sans-serif;
+    font-size: .6em;
+    /*padding-right: 5px;*/
+    position: absolute;
+    bottom: 10px;
+    right: 37px;
+    color: white;
 }
 
 .user-upload-box {
     float: left;
     opacity: 1;
 
-    -webkit-transition: opacity .3s linear; /* Safari, Chrome and Opera > 12.1 */
-    -moz-transition: opacity .3s linear; /* Firefox < 16 */
-    -ms-transition: opacity .3s linear; /* Internet Explorer */
-    -o-transition: opacity .3s linear; /* Opera < 12.1 */
+    -webkit-transition: opacity .3s linear;
+    -moz-transition: opacity .3s linear;
+    -ms-transition: opacity .3s linear;
+    -o-transition: opacity .3s linear;
     transition: opacity .3s linear; 
+}
+
+.vertical-helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }
 
 .crop {
@@ -280,6 +344,7 @@ body {
     height:     150px;
     overflow:   hidden;
     position:   relative;
+    vertical-align: top;
 }
 
 .crop .btn-delete {
@@ -351,7 +416,9 @@ body {
     transition:         color .3s;
 }
 
-.user-post-box .btn-like:hover {
+.user-post-box .btn-like:hover,
+.user-post-box .btn-like:hover + span,
+.user-post-box .btn-liked:hover + span {
     color: #D91E18;
 }
 
@@ -371,6 +438,9 @@ img.short-width {
 img.perfect-box {
     width:  100%;
     height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /**************** Colors ****************/

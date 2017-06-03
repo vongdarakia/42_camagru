@@ -18,6 +18,11 @@ require_once '../includes/lib/auth.php';
 require_once '../includes/models/User.php';
 require_once '../includes/models/Like.php';
 
+if (!isset($_SESSION['user_email']) || $_SESSION['user_email'] == "") {
+    sendData(0);
+    exit(0);
+}
+
 checkUserAuthentication();
 
 header_status(200);
@@ -31,7 +36,7 @@ try {
         $is_liking = urldecode($_POST["is_liking"]);
         $uid = $User->getId();
 
-        if ($User->getId() > 0) {
+        if ($uid > 0) {
             if ($is_liking == "true") {
                 $res = $Like->exists($post_id, $uid);
                 if (!$res) {

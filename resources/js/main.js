@@ -91,6 +91,9 @@ function like(heart) {
     let email = document.getElementById("user-email").value;
     let isLiking = true;
     
+    // console.log(email);
+    // if (!email)
+    //     return;
     if (heart.classList.contains('btn-liked')) {
         applyUnlike(heart);
         isLiking = false;
@@ -106,7 +109,21 @@ function like(heart) {
             is_liking: isLiking
         },
         success: function(res) {
-            console.log(res);
+            // console.log("liking " + isLiking);
+            // console.log(res);
+            if (res >= 1) {
+                let spanNumLikes = document.getElementById('num-likes-' + heart.id);
+                let numLikes = parseInt(spanNumLikes.innerHTML);
+                numLikes += isLiking ? 1 : -1;
+                spanNumLikes.innerHTML = numLikes;
+            } else {
+                if (heart.classList.contains('btn-liked')) {
+                    applyUnlike(heart);
+                } else {
+                    applyLike(heart);
+                }
+                alert("Please log in to like this post.");
+            }
         },
         error: function(err) {
             console.log(err);
