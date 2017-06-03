@@ -83,11 +83,7 @@ function createTables($dbh)
         id              int not null auto_increment primary key,
         post_id         int not null,
         author_id       int not null,
-        creation_date   datetime default current_timestamp,
-        foreign key (author_id)
-            references `user`(id),
-        foreign key (post_id)
-            references `post`(id)
+        creation_date   datetime default current_timestamp
     )";
     $dbh->exec($qry);
 
@@ -97,11 +93,7 @@ function createTables($dbh)
         author_id       int not null,
         comment         varchar(1024) not null,
         creation_date   datetime default current_timestamp,
-        update_date     datetime on update current_timestamp,
-        foreign key (author_id)
-            references `user`(id),
-        foreign key (post_id)
-            references `post`(id)
+        update_date     datetime on update current_timestamp
     )";
     $dbh->exec($qry);
 }

@@ -93,7 +93,7 @@ class Post extends DbItem
      *
      * @return String the image name.
      */
-    public function getImgName()
+    public function getImgFile()
     {
         return $this->_img_file;
     }
@@ -105,7 +105,7 @@ class Post extends DbItem
      *
      * @return Boolean whether set was successful or not.
      */
-    public function setImgName($value)
+    public function setImgFile($value)
     {
         if (DbItem::validNonEmptyString($value)) {
             $this->_img_file = $value;
@@ -243,7 +243,7 @@ class Post extends DbItem
                 }
             }
             if (array_key_exists('img_file', $fields)) {
-                if (!$this->setImgName($fields['img_file'])) {
+                if (!$this->setImgFile($fields['img_file'])) {
                     throw new Exception("img_file can't be empty.", 1);
                 }
             }
@@ -323,7 +323,9 @@ class Post extends DbItem
                     ":description" => $this->_description
                 )
             );
-            return $stmt->rowCount() == 1;
+            if ($stmt->rowCount() == 1) {
+                return $this->db->lastInsertId();
+            }
         }
         return false;
     }

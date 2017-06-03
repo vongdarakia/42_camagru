@@ -30,21 +30,17 @@ require_once '../includes/models/User.php';
 // }
 checkUserAuthentication();
 $email = $_SESSION["user_email"];
-$user = new User($dbh);
+$User = new User($dbh);
 $query = "select
-    u.first 'author_fn',
-    u.last 'author_ln',
-    u.username 'author_login',
-    u.email 'author_email',
-    p.title 'title',
+    p.id 'post_id',
     p.img_file 'img_file',
     p.creation_date 'post_creation_date'
 from `user` u inner join `post` p on p.author_id = u.id
 where u.email = '".$email."'
 order by p.creation_date desc";
-$info = $user->getDataByPage(1, 10, $query);
+$info = $User->getDataByPage(1, 10, $query);
 $relative_path = "../"; // Path to root;
-
+// echo $info->rows[0]->img_file;
 
 require_once TEMPLATES_PATH . "/header.php";
 ?>
@@ -68,6 +64,11 @@ require_once TEMPLATES_PATH . "/header.php";
                 value="<?php echo POSTS_DIR ?>"
                 id="post-dir"
             >
+            <input
+                type="hidden" 
+                value="<?php echo ACTIONS_DIR ?>"
+                id="action-dir"
+            >
 
             <form id="form-sticker">
             <?php 
@@ -88,7 +89,7 @@ require_once TEMPLATES_PATH . "/header.php";
                 <label for="camera-mode">Camera Mode</label>
 
                 <input class="mode-radio" type="radio" name="mode" id="upload-mode" value="upload" onchange="changeMode(this)">
-                <label for="upload-mode">Upload Mode</label>
+                <label for="upload-mode" class="active">Upload Mode</label>
             </div>
 
             <div id="file-wrapper">
@@ -125,6 +126,7 @@ require_once TEMPLATES_PATH . "/header.php";
             <div id="photos">
                 <?php 
                 foreach ($info->rows as $row) {
+                    
                     include '../templates/user_upload_box.php';
                 }
                 ?>

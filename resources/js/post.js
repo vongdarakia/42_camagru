@@ -26,7 +26,10 @@ var currentSticker;
 var currentMode;
 
 var imgDir;
+var postDir;
+var actionDir;
 
+var happyTriggerStopperOn = false;
 var changingMode = false;
 var style = "";
 
@@ -54,51 +57,78 @@ var stickers = [
     }
 ];
 
+function userUploadBox(id, imgClass="", style="", src="") {
+    let box = document.createElement('div');
+    let crop = document.createElement('div');
+    let photo = document.createElement('img');
+    let icon = document.createElement('i');
+
+    box.className = 'user-upload-box';
+    box.id = 'upload-box-' + id;
+    crop.className = 'crop';
+    photo.className = imgClass;
+    photo.style = style;
+    photo.src = src;
+    icon.className = "btn-delete fa fa-trash-o";
+    icon.setAttribute('onclick', 'deletePost(' + id + ')');
+
+    crop.appendChild(photo);
+    crop.appendChild(icon);
+    box.appendChild(crop);
+    return box;
+}
+
 /**
  * Creates and adds a photo box to the side photo list.
- * @param {string}      imgFile   Image we're going to display.
+ * @param {object}      postObj   Has imgFile and postId
  * @param {DOM Element} photosDiv Div we're adding to.
  * @return {void}
  */
-function createUserUploadBox(imgFile, photosDiv) {
-    let img = new Image();
-    let postDir = document.getElementById('post-dir').getAttribute('value');
-    let boxSize = 150;
-    img.src = postDir + imgFile;
+function createUserUploadBox(postObj, photosDiv, pre=true) {
+    try {
+        let img = new Image();
+        let boxSize = 150;
 
-    img.onload = function() {
-        let imgClass = "";
-        let offset = 0;
+        img.src = postDir + postObj.imgFile;
 
-        // Makes sure to fill up the box when image sizes are not
-        // a 1:1 ratio.
-        if (this.height < this.width) {
-            imgClass = "short-height";
-            offset = -(this.width * boxSize / this.height - boxSize) / 2;
-            style = "left: " + offset + "px;";
-        } else if (this.width < this.height) {
-            imgClass = "short-width";
-            offset =  -(this.height * boxSize / this.width - boxSize) / 2;
-            style = "top: " + offset + "px;";
-        } else {
-            imgClass = "perfect-box";
+        img.onerror = function() {
+            let errorImg = imgDir + "image-not-available.png";
+            let box = userUploadBox(postObj.postId, "", "", errorImg);
+            if (pre) {
+                photosDiv.prepend(box);
+            } else {
+                photosDiv.appendChild(box);
+            }
         }
 
-        let box = document.createElement('div');
-        let crop = document.createElement('div');
-        let photo = document.createElement('img');
+        img.onload = function() {
+            let imgClass = "";
+            let offset = 0;
 
-        box.className = 'user-upload-box';
-        crop.className = 'crop';
-        photo.className = imgClass;
-        photo.style = style;
-        photo.src = img.src;
-
-        crop.appendChild(photo);
-        box.appendChild(crop);
-
-        photosDiv.prepend(box);
-    };
+            // Makes sure to fill up the box when image sizes are not
+            // a 1:1 ratio.
+            if (this.height < this.width) {
+                imgClass = "short-height";
+                offset = -(this.width * boxSize / this.height - boxSize) / 2;
+                style = "left: " + offset + "px;";
+            } else if (this.width < this.height) {
+                imgClass = "short-width";
+                offset =  -(this.height * boxSize / this.width - boxSize) / 2;
+                style = "top: " + offset + "px;";
+            } else {
+                imgClass = "perfect-box";
+            }
+            let box = userUploadBox(postObj.postId, imgClass, style, img.src);
+            if (pre) {
+                photosDiv.prepend(box);
+            } else {
+                photosDiv.appendChild(box);
+            }
+        };
+    }
+    catch(error) {
+        console.log(error);
+    }
 }
 
 /**
@@ -128,6 +158,8 @@ function changeMode(mode) {
     }
     else if (mode.value == "camera") {
         changingMode = true;
+        document.querySelectorAll(".mode-radio")[0].classList.remove('inactive');
+        
         cameraImg.classList.add('invisible');
         stickerImg.style = "";
         cameraImg.style = "";
@@ -141,6 +173,7 @@ function changeMode(mode) {
         camera.onloadeddata = function() {
             camera.classList.remove('invisible');
             changingMode = false;
+            document.querySelectorAll(".mode-radio")[1].classList.add('inactive');
         }
         setTimeout(() => {
             setupCamera();
@@ -160,6 +193,8 @@ function changeMode(mode) {
         cameraContext.scale(-1, 1);
     } else if (mode.value == "upload") {
         changingMode = true;
+        document.querySelectorAll(".mode-radio")[1].classList.remove('inactive');
+
         cameraImg.classList.add('invisible');
         camera.classList.add('invisible');
         cameraImg.src = "";
@@ -169,6 +204,7 @@ function changeMode(mode) {
         setTimeout(() => {
             stopVideo();
             changingMode = false;
+            document.querySelectorAll(".mode-radio")[0].classList.add('inactive');
         }, 1000);
 
         document.getElementById("file-wrapper").classList.add("active");
@@ -304,8 +340,6 @@ function fileChange(input) {
             }
         }
         reader.readAsDataURL(input.files[0]);
-
-        // MMMMMMMMMMMMMMMMMMMMWW.jpg
         let filename = getFilenameFromInput(input);
         if (filename.length > 26) {
             let ext = getFileExtension(filename);
@@ -344,7 +378,7 @@ function captureImage() {
     }
 
     ajax({
-        url: "/camagru/actions/post.php",
+        url: actionDir + "post.php",
         data: {
             title: title,
             description: description,
@@ -353,10 +387,21 @@ function captureImage() {
         },
         method: "post",
         success: function(res) {
-            createUserUploadBox(res, document.getElementById('photos'));
+            if (res.indexOf("Error") < 0) {
+                res = JSON.parse(res);
+                // console.log(res);
+                createUserUploadBox(res, document.getElementById('photos'));
+            }
         },
         error: function(err) {
-            console.log(err);
+            if (err.indexOf("Trigger happy")) {
+                document.getElementById('btn-capture').innerHTML = "Hold your horses! Trigger happy much?";
+                setTimeout(function() {
+                    document.getElementById('btn-capture').innerHTML = "Capture";
+                }, 1000);
+            } else {
+                console.log(err);
+            }
         }
     });
 }
@@ -374,6 +419,15 @@ function stopVideo() {
  * @return {void}
  */
 function cameraCapture() {
+    if (happyTriggerStopperOn) {
+        document.getElementById('btn-capture').innerHTML = "Hold your horses! Trigger happy much?";
+        return;
+    }
+    happyTriggerStopperOn = true;
+    setTimeout(function() {
+        happyTriggerStopperOn = false;
+        document.getElementById('btn-capture').innerHTML = "Capture";
+    }, 1000);
     capturedCamImg.style = "";
     capturedStkrImg.style = "";
 
@@ -420,6 +474,73 @@ function capture() {
 }
 
 /**
+ * Deletes a post
+ * @return {void}
+ */
+function appendLastPost() {
+    let numUploads = document.querySelectorAll('.user-upload-box').length;
+    if (numUploads < 10) {
+        // console.log(numUploads);
+        ajax({
+            method: 'post',
+            url: actionDir + 'get_nth_post.php',
+            data: {
+                nth: numUploads + 1
+            },
+            success: function(res) {
+                res = JSON.parse(res);
+
+                if (res) {
+                    // Have to parsed to get the variables right
+                    let parsed = {
+                        imgFile: res.img_file,
+                        postId: res.post_id
+                    };
+                    createUserUploadBox(parsed, document.getElementById('photos'), false);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+}
+
+/**
+ * Deletes a post
+ * @param {number} id Id of the post
+ * @return {void}
+ */
+function deletePost(id) {
+    let yes = confirm("Are you sure?");
+    if (yes) {
+        ajax({
+            method: 'post',
+            url: actionDir + 'delete_post.php',
+            data: {
+                post_id: id
+            },
+            success: function(res) {
+                if (res.indexOf("Error") == -1) {
+                    let post = document.getElementById('upload-box-' + id);
+                    
+                    post.style.opacity = '0';
+                    setTimeout(function() {
+                        post.parentNode.removeChild(post);
+                        appendLastPost();
+                    }, 400);
+                } else {
+                    console.log(res);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+}
+
+/**
  * Sets up the webcam.
  * @return {void}
  */
@@ -462,6 +583,8 @@ function initVariables() {
     vidWrapper      = document.getElementById('video-wrapper');
     previewWrapper  = document.getElementById('preview-wrapper');
     imgDir          = document.getElementById('img-dir').getAttribute('value');
+    actionDir       = document.getElementById('action-dir').getAttribute('value');
+    postDir         = document.getElementById('post-dir').getAttribute('value');
 }
 
 (function() {

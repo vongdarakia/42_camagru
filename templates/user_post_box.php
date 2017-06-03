@@ -25,30 +25,31 @@
  */
 
 $img_path = $relative_path . POSTS_DIR_NAME . "/" . $post["img_file"];
-if (!file_exists($img_path)) {
-    return 0;
-}
+$class = "perfect-box";
+$style = "";
 
-$size = getimagesize($img_path);
-$width = $size[0];
-$height = $size[1];
-$boxSize = 150;
+if (file_exists($img_path)) {
+    $size = getimagesize($img_path);
+    $width = $size[0];
+    $height = $size[1];
+    $boxSize = 150;
 
-// Change for html img to work.
-$img_path = SITE_DIR . "/" . POSTS_DIR_NAME . "/" . $post["img_file"];
+    // Change for html img to work.
+    $img_path = SITE_DIR . "/" . POSTS_DIR_NAME . "/" . $post["img_file"];
 
-// Makes sure to fill up the box when image sizes are not
-// a 1:1 ratio.
-if ($height < $width) {
-    $class = "short-height";
-    $offset = -($width * $boxSize / $height - $boxSize) / 2;
-    $style = "left: " . $offset . "px;";
-} else if ($width < $height) {
-    $class = "short-width";
-    $offset =  -($height * $boxSize / $width - $boxSize) / 2;
-    $style = "top: " . $offset . "px;";
+    // Makes sure to fill up the box when image sizes are not
+    // a 1:1 ratio.
+    if ($height < $width) {
+        $class = "short-height";
+        $offset = -($width * $boxSize / $height - $boxSize) / 2;
+        $style = "left: " . $offset . "px;";
+    } else if ($width < $height) {
+        $class = "short-width";
+        $offset =  -($height * $boxSize / $width - $boxSize) / 2;
+        $style = "top: " . $offset . "px;";
+    }
 } else {
-    $class = "perfect-box";
+    $img_path = IMG_DIR . "/" . "image-not-available.png";
 }
 ?>
 <i class="btn-liked icon-heart-empty"></i>

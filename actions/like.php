@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * User action to like a post.
+ *
+ * PHP version 5.5.38
+ *
+ * @category  Action
+ * @package   Camagru
+ * @author    Akia Vongdara <vongdarakia@gmail.com>
+ * @copyright 2017 Akia Vongdara
+ * @license   No License
+ * @link      localhost:8080
+ */
 session_start();
 require_once '../config/paths.php';
 require_once '../config/connect.php';
@@ -40,8 +51,7 @@ try {
                 sendData($Like->removeByPostAndAuthor($post_id, $uid));
                 exit(0);
             }
-        }
-        else {
+        } else {
             sendError("Can't find user", 200);
         }
     }

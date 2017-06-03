@@ -157,7 +157,6 @@ function saveFileFromCapture($img_name)
 }
 
 session_start();
-
 require_once '../config/paths.php';
 require_once '../includes/lib/auth.php';
 require_once '../includes/lib/features.php';
@@ -187,6 +186,11 @@ try {
     // saveFileFromUpload and saveFileFromCapture functions.
     $imgName = str_replace(" ", "_", strtolower(trim($_SESSION["user_login"])));
     $imgName = $imgName . "_" . date('YmdHis');
+
+    // If file exists, then they're probably capturing too fast.
+    if (file_exists(POSTS_PATH . $imgName . ".png")) {
+        sendError("Hold your horses! Happy trigger much?", 200);
+    }
     
     // Sets title image name unless title was specified.
     $title = $imgName;
@@ -244,19 +248,21 @@ try {
 
     // Records the post to the database, and if successful, saves the image.
     // echo urldecode($_POST["description"]);
-    if (post(
+    $id = post(
         $_SESSION["user_email"],
         $title,
         $imgName,
         urldecode($_POST["description"])
-    )
-    ) {
+    );
+    if ($id !== false) {
+        $id = (int)$id;
         if (isset($_FILES["file"]) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
             saveFileFromUpload($imgName);
         } else {
             saveFileFromCapture($imgName);
         }
     } else {
+        $id = 0;
         $msg = "Failed to save post.";
     }
 } catch (Exception $e) {
@@ -267,7 +273,7 @@ try {
     }
 }
 header_status(200);
-echo $imgName;
+echo json_encode(array('imgFile' => $imgName, 'postId' => $id));
 // header("Location: ../pages/post.php");
 
 ?>

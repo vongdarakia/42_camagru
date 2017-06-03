@@ -223,10 +223,10 @@ class DbItem
             throw new Exception("Error: page and limit must be positive number", 1);
         }
         if ($query === null) {
-            $query = "select * from $this->table";
+            $query = "select * from `$this->table`";
         }
 
-        $countQuery = "select count(1) from $this->table";
+        $countQuery = "select count(1) from `$this->table`";
         $rows = $this->db->query($countQuery);
         $count = $rows->fetchColumn();
 
@@ -242,6 +242,18 @@ class DbItem
         $info->total  = $count;
         $info->rows   = $rows;
         return $info;
+    }
+
+    public function getNthData($nth, $query=null)
+    {
+        if ($query == null) {
+            $query = "select * from `$this->table` limit 1 offset " . ($nth - 1);
+        } else {
+            $query = "$query limit 1 offset " . ($nth - 1);
+        }
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchObject();
     }
 }
 

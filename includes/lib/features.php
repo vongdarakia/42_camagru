@@ -24,7 +24,7 @@ require_once '../includes/models/Post.php';
  * @param String $img_file    File name of image.
  * @param String $description Description of the post.
  *
- * @return Boolean if post was successful.
+ * @return Boolean if post was successful. Otherwise id.
  */
 function post($email, $title, $img_file, $description="")
 {
