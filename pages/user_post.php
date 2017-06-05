@@ -42,6 +42,11 @@ if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
 $relative_path = "../"; // Path to root;
 $Post = new Post($dbh);
 $post = $Post->getById($_GET["post_id"]);
+$user_liked_post = false;
+if ($email != "") {
+    $user_liked_post = $Post->didUserLike($email, $_GET["post_id"]);    
+}
+
 
 if (!$post) {
     echo "This post doesn't exist.";
@@ -94,7 +99,7 @@ require_once TEMPLATES_PATH . "/header.php";
 
                 <?php 
                 if ($email != "") {
-                    if ($num_likes == 1) {
+                    if ($user_liked_post) {
                         echo '<i class="btn-liked fa fa-heart" onclick="like(this)" post-id="' .$post_id . '"></i>';
                     } else {
                         echo '<i class="btn-like fa fa-heart-o" onclick="like(this)" post-id="' .$post_id . '"></i>';
@@ -102,7 +107,6 @@ require_once TEMPLATES_PATH . "/header.php";
                 } else {
                     echo '<i class="btn-like fa fa-heart-o" onclick="like(this)" post-id="' .$post_id . '"></i>';
                 }
-                echo '<span id="num-likes-'.$post_id.'" class="num-likes">'.$num_likes.'</span>';
                 ?>
             </div>
         </div>

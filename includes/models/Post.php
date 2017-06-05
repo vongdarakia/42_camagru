@@ -387,6 +387,34 @@ class Post extends DbItem
         }
         return 0;
     }
+
+    /**
+     * Gets all comments for this post.
+     *
+     * @param Int $id Post ID
+     *
+     * @return PDO Object of all comments, or false if failed.
+     */
+    public function didUserLike($user_email, $id=null)
+    {
+        if ($id == null) {
+            $id = $this->id;
+        }
+        $query = "
+            select distinct 1 'liked'
+            from `like` l
+            inner join `user` u on u.id = l.author_id 
+            inner join `post` p on p.id = l.post_id
+            where
+                u.email=:user_email and
+                p.id=:post_id";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(array(':user_email' => $user_email, ':post_id' => $id));
+
+        $count = $stmt->fetchColumn();
+        return $count == 1;
+    }
 }
 
 ?>

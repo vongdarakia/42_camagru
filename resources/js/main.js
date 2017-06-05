@@ -113,7 +113,7 @@ function like(heart) {
             is_liking: isLiking
         },
         success: function(res) {
-            // console.log("liking " + isLiking);
+            console.log("liking " + isLiking);
             console.log(res);
             if (res >= 1) {
                 let spanNumLikes = document.getElementById('num-likes-' + postId);
