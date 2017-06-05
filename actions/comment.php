@@ -39,7 +39,9 @@ try {
         array('post_id' => $post_id, 'author_id' => $uid, 'comment' => $comment)
     );
     if ($num_rows) {
-        sendData($num_rows);
+        $last = $dbh->lastInsertId();
+        $comment = $Comment->getById($last);
+        echo json_encode($comment);
     } else {
         sendError("Couldn't add comment", 200);
     }

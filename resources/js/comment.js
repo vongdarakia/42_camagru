@@ -41,6 +41,27 @@ function commentBox(author, id, comment, time) {
     return box;
 }
 
+function commentDate(date) {
+    let monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+    ];
+
+    date = new Date(date);
+    let day = date.getDate();
+    let month = monthNames[date.getMonth()];
+    let year = date.getFullYear();
+    let mins = date.getMinutes();
+    let hrs = (date.getHours() + 1) % 12;
+    let isPM = date.getHours() >= 12 ? 1 : 0;
+    let time = hrs + ":" + mins + (isPM ? " pm" : " am");
+    
+    return month + " " + day + ", " + year + " " + time;
+
+}
+
 function postComment() {
     let comment = document.getElementById('comment-area').value;
 
@@ -57,30 +78,59 @@ function postComment() {
             comment: comment,
             post_id: post_id
         },
-        success: function(res) {
-            console.log(res);
-            if (res) {
-                let author = document.getElementById('user-login').value;
-                let box = commentBox(author, post_id, comment, 'jan 15');
-                let firstComment = document.querySelector('.comment-box');
-                insertAfter(box, firstComment);
-
-                document.getElementById('comment-area').value = "";
-            } else {
-                alert("Couldn't add comment.");
+        success: function(cObj) {
+            // console.log(cObj);
+            try {
+                if (cObj) {
+                    cObj = JSON.parse(cObj);
+                    // console.log(cObj);
+                    let author = document.getElementById('user-login').value;
+                    let box = commentBox(author, cObj.id, comment, commentDate(cObj.creation_date));
+                    let firstComment = document.querySelector('.comment-box');
+                    
+                    insertAfter(box, firstComment);
+                    document.getElementById('comment-area').value = "";
+                } else {
+                    alert("Couldn't add comment.");
+                }
+            } catch (err) {
+                console.log(err);
+                // alert("Couldn't add comment.");
             }
+            
         },
         error: function(err) {
-            console.log(err);
+            alert(err);
         }
     });
 }
 
 function deleteComment(comment) {
-    let id = comment.getAttribute('comment-id');
-    let cBox = document.getElementById('comment-box-' + id);
-
-    cBox.parentNode.removeChild(cBox);
+    let yes = confirm("Are you sure you want to delete this?");
+    if (!yes) {
+        return;
+    }
+    let comment_id = comment.getAttribute('comment-id');
+    console.log(comment_id);
+    ajax({
+        method: 'post',
+        url: document.getElementById('delete-comment-action').value,
+        data: {
+            comment_id: comment_id
+        },
+        success: function(res) {
+            if (res) {
+                let cBox = document.getElementById('comment-box-' + comment_id);
+                cBox.parentNode.removeChild(cBox);
+            } else {
+                alert("Couldn't delete comment.");
+            }
+        },
+        error: function(err) {
+            alert(err);
+        }
+    });
+    
 }
 
 (function() {

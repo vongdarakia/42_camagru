@@ -61,6 +61,8 @@ $post_time = commentDate($post->creation_date);
 $num_likes = $Post->getNumLikes($_GET['post_id']);
 $post_id = $_GET['post_id'];
 
+$logged_in = isset($_SESSION["user_login"]) && $_SESSION["user_login"] != "";
+
 // echo $num_likes;
 require_once TEMPLATES_PATH . "/header.php";
 ?>
@@ -69,6 +71,7 @@ require_once TEMPLATES_PATH . "/header.php";
     <input type="hidden" id="user-login" value="<?php echo $author; ?>">
     <input type="hidden" id="like-action" value="<?php echo ACTIONS_DIR ?>like.php">
     <input type="hidden" id="comment-action" value="<?php echo ACTIONS_DIR ?>comment.php">
+    <input type="hidden" id="delete-comment-action" value="<?php echo ACTIONS_DIR ?>delete_comment.php">
     <div id="post-wrapper">
         <div id="post-box" class="back-shadow smooth-corners">
             <div class="photo-box-wrapper smooth-top-corners">
@@ -123,9 +126,11 @@ require_once TEMPLATES_PATH . "/header.php";
                     </p>
                     <p>
                         <span class="comment">'.$comment["comment"].'</span>
-                    </p>
-                    <i class="btn-delete fa fa-trash-o" onclick="deleteComment(this)" comment-id="'.$comment["id"].'"></i>
-                </div>';
+                    </p>';
+                if ($logged_in && $_SESSION["user_login"] == $comment['author_login']) {
+                    echo '<i class="btn-delete fa fa-trash-o" onclick="deleteComment(this)" comment-id="'.$comment["id"].'"></i>';
+                }
+                echo '</div>';
             }
             ?>
             <div id="comment-box-1" class="comment-box">
