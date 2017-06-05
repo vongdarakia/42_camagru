@@ -301,7 +301,7 @@ class Post extends DbItem
     /**
      * Adds a post to the database given a list of fields. Must have all 3 values.
      *
-     * @param Int $fields Valuess we're adding.
+     * @param Int $fields Values we're adding.
      *
      * @return Boolean whether the add was successful or not.
      */
@@ -328,6 +328,64 @@ class Post extends DbItem
             }
         }
         return false;
+    }
+
+    /**
+     * Gets all comments for this post.
+     *
+     * @param Int $id Post ID
+     *
+     * @return PDO Object of all comments, or false if failed.
+     */
+    public function getComments($id=null)
+    {
+        if ($id == null) {
+            $id = $this->id;
+        }
+        $query = "
+            select
+                c.id 'id',
+                u.username 'author_login',
+                c.comment 'comment',
+                c.creation_date 'creation_date'
+            from `{$this->table}` p
+            inner join `comment` c on c.post_id = p.id
+            inner join `user` u on c.author_id = u.id
+            where p.id = " . $id . "
+            order by c.creation_date desc, c.id asc";
+
+        $rows = $this->db->query($query);
+        return $rows;
+    }
+
+    /**
+     * Gets all comments for this post.
+     *
+     * @param Int $id Post ID
+     *
+     * @return PDO Object of all comments, or false if failed.
+     */
+    public function getNumLikes($id=null)
+    {
+        if ($id == null) {
+            $id = $this->id;
+        }
+        $query = "
+            select count(p.id) 'count'
+            from `{$this->table}` p
+            inner join `like` l on l.post_id = p.id
+            inner join `user` u on u.id = l.author_id
+            where p.id = " . $id . "
+            group by p.id";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        $count = $stmt->fetchColumn();
+        if ($count != false || $count != null) {
+            return $count;
+        }
+        return 0;
     }
 }
 

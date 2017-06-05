@@ -83,8 +83,6 @@ if ($page > $maxPages) {
     $info = $Post->getDataByPage($maxPages, $limit, $query);
 }
 
-
-
 require_once TEMPLATES_PATH . "/header.php";
 ?>
 

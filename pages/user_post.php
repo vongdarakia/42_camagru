@@ -21,46 +21,54 @@ session_start();
 require_once '../config/paths.php';
 require_once '../config/connect.php';
 require_once '../includes/lib/auth.php';
-require_once '../includes/models/User.php';
+require_once '../includes/models/Post.php';
 
-checkUserAuthentication();
-$email = $_SESSION["user_email"];
-$User = new User($dbh);
+function commentDate($date)
+{
+    $date = strtotime($date);
+    $date = date('F j, Y g:i a',$date);
+    return $date;
+}
+
+if (!isset($_GET["post_id"])) {
+    header("Location: " . SITE_DIR);
+}
+
+$email = "";
+if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
+    $email = $_SESSION["user_email"];
+}
+
 $relative_path = "../"; // Path to root;
+$Post = new Post($dbh);
+$post = $Post->getById($_GET["post_id"]);
 
-// $img_path = $relative_path . POSTS_DIR_NAME . "/" . $post["img_file"];
-// $class = "perfect-box";
-// $style = "";
+if (!$post) {
+    echo "This post doesn't exist.";
+    exit;
+}
 
-// if (file_exists($img_path)) {
-//     $size = getimagesize($img_path);
-//     $width = $size[0];
-//     $height = $size[1];
-//     $boxSize = 150;
+$comments = $Post->getComments($_GET["post_id"]);
 
-//     // Change for html img to work.
-//     $img_path = SITE_DIR . "/" . POSTS_DIR_NAME . "/" . $post["img_file"];
+if ($comments == false || $comments->rowCount() == 0) {
+    $comments = [];
+}
 
-//     // Makes sure to fill up the box when image sizes are not
-//     // a 1:1 ratio.
-//     if ($height < $width) {
-//         $class = "short-height";
-//         $offset = -($width * $boxSize / $height - $boxSize) / 2;
-//         $style = "left: " . $offset . "px;";
-//     } else if ($width < $height) {
-//         $class = "short-width";
-//         $offset =  -($height * $boxSize / $width - $boxSize) / 2;
-//         $style = "top: " . $offset . "px;";
-//     }
-// } else {
-//     $img_path = IMG_DIR . "/" . "image-not-available.png";
-// }
+$author = $_SESSION['user_login'];
+
+$post_time = commentDate($post->creation_date);
+
+$num_likes = $Post->getNumLikes($_GET['post_id']);
+$post_id = $_GET['post_id'];
+
+// echo $num_likes;
 require_once TEMPLATES_PATH . "/header.php";
 ?>
 
 <div class="container">
-    <input type="hidden" id="user-login" value="avongdar">
+    <input type="hidden" id="user-login" value="<?php echo $author; ?>">
     <input type="hidden" id="like-action" value="<?php echo ACTIONS_DIR ?>like.php">
+    <input type="hidden" id="comment-action" value="<?php echo ACTIONS_DIR ?>comment.php">
     <div id="post-wrapper">
         <div id="post-box" class="back-shadow smooth-corners">
             <div class="photo-box-wrapper smooth-top-corners">
@@ -71,25 +79,55 @@ require_once TEMPLATES_PATH . "/header.php";
                         class="<?php echo $class; ?>"
                         style="<?php echo $style; ?>"
                     > -->
-                    <img src="../resources/img/avongdar_20170519132145.png" alt="" class="">
+                    <img src="<?php echo POSTS_DIR . $post->img_file ?>" alt="" class="">
                 </div>
             </div>
             
             <div class="post-info">
-                <span class="post-author"><a href="#" class="author-link">avongdar</a></span>
-                <span class="post-time">January 24th, 2017 12:26 pm</span>
-                <span id="num-likes-1" class="num-likes">1234</span>
-                <i class="btn-like fa fa-heart-o" onclick="like(this)" post-id="1"></i>
+                <span class="post-author"><a href="#" class="author-link"><?php echo $author; ?></a></span>
+                <span class="post-time"><?php echo $post_time ?></span>
+                <span id="num-likes-<?php echo $post_id ?>" class="num-likes"><?php echo $num_likes; ?></span>
+                <!-- <i class="btn-like fa fa-heart-o" onclick="like(this)" post-id="<?php echo $post_id ?>"></i> -->
+
+                <?php 
+                if ($email != "") {
+                    if ($num_likes == 1) {
+                        echo '<i class="btn-liked fa fa-heart" onclick="like(this)" post-id="' .$post_id . '"></i>';
+                    } else {
+                        echo '<i class="btn-like fa fa-heart-o" onclick="like(this)" post-id="' .$post_id . '"></i>';
+                    }
+                } else {
+                    echo '<i class="btn-like fa fa-heart-o" onclick="like(this)" post-id="' .$post_id . '"></i>';
+                }
+                echo '<span id="num-likes-'.$post_id.'" class="num-likes">'.$num_likes.'</span>';
+                ?>
             </div>
         </div>
 
         <div id="comments" class="back-shadow smooth-corners">
             <div id="write-comment" class="comment-box">
-                <textarea id="comment-area" name="comment" placeholder="Write a comment..."></textarea>
+                <textarea id="comment-area" name="comment" placeholder="Write a comment..." post-id="<?php echo $post_id ?>"></textarea>
                 <div>
                     <div id="btn-comment" class="back-shadow smooth-corners" onclick="postComment()">Comment</div>    
                 </div>
             </div>
+
+            <?php
+            foreach ($comments as $comment) {
+                $time = commentDate($comment['creation_date']);
+                echo '
+                <div id="comment-box-'.$comment["id"].'" class="comment-box">
+                    <p>
+                        <span class="comment-author"><a href="#" class="author-link">'.$comment['author_login'].'</a></span>
+                        <span class="comment-time">'.$time.'</span>
+                    </p>
+                    <p>
+                        <span class="comment">'.$comment["comment"].'</span>
+                    </p>
+                    <i class="btn-delete fa fa-trash-o" onclick="deleteComment(this)" comment-id="'.$comment["id"].'"></i>
+                </div>';
+            }
+            ?>
             <div id="comment-box-1" class="comment-box">
                 <p>
                     <span class="comment-author"><a href="#" class="author-link">avongdar</a></span>

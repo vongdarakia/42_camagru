@@ -47,14 +47,33 @@ function postComment() {
     if (comment == "")
         return;
 
-    console.log(comment);
-    let id = 1;
-    let author = document.getElementById('user-login').value;
-    let box = commentBox(author, id, comment, 'jan 15');
-    let firstComment = document.querySelector('.comment-box');
-    insertAfter(box, firstComment);
+    
+    let post_id = document.getElementById('comment-area').getAttribute('post-id');
 
-    document.getElementById('comment-area').value = "";
+    ajax({
+        method: 'post',
+        url: document.getElementById('comment-action').value,
+        data: {
+            comment: comment,
+            post_id: post_id
+        },
+        success: function(res) {
+            console.log(res);
+            if (res) {
+                let author = document.getElementById('user-login').value;
+                let box = commentBox(author, post_id, comment, 'jan 15');
+                let firstComment = document.querySelector('.comment-box');
+                insertAfter(box, firstComment);
+
+                document.getElementById('comment-area').value = "";
+            } else {
+                alert("Couldn't add comment.");
+            }
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
 }
 
 function deleteComment(comment) {

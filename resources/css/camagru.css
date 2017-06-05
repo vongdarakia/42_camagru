@@ -810,7 +810,7 @@ img.perfect-box {
 
 .post-info .post-time {
     position: absolute;
-    top: 32px;
+    top: 34px;
     left: 10px;
     font-size: .7em;
 }
@@ -846,14 +846,10 @@ img.perfect-box {
     
 }
 
-.comment-box {
-    padding: 0 10px;
-}
-
 #write-comment {
     overflow: auto;
     position: relative;
-    padding-top: 20px;
+    padding-top: 15px;
 }
 
 #write-comment textarea {
@@ -931,7 +927,8 @@ img.perfect-box {
 }
 
 .comment-box {
-    padding-bottom: 10px;
+    padding: 0 10px 10px 10px;
+    /*padding-bottom: 10px;*/
     position:       relative;
     /*border: 1px solid black;*/
 }
