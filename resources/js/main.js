@@ -1,3 +1,7 @@
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
 function ajax(o){
     let xmlhttp;
     xmlhttp = new XMLHttpRequest();
@@ -88,8 +92,8 @@ function applyUnlike(heart) {
 
 function like(heart) {
     let url = document.getElementById("like-action").value;
-    let email = document.getElementById("user-email").value;
     let isLiking = true;
+    let postId = heart.getAttribute('post-id');
     
     // console.log(email);
     // if (!email)
@@ -105,14 +109,14 @@ function like(heart) {
         method: 'post',
         url: url,
         data: {
-            post_id: heart.id,
+            post_id: postId,
             is_liking: isLiking
         },
         success: function(res) {
             // console.log("liking " + isLiking);
             // console.log(res);
             if (res >= 1) {
-                let spanNumLikes = document.getElementById('num-likes-' + heart.id);
+                let spanNumLikes = document.getElementById('num-likes-' + postId);
                 let numLikes = parseInt(spanNumLikes.innerHTML);
                 numLikes += isLiking ? 1 : -1;
                 spanNumLikes.innerHTML = numLikes;

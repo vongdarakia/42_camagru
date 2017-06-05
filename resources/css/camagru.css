@@ -1,6 +1,5 @@
 body {
     background-color:   white;
-    font-family:        helvetica;
     margin:             0;
     font-family:        'Lato', sans-serif;
     font-weight:        100;
@@ -321,6 +320,7 @@ body {
     bottom: 10px;
     right: 37px;
     color: white;
+    text-shadow: 0px 0px 1px black;
 }
 
 .user-post-box .post-author {
@@ -413,19 +413,24 @@ body {
     right:      10px;
     font-size:  x-large;
     padding:    1px 3px;
+    text-shadow: 0px 0px 1px #D91E18;
 }
 
-.user-post-box .btn-liked {
+.btn-liked, .btn-like {
+    cursor: pointer;
+}
+
+.btn-liked {
     color: #D91E18;
 }
 
-.user-post-box .btn-like {
+.btn-like {
     color: #F2F1EF;
     -webkit-transition: color .3s;
     transition:         color .3s;
 }
 
-.user-post-box .btn-like:hover {
+.btn-like:hover {
     color: #D91E18;
 }
 
@@ -755,4 +760,221 @@ img.perfect-box {
 .no-hover {
     /*background-color: transparent;*/
     color: black;
+}
+
+/**************** User Post Page ****************/
+
+#post-wrapper {
+    max-width: 500px;
+    /*min-width: 400px;*/
+
+    margin: auto;
+    margin-top: 40px;
+    text-align: center;
+    /*background-color: white;*/
+    /*background-color: white;*/
+}
+
+.photo-box {
+    width: 400px;
+    height: 300px;
+    margin: auto;
+    
+}
+
+.photo-box-wrapper {
+    background-color: black;
+}
+
+.photo-box img {
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#post-box {
+    background-color: white;
+}
+.post-info {
+    height: 60px;
+    position: relative;
+    /*background-color: white;*/
+}
+
+.post-info .post-author {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.post-info .post-time {
+    position: absolute;
+    top: 32px;
+    left: 10px;
+    font-size: .7em;
+}
+
+.post-info .num-likes {
+    position: absolute;
+    top: 17px;
+    right: 50px;
+}
+
+.post-info .btn-like, .post-info .btn-liked {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2em;
+    color: black;
+}
+
+.post-info .btn-liked, .post-info .btn-like:hover {
+    color: #D91E18;
+}
+
+#comments {
+    margin: 10px 0;
+    text-align: left;
+    /*padding: 5px 10px 10px 10px;*/
+    background-color: white;
+}
+
+#comments p {
+    margin: 4px 0;
+    /*border: 1px solid black;*/
+    
+}
+
+.comment-box {
+    padding: 0 10px;
+}
+
+#write-comment {
+    overflow: auto;
+    position: relative;
+    padding-top: 20px;
+}
+
+#write-comment textarea {
+    resize:         none;
+    /*max-width: 500px;*/
+    width:          466px;
+    border-radius:  2px;
+    border-color:   #d5d5d5;
+    font-family:    'Lato', sans-serif;
+    font-size:      1em;
+    font-weight:    100;
+    padding:        6px;
+    cursor:         text;
+}
+
+#write-comment textarea:focus {
+    /*outline: 1px dotted #000;*/
+    outline:        none;
+    border-color:   #167ac6;
+}
+
+#write-comment span {
+    clear:      both;
+    display:    block;
+    /*float: left;*/
+}
+
+#btn-comment {
+    float:              right;
+    margin-top:         5px;
+    /*border-radius: 0;*/
+    padding:            10px;
+    background-color:   #EC644B;
+    color:              white;
+    font-size:          .7em;
+    cursor:             pointer;
+    /*right: 0;*/
+    /*position: absolute;*/
+
+    -moz-transform:     all 0.3s;
+    -webkit-transition: all 0.3s;
+    transition:         all 0.3s;
+}
+
+#btn-comment:hover {
+    background-color: #FF977E;
+}
+
+#btn-comment:active {
+    background-color: #EC644B;
+    box-shadow: none;
+}
+
+.comment-author {
+    
+}
+
+
+/*.comment-author a {
+    text-decoration: none;
+    color: #2C3E50;
+
+    -moz-transform:     color 0.3s;
+    -webkit-transition: color 0.3s;
+    transition:         color 0.3s;
+}*/
+
+/*.comment-author a:hover {
+    color: #EC644B;
+}*/
+
+.comment-time {
+    font-size:      0.7em;
+    margin-left:    5px;
+}
+
+.comment-box {
+    padding-bottom: 10px;
+    position:       relative;
+    /*border: 1px solid black;*/
+}
+
+.comment-box .btn-delete {
+    position:   absolute;
+    top:        0;
+    right:      10px;
+    font-size:  1.2em;
+    cursor:     pointer;
+
+    -moz-transform:     all 0.3s;
+    -webkit-transition: all 0.3s;
+    transition:         all 0.3s;
+}
+
+.comment-box .btn-delete:hover {
+    color: #EC644B;
+}
+
+.author-link {
+    font-weight:        bold;
+    text-decoration:    none;
+    color:              #2C3E50;
+
+    -moz-transform:     color 0.3s;
+    -webkit-transition: color 0.3s;
+    transition:         color 0.3s;
+}
+
+.author-link:hover {
+    color: #EC644B;
+}
+
+.back-shadow {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.smooth-corners {
+    border-radius: 3px;
+}
+
+.smooth-top-corners {
+    border-top-right-radius:    3px;
+    border-top-left-radius:     3px;
 }

@@ -398,13 +398,14 @@ function captureImage() {
             }
         },
         error: function(err) {
-            if (err.indexOf("Trigger happy")) {
+            if (err.indexOf("Trigger happy") >= 0) {
                 document.getElementById('btn-capture').innerHTML = "Hold your horses! Trigger happy much?";
                 setTimeout(function() {
                     document.getElementById('btn-capture').innerHTML = "Capture";
                 }, 1000);
-            } else {
-                console.log(err);
+            } else if (err.indexOf("No image") >= 0){
+                // console.log(err);
+                alert("Please select an file first.");
             }
         }
     });

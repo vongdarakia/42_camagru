@@ -99,7 +99,7 @@ require_once TEMPLATES_PATH . "/header.php";
         ?>
     </div>
     <?php require_once TEMPLATES_PATH . "/pagination.php"; ?>
-    <input type="hidden" id="user-email" value="<?php echo $email; ?>">
+   <!--  <input type="hidden" id="user-email" value="<?php echo $email; ?>"> -->
     <input type="hidden" id="like-action" value="<?php echo ACTIONS_DIR ?>like.php">
 </div>
 <script src="<?php echo JS_DIR . "main.js" ?>"></script>

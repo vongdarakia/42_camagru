@@ -61,6 +61,6 @@ try {
         }
     }
 } catch (Exception $e) {
-    sendError($e->getMessage(), 200);
+    sendError("Server error. Probably invalid post id.", 200);
 }
 ?>
