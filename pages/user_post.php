@@ -137,27 +137,6 @@ require_once TEMPLATES_PATH . "/header.php";
                 echo '</div>';
             }
             ?>
-            <div id="comment-box-1" class="comment-box">
-                <p>
-                    <span class="comment-author"><a href="#" class="author-link">avongdar</a></span>
-                    <span class="comment-time">12:56 pm</span>
-                </p>
-                <p>
-                    <span class="comment">It's so funny, I'm going to die!</span>
-                </p>
-                <i class="btn-delete fa fa-trash-o" onclick="deleteComment(this)" comment-id="1"></i>
-            </div>
-
-            <div id="comment-box-2" class="comment-box">
-                <p>
-                    <span class="comment-author"><a href="#" class="author-link">avongdar</a></span>
-                    <span class="comment-time">12:55 pm</span>
-                </p>
-                <p>
-                    <span class="comment">What are you doing!? This is a really long comment and I'm trying to see how it looks like, if there are multiple lines. Hope it turns out well. </span>
-                </p>
-                <i class="btn-delete fa fa-trash-o" onclick="deleteComment(this)" comment-id="2"></i>
-            </div>
         </div>
     </div>
 </div>

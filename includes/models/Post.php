@@ -391,7 +391,8 @@ class Post extends DbItem
     /**
      * Gets all comments for this post.
      *
-     * @param Int $id Post ID
+     * @param String $user_email User's email
+     * @param Int    $id         Post ID
      *
      * @return PDO Object of all comments, or false if failed.
      */

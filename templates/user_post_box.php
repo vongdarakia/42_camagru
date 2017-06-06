@@ -24,6 +24,7 @@
  * @link      localhost:8080
  */
 
+$page = PAGES_DIR . 'user_post.php?post_id=' . $post['post_id'];
 $img_path = $relative_path . POSTS_DIR_NAME . "/" . $post["img_file"];
 $class = "perfect-box";
 $style = "";
@@ -53,7 +54,7 @@ if (file_exists($img_path)) {
 }
 ?>
 <i class="btn-liked icon-heart-empty"></i>
-<div class="user-post-box">
+<div class="user-post-box" onclick="location.href='<?php echo $page ?>';">
     <div class="crop">
         <span class="vertical-helper"></span>
         <img
