@@ -137,7 +137,15 @@ function displayError()
     }
 }
 
-function header_status($statusCode) {
+/**
+ * Sets the header status.
+ *
+ * @param String $status_code Status code to set to.
+ *
+ * @return void
+ */
+function headerStatus($status_code)
+{
     static $status_codes = null;
 
     if ($status_codes === null) {
@@ -195,26 +203,52 @@ function header_status($statusCode) {
         );
     }
 
-    if ($status_codes[$statusCode] !== null) {
-        $status_string = $statusCode . ' ' . $status_codes[$statusCode];
-        header($_SERVER['SERVER_PROTOCOL'] . ' ' . $status_string, true, $statusCode);
+    if ($status_codes[$status_code] !== null) {
+        $status_string = $status_code . ' ' . $status_codes[$status_code];
+        header(
+            $_SERVER['SERVER_PROTOCOL']
+            . ' ' . $status_string, true, $status_code
+        );
     }
 }
 
+/**
+ * Sends error message.
+ *
+ * @param String $err_msg  Error message to display.
+ * @param String $err_code Status code.
+ *
+ * @return void
+ */
 function sendError($err_msg, $err_code)
 {
-    header_status($err_code);
+    headerStatus($err_code);
     echo "Error: "  . $err_msg;
     exit(0);
 }
 
+/**
+ * Sends data
+ *
+ * @param Mixed $data Data to send.
+ *
+ * @return void
+ */
 function sendData($data)
 {
-    header_status(200);
+    headerStatus(200);
     echo $data;
     exit(0);
 }
 
+/**
+ * Sets the session error message, and relocates to a url.
+ *
+ * @param String $err_msg Error message to display.
+ * @param String $url     Url to relocate to.
+ *
+ * @return void
+ */
 function relocateError($err_msg, $url)
 {
     $_SESSION["err_msg"] = $err_msg;

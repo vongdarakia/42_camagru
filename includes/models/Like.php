@@ -272,10 +272,12 @@ class Like extends DbItem
      *
      * @return Boolean Exists or Int Like ID
      */
-    public function exists($post_id, $author_id) {
+    public function exists($post_id, $author_id)
+    {
         $stmt = $this->db->prepare(
             "select id from `{$this->table}`
-            where post_id=:post_id and author_id=:author_id");
+            where post_id=:post_id and author_id=:author_id"
+        );
         $stmt->execute(
             array(
                 ":author_id" => $author_id,

@@ -817,13 +817,13 @@ img.perfect-box {
 
 .post-info .num-likes {
     position: absolute;
-    top: 17px;
+    top: 22px;
     right: 50px;
 }
 
 .post-info .btn-like, .post-info .btn-liked {
     position: absolute;
-    top: 10px;
+    top: 15px;
     right: 10px;
     font-size: 2em;
     color: black;

@@ -272,7 +272,7 @@ try {
         $msg = $e->getMessage();
     }
 }
-header_status(200);
+headerStatus(200);
 echo json_encode(array('imgFile' => $imgName, 'postId' => $id));
 // header("Location: ../pages/post.php");
 

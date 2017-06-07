@@ -23,11 +23,6 @@ require_once '../config/connect.php';
 require_once '../includes/lib/auth.php';
 require_once '../includes/models/User.php';
 
-
-// Maybe use this.
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     // …
-// }
 checkUserAuthentication();
 $email = $_SESSION["user_email"];
 $User = new User($dbh);
@@ -40,7 +35,6 @@ where u.email = '".$email."'
 order by p.creation_date desc";
 $info = $User->getDataByPage(1, 10, $query);
 $relative_path = "../"; // Path to root;
-// echo $info->rows[0]->img_file;
 
 require_once TEMPLATES_PATH . "/header.php";
 ?>
@@ -76,7 +70,8 @@ require_once TEMPLATES_PATH . "/header.php";
             $stickerNames = ["Patrick Gasp", "Doge", "Mustache Glasses"];
             for ($i=0; $i < 3; $i++) {
                 echo '<label class="radio-inline">
-                    <input type="radio" name="opt-sticker" onclick="changeSticker(this)" value="'.$i.'">
+                    <input type="radio" name="opt-sticker"
+                        onclick="changeSticker(this)" value="'.$i.'">
                     <div class="sticker-box" title="'. $stickerNames[$i] .'">
                         <img src="'. IMG_DIR . $stickers[$i] .'">
                     </div>
@@ -85,15 +80,18 @@ require_once TEMPLATES_PATH . "/header.php";
             ?>
             </form>
             <div id="modes">
-                <input class="mode-radio" type="radio" name="mode" id="camera-mode" value="camera" onchange="changeMode(this)" checked>
+                <input class="mode-radio" type="radio" name="mode" id="camera-mode"
+                    value="camera" onchange="changeMode(this)" checked>
                 <label for="camera-mode">Camera Mode</label>
 
-                <input class="mode-radio" type="radio" name="mode" id="upload-mode" value="upload" onchange="changeMode(this)">
+                <input class="mode-radio" type="radio" name="mode" id="upload-mode"
+                    value="upload" onchange="changeMode(this)">
                 <label for="upload-mode" class="active">Upload Mode</label>
             </div>
 
             <div id="file-wrapper">
-                <input class="file-input" type="file" name="file" id="file" onchange="fileChange(this)">
+                <input class="file-input" type="file" name="file" id="file"
+                    onchange="fileChange(this)">
                 <label for="file" id="file-label"></label>
             </div>
                 

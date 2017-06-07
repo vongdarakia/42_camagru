@@ -54,14 +54,16 @@ if (file_exists($img_path)) {
 }
 ?>
 <i class="btn-liked icon-heart-empty"></i>
-<div class="user-post-box" onclick="location.href='<?php echo $page ?>';">
+<div class="user-post-box">
     <div class="crop">
-        <span class="vertical-helper"></span>
-        <img
-            src="<?php echo $img_path; ?>"
-            class="<?php echo $class; ?>"
-            style="<?php echo $style; ?>"
-        >
+        <a href="<?php echo $page ?>" title="">
+            <span class="vertical-helper"></span>
+            <img
+                src="<?php echo $img_path; ?>"
+                class="<?php echo $class; ?>"
+                style="<?php echo $style; ?>"
+            >
+        </a>
     </div>
     <?php 
     

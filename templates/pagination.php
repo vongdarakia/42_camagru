@@ -3,6 +3,9 @@
  * Template for pagination. Uses the info variable to determine
  * how the pagination will be created.
  *
+ * Note: $url variable needs to be in the page that is requiring this
+ * template.
+ *
  * Fields
  *      page
  *      limit
@@ -32,9 +35,16 @@
  *
  * @return Boolean if valid.
  */
-function pageBox($pageNum, $info)
+function pageBox($pageNum, $info, $url)
 {
-    $link = SITE_DIR . "/?page=$pageNum";
+    $link = $url;
+
+    if (strpos($link, "?") !== false) {
+        $link = $url . "&page=$pageNum";
+    } else {
+        $link = $url . "?page=$pageNum";
+    }
+
     $class = "page-box";
     if ($info->page == $pageNum) {
         $class = $class ." current-page";
@@ -82,7 +92,7 @@ $linkPrev = SITE_DIR . "/?page=$pagePrev";
         
         <?php
         // First page should always be shown
-        echo pageBox(1, $info);
+        echo pageBox(1, $info, $url);
 
         // At minimum the current page should be 2 because
         // the first page box was already printed.
@@ -102,7 +112,7 @@ $linkPrev = SITE_DIR . "/?page=$pagePrev";
             $idx = 0;
             while ($range + $idx < $currPage) {
                 if ($range + $idx > 1) {
-                    echo pageBox($range + $idx, $info);
+                    echo pageBox($range + $idx, $info, $url);
                 }
                 $idx++;
             }
@@ -112,7 +122,7 @@ $linkPrev = SITE_DIR . "/?page=$pagePrev";
         // or till the max page.
         $idx = 0;
         while ($idx++ < 3 && $currPage < $maxPages) {
-            echo pageBox($currPage++, $info);
+            echo pageBox($currPage++, $info, $url);
         }
 
         // If the current page is within a range of 2 from the max,
@@ -120,12 +130,12 @@ $linkPrev = SITE_DIR . "/?page=$pagePrev";
         // indicate there are many more pages in between.
         if ($maxPages - $currPage < 2) {
             while ($currPage < $maxPages) {
-                echo pageBox($currPage++, $info);
+                echo pageBox($currPage++, $info, $url);
             }
         } else {
             echo pageDots();
         }
-        echo pageBox($maxPages, $info);
+        echo pageBox($maxPages, $info, $url);
         ?>
         <?php
         // Next button doesn't need to be shown if on last page.

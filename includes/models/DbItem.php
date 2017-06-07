@@ -219,6 +219,7 @@ class DbItem
      */
     public function getDataByPage($page=1, $limit=10, $query=null)
     {
+        // echo "page " . $page;
         if ($page <= 0 || ($limit !== 'all' && $limit <= 0)) {
             throw new Exception("Error: page and limit must be positive number", 1);
         }
@@ -226,14 +227,21 @@ class DbItem
             $query = "select * from `$this->table`";
         }
 
-        $countQuery = "select count(1) from `$this->table`";
+        $query_end = substr($query, strpos($query, "from"));
+
+        $countQuery = "select count(1) from (" . $query . ") t";
+        // echo $countQuery;
+        // echo "NOOOOOOOOOOOOOO! $page";
         $rows = $this->db->query($countQuery);
         $count = $rows->fetchColumn();
+
+        
+
 
         if ($limit != 'all') {
             $query = "$query limit ". ($limit * ($page - 1)) .", $limit";
         }
-
+        // echo $query;
         $rows = $this->db->query($query);
 
         $info         = new stdClass();
@@ -244,6 +252,14 @@ class DbItem
         return $info;
     }
 
+    /**
+     * Gets the nth row of data given a query.
+     *
+     * @param Int    $nth   Nth item to get.
+     * @param String $query Query to pull data.
+     *
+     * @return Object Data object.
+     */
     public function getNthData($nth, $query=null)
     {
         if ($query == null) {

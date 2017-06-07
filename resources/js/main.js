@@ -6,15 +6,6 @@ function ajax(o){
     let xmlhttp;
     xmlhttp = new XMLHttpRequest();
 
-    // xmlhttp.onreadystatechange = function() {
-    //     if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200) {
-    //         if (o.success) {
-    //             o.success(xmlhttp.responseText);
-    //         }
-    //     } else if (o.error) {
-    //         o.error(xmlhttp.responseText);
-    //     }
-    // }
     xmlhttp.onload = function() {
         if (o.success && xmlhttp.responseText.indexOf('Error') == -1) {
             o.success(xmlhttp.responseText);
@@ -95,9 +86,6 @@ function like(heart) {
     let isLiking = true;
     let postId = heart.getAttribute('post-id');
     
-    // console.log(email);
-    // if (!email)
-    //     return;
     if (heart.classList.contains('btn-liked')) {
         applyUnlike(heart);
         isLiking = false;
@@ -113,8 +101,6 @@ function like(heart) {
             is_liking: isLiking
         },
         success: function(res) {
-            console.log("liking " + isLiking);
-            console.log(res);
             if (res >= 1) {
                 let spanNumLikes = document.getElementById('num-likes-' + postId);
                 let numLikes = parseInt(spanNumLikes.innerHTML);

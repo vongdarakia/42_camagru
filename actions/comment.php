@@ -25,7 +25,7 @@ if (!isset($_SESSION['user_email']) || $_SESSION['user_email'] == ""
     exit(0);
 }
 
-header_status(200);
+headerStatus(200);
 $Comment = new Comment($dbh);
 $User = new User($dbh);
 
