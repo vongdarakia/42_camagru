@@ -136,7 +136,8 @@ require_once TEMPLATES_PATH . "/header.php";
             <div id="write-comment" class="comment-box">
                 <textarea
                     id="comment-area"
-                    name="comment" placeholder="Write a comment..."
+                    name="comment"
+                    placeholder="Commenting as <?php echo $_SESSION['user_login'] ?>..."
                     post-id="<?php echo $post_id ?>"></textarea>
                 <div>
                     <div id="btn-comment"
