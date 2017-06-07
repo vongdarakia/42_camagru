@@ -19,9 +19,9 @@ session_start();
 require_once '../config/paths.php';
 require_once '../includes/lib/auth.php';
 
-if (isset($_POST["email"])
+if (isset($_POST["username"])
     && isset($_POST["password"])
-    && auth($_POST["email"], $_POST["password"])
+    && authUsername($_POST["username"], $_POST["password"])
 ) {
     header("Location: " . SITE_DIR);
 } else {

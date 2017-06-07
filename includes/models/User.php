@@ -440,12 +440,29 @@ class User extends DbItem
      *
      * @return Boolean on if the password and email matches.
      */
-    public function passwordMatchesLogin($email, $password)
+    public function passwordMatchesEmail($email, $password)
     {
         $hashedPass = hash('whirlpool', $password);
         $qry = "select * from `user` where email=:email and password=:password";
         $stmt = $this->db->prepare($qry);
         $stmt->execute(array(':email' => $email, ':password' => $hashedPass));
+        return $stmt->rowCount() == 1;
+    }
+
+    /**
+     * Gets whether or not the username and the password matches.
+     *
+     * @param String $username Username we're trying to find.
+     * @param String $password Password to check if it matches the given username.
+     *
+     * @return Boolean on if the password and username matches.
+     */
+    public function passwordMatchesUsername($username, $password)
+    {
+        $hashedPass = hash('whirlpool', $password);
+        $qry = "select * from `user` where username=:username and password=:password";
+        $stmt = $this->db->prepare($qry);
+        $stmt->execute(array(':username' => $username, ':password' => $hashedPass));
         return $stmt->rowCount() == 1;
     }
 }

@@ -19,6 +19,14 @@ require_once '../config/paths.php';
 require_once '../includes/lib/auth.php';
 
 try {
+    if (!isset($_POST['first']) ||
+        !isset($_POST['last']) ||
+        !isset($_POST['username']) ||
+        !isset($_POST['email']) ||
+        !isset($_POST['password'])
+    ) {
+        sendError('All fields needs to be filled in.', 200);
+    }
     if (signUp(
         $_POST["first"],
         $_POST["last"],

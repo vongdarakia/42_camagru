@@ -32,7 +32,7 @@ require_once TEMPLATES_PATH . "/header.php";
     }
     ?>
     <form action="<?php echo ACTIONS_DIR ?>login.php" method="post">
-        <input type="email" name="email">
+        <input type="text" name="username">
         <input type="password" name="password">
         <button>Login</button>
     </form>

@@ -28,8 +28,36 @@ function auth($email, $pass)
 {
     global $dbh;
     $user = new User($dbh);
-    if ($user->passwordMatchesLogin($email, $pass)) {
+    if ($user->passwordMatchesEmail($email, $pass)) {
         $user->loadByEmail($email);
+        initSession(
+            array(
+                "first" => $user->getFirstName(),
+                "last" => $user->getLastName(),
+                "username" => $user->getUsername(),
+                "email" => $user->getEmail()
+            )
+        );
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Return if the username and password matches an account. This hashes the password
+ * first before checking it.
+ *
+ * @param String $username Email we're trying to find.
+ * @param String $pass  Password to check if it matches the given username.
+ *
+ * @return Boolean on if the password and username matches.
+ */
+function authUsername($username, $pass)
+{
+    global $dbh;
+    $user = new User($dbh);
+    if ($user->passwordMatchesUsername($username, $pass)) {
+        $user->loadByUsername($username);
         initSession(
             array(
                 "first" => $user->getFirstName(),

@@ -131,7 +131,7 @@ function insertDummyUsers($dbh)
         $sth->execute($value);
     }
     $password = hash('whirlpool', "password");
-    for ($i=0; $i < 10000; $i++) { 
+    for ($i=0; $i < 100; $i++) { 
         $sth->execute(
             array(
                 ":first" => "Akia" . $i,
