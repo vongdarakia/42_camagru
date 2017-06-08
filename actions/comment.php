@@ -37,7 +37,8 @@ try {
     if (trim($comment) == "") {
         sendError("Can't comment with empty string.", 200);
     }
-
+    
+    $comment = trim($comment);
     $uid = $User->getId();
     $num_rows = $Comment->add(
         array('post_id' => $post_id, 'author_id' => $uid, 'comment' => $comment)
