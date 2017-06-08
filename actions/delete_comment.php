@@ -26,15 +26,14 @@ $User = new User($dbh);
 
 $User->loadByEmail($_SESSION['user_email']);
 
-
-
-
-
 try {
     if (isset($_POST["comment_id"])) {
         $comment_id = urldecode($_POST["comment_id"]);
         $comment = $Comment->getById($comment_id);
 
+        if ($comment == false) {
+            sendError("This comment doesn't exist.", 200);
+        }
         if ($User->getId() != $comment->author_id) {
             sendError("Can't delete another user's comment.", 200);
         }

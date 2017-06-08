@@ -11,6 +11,8 @@ function commentBox(author, id, comment, time) {
     box.className = 'comment-box';
     box.id = 'comment-box-' + id;
 
+    p2.className = 'p-comment';
+
     cAuthor.className = 'comment-author';
     authorLink.className = 'author-link';
     authorLink.innerHTML = author;

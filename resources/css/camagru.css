@@ -903,8 +903,8 @@ img.perfect-box {
     box-shadow: none;
 }
 
-.comment-author {
-    
+.p-comment {
+    white-space: pre-wrap;
 }
 
 

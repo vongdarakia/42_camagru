@@ -173,9 +173,7 @@ require_once TEMPLATES_PATH . "/header.php";
                         </span>
                         <span class="comment-time">'.$time.'</span>
                     </p>
-                    <p>
-                        <span class="comment">'.$com["comment"].'</span>
-                    </p>
+                    <p class="p-comment"><span class="comment">'.$com["comment"].'</span></p>
                 </div>';
             }
             ?>
