@@ -185,6 +185,8 @@ function insertDummyPosts($dbh)
     }
 }
 
+require 'paths.php';
+
 // Creates a database if it doesn't exist, then connects to it.
 try {
     $dbh = new PDO($DB_DSN_HOST_ONLY, $DB_USER, $DB_PASSWORD);
@@ -203,6 +205,9 @@ try {
     createTables($dbh);
     insertDummyUsers($dbh);
     insertDummyPosts($dbh);
+    if (!file_exists('../'.POSTS_DIR_NAME)) {
+        mkdir('../'.POSTS_DIR_NAME);
+    }
 } catch (PDOException $e) {
     echo 'Database setup failed: ' . $e->getMessage() . "\n";
     if (strpos($e->getMessage(), 'SQLSTATE[22001]') !== false) {

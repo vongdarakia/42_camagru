@@ -47,6 +47,14 @@ try {
         $last = $dbh->lastInsertId();
         $comment = $Comment->getById($last);
         $comment->author_login = $_SESSION['user_login'];
+        $url = WEBSITE_URL . PAGES_DIR . "user_post.php?post_id=" . $post_id;
+        $sub = "Camagru: " . $comment->author_login . " commented on your post!";
+        $msg = $comment->author_login . " said,<br><br>\"" . $comment->comment
+            . "\"<br><br>Log in to see more: <a href=\"".$url."\">Camagru</a>";
+
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        mail($_SESSION['user_email'], $sub, $msg, $headers);
         echo json_encode($comment);
     } else {
         sendError("Couldn't add comment", 200);

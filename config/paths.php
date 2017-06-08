@@ -54,6 +54,14 @@
     defined("POSTS_PATH")
     or define("POSTS_PATH", SITE_ROOT . '/' . POSTS_DIR_NAME . '/');
 
+    defined("WEBSITE_URL")
+    or define("WEBSITE_URL", 'http://localhost:8080');
+
+    defined("WEBSITE_HOME_URL")
+    or define("WEBSITE_HOME_URL", WEBSITE_URL . SITE_DIR);
+    
+    
+
     ini_set('display_errors', 1);
     error_reporting(E_ALL|E_STRICT);
     date_default_timezone_set('America/Los_Angeles');

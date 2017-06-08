@@ -31,7 +31,8 @@ try {
     // $go = strrchr("asdfpicjpg", ".");
     // echo $go;
     // echo ctype_alnum('a?bc');
-    echo htmlentities("abc<a>");
+    // echo htmlentities("abc<a>");
+    mail("vongdarakia@gmail.com","My subject", "Hello");
     // $obj = $user->getDataByPage(10, 10000);
 
     // foreach ($obj->rows as $row) {
