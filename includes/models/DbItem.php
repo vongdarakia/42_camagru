@@ -217,7 +217,7 @@ class DbItem
      *      $total -> Total items from table
      *      $rows  -> List of items retrieved for the page.
      */
-    public function getDataByPage($page=1, $limit=10, $query=null)
+    public function getDataByPage($page=1, $limit=10, $query=null, $param=array())
     {
         // echo "page " . $page;
         if ($page <= 0 || ($limit !== 'all' && $limit <= 0)) {
@@ -232,17 +232,21 @@ class DbItem
         $countQuery = "select count(1) from (" . $query . ") t";
         // echo $countQuery;
         // echo "NOOOOOOOOOOOOOO! $page";
-        $rows = $this->db->query($countQuery);
-        $count = $rows->fetchColumn();
+        // $rows = $this->db->query($countQuery);
+        // $count = $rows->fetchColumn();
 
-        
-
+        $stmt = $this->db->prepare($countQuery);
+        $stmt->execute($param);
+        $count = $stmt->fetchColumn();
 
         if ($limit != 'all') {
             $query = "$query limit ". ($limit * ($page - 1)) .", $limit";
         }
+        $stmt = $this->db->prepare($query);
+        $stmt->execute($param);
         // echo $query;
-        $rows = $this->db->query($query);
+        // $rows = $this->db->query($query);
+        $rows = $stmt->fetchAll();
 
         $info         = new stdClass();
         $info->page   = $page;

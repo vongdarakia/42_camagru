@@ -68,7 +68,7 @@ left join (
     from `like` l
     inner join `user` u on u.id = l.author_id 
     inner join `post` p on p.id = l.post_id
-    where u.username = '".$user_login."'
+    where u.username = :user_login
 ) l on l.post_id = p.id
 left join (
     select p.id, count(p.id) 'count' from `post` p
@@ -76,17 +76,18 @@ left join (
     inner join `user` u on u.id = l.author_id
     group by p.id
 ) c on c.id = p.id
-where u.username = '".$author_login."'
+where u.username = :author_login
 order by p.creation_date desc, p.id asc";
 
 // Pagination info
-$info     = $Post->getDataByPage($page, $limit, $query);
+$param    = array(':user_login'=>$user_login, ':author_login'=>$author_login);
+$info     = $Post->getDataByPage($page, $limit, $query, $param);
 $maxPages = ceil($info->total / $info->limit);
 $maxPages = ($maxPages <= 0) ? 1 : $maxPages;
 
 // Limits the user to the max page if they try to exceed it.
 if ($page > $maxPages) {
-    $info = $Post->getDataByPage($maxPages, $limit, $query);
+    $info = $Post->getDataByPage($maxPages, $limit, $query, $param);
 }
 
 $url = $_SERVER['REQUEST_URI'];

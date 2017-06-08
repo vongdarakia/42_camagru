@@ -161,6 +161,8 @@ function changeMode(mode) {
     else if (mode.value == "camera") {
         changingMode = true;
         offsetExtra = null;
+        document.getElementById('btn-capture').classList.add('disabled');
+        document.querySelectorAll(".mode-radio")[1].setAttribute('disabled', true);
         document.querySelectorAll(".mode-radio")[0].classList.remove('inactive');
         
         cameraImg.classList.add('invisible');
@@ -176,6 +178,8 @@ function changeMode(mode) {
         camera.onloadeddata = function() {
             camera.classList.remove('invisible');
             changingMode = false;
+            document.getElementById('btn-capture').classList.remove('disabled');
+            document.querySelectorAll(".mode-radio")[1].removeAttribute('disabled');
             document.querySelectorAll(".mode-radio")[1].classList.add('inactive');
         }
         setTimeout(() => {
@@ -197,6 +201,8 @@ function changeMode(mode) {
     } else if (mode.value == "upload") {
         changingMode = true;
         offsetExtra = null;
+        document.getElementById('btn-capture').classList.add('disabled');
+        document.querySelectorAll(".mode-radio")[0].setAttribute('disabled', true);
         document.querySelectorAll(".mode-radio")[1].classList.remove('inactive');
 
         cameraImg.classList.add('invisible');
@@ -209,6 +215,8 @@ function changeMode(mode) {
             stopVideo();
             changingMode = false;
             document.querySelectorAll(".mode-radio")[0].classList.add('inactive');
+            document.getElementById('btn-capture').classList.remove('disabled');
+            document.querySelectorAll(".mode-radio")[0].removeAttribute('disabled');
         }, 1000);
 
         document.getElementById("file-wrapper").classList.add("active");

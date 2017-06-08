@@ -102,7 +102,7 @@ require_once TEMPLATES_PATH . "/header.php";
                     <video id="camera" width="400" height="300"></video>
                 </div>
 
-                <a href="#" id="btn-capture">Capture</a>
+                <div id="btn-capture">Capture</div>
 
                 <div id="captured-wrapper" class="" title="Captured Picture">
                     <img src="" id="captured-cam-img">

@@ -136,6 +136,7 @@ body {
     text-decoration:    none;
     border-top:         10px solid #ddd;
     border-bottom:      10px solid #ddd;
+    cursor:             pointer;
 
     -moz-transform:     background-color 0.3s, color 0.3s;
     -webkit-transition: background-color 0.3s, color 0.3s;
@@ -148,6 +149,12 @@ body {
 
 #btn-capture:active {
     background-color: #97C8FF;
+}
+
+#btn-capture.disabled {
+    background-color: #ccc;
+    color: #999;
+    cursor: default;
 }
 
 #camera-canvas, #sticker-canvas {
@@ -681,6 +688,12 @@ img.perfect-box {
 
 .mode-radio.inactive + label:hover {
     color: white;
+}
+
+.mode-radio:disabled + label {
+    background-color: #ccc !important;
+    color: #999 !important;
+    cursor: default !important;
 }
 
 .mode-radio:checked + label {

@@ -24,14 +24,10 @@ require_once 'config/connect.php';
 require_once 'includes/models/User.php';
 require_once 'includes/models/Post.php';
 require_once 'includes/lib/auth.php';
-// require_once 'includes/models/Post.php';
-// require_once 'includes/models/Like.php';
-// require_once 'includes/models/Comment.php';
 
-
-$page  = 1; // Page that we're trying to get.
-$limit = 20; // How many post to show per page
-$relative_path = "./"; // Path to root;
+$page  = 1;             // Page that we're trying to get.
+$limit = 20;            // How many post to show per page
+$relative_path = "./";  // Path to root;
 
 if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
     $page = $_GET["page"];
@@ -64,7 +60,7 @@ left join (
     from `like` l
     inner join `user` u on u.id = l.author_id 
     inner join `post` p on p.id = l.post_id
-    where u.email = '".$email."'
+    where u.email = :email
 ) l on l.post_id = p.id
 left join (
     select p.id, count(p.id) 'count' from `post` p
@@ -73,22 +69,19 @@ left join (
     group by p.id
 ) c on c.id = p.id
 order by p.creation_date desc, p.id asc";
-
+asdfasdfasdfasdf
 // Pagination info
-$info     = $Post->getDataByPage($page, $limit, $query);
+$param    = array(':email'=>$email);
+$info     = $Post->getDataByPage($page, $limit, $query, $param);
 $maxPages = ceil($info->total / $info->limit);
 $maxPages = ($maxPages <= 0) ? 1 : $maxPages;
 
-$url = $_SERVER['REQUEST_URI'];
-
 $i = strpos($_SERVER['REQUEST_URI'], "?");
-$url = substr($_SERVER['REQUEST_URI'], 0, $i);
-
-// echo $_SERVER['REQUEST_URI'];
+$url = substr($_SERVER['REQUEST_URI'], 0, $i); // Base url for pagination to create the links.
 
 // Limits the user to the max page if they try to exceed it.
 if ($page > $maxPages) {
-    $info = $Post->getDataByPage($maxPages, $limit, $query);
+    $info = $Post->getDataByPage($maxPages, $limit, $query, $param);
 }
 
 require_once TEMPLATES_PATH . "/header.php";
@@ -105,7 +98,6 @@ require_once TEMPLATES_PATH . "/header.php";
         ?>
     </div>
     <?php require_once TEMPLATES_PATH . "/pagination.php"; ?>
-   <!--  <input type="hidden" id="user-email" value="<?php echo $email; ?>"> -->
     <input type="hidden" id="like-action" value="<?php echo ACTIONS_DIR ?>like.php">
 </div>
 <script src="<?php echo JS_DIR . "main.js" ?>"></script>
