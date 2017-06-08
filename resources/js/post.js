@@ -526,20 +526,16 @@ function deletePost(id) {
                 post_id: id
             },
             success: function(res) {
-                if (res.indexOf("Error") == -1) {
-                    let post = document.getElementById('upload-box-' + id);
-                    
-                    post.style.opacity = '0';
-                    setTimeout(function() {
-                        post.parentNode.removeChild(post);
-                        appendLastPost();
-                    }, 400);
-                } else {
-                    console.log(res);
-                }
+                let post = document.getElementById('upload-box-' + id);
+                
+                post.style.opacity = '0';
+                setTimeout(function() {
+                    post.parentNode.removeChild(post);
+                    appendLastPost();
+                }, 400);
             },
             error: function(err) {
-                console.log(err);
+                alert(err);
             }
         });
     }

@@ -22,14 +22,20 @@ require_once '../includes/models/Post.php';
 checkUserAuthentication();
 
 $Post = new Post($dbh);
+$User = new User($dbh);
 
 try {
     if (isset($_POST["post_id"])) {
         $post_id = urldecode($_POST["post_id"]);
         $Post->loadById($post_id);
+        $User->loadByEmail($_SESSION["user_email"]);
+
         $path = POSTS_PATH . $Post->getImgFile();
         
-        if ($Post->getId() > 0 && $Post->removeById($post_id) == 1) {
+        if ($Post->getId() > 0 &&
+            $Post->getAuthorId() == $User->getId() &&
+            $Post->removeById($post_id) == 1
+        ) {
             if (file_exists($path)) {
                 unlink($path);    
             }
