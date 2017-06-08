@@ -77,6 +77,7 @@ order by p.creation_date desc, p.id asc";
 // Pagination info
 $info     = $Post->getDataByPage($page, $limit, $query);
 $maxPages = ceil($info->total / $info->limit);
+$maxPages = ($maxPages <= 0) ? 1 : $maxPages;
 
 $url = $_SERVER['REQUEST_URI'];
 

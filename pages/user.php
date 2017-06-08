@@ -40,11 +40,13 @@ if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
 }
 
 $email = "";
+$user_login = "";
 if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
     $email = $_SESSION["user_email"];
+    $user_login = $_SESSION["user_login"];
 }
 
-$user_login = $_GET["user"];
+$author_login = $_GET["user"];
 
 $Post  = new Post($dbh);
 $query = "select DISTINCT
@@ -74,7 +76,7 @@ left join (
     inner join `user` u on u.id = l.author_id
     group by p.id
 ) c on c.id = p.id
-where u.username = '".$user_login."'
+where u.username = '".$author_login."'
 order by p.creation_date desc, p.id asc";
 
 // Pagination info
@@ -90,7 +92,7 @@ if ($page > $maxPages) {
 $url = $_SERVER['REQUEST_URI'];
 $idx = strpos($url, "?");
 $url = substr($url, 0, $idx);
-$url = $url . "?user=" . $user_login;
+$url = $url . "?user=" . $author_login;
 
 require_once TEMPLATES_PATH . "/header.php";
 ?>
