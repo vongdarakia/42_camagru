@@ -101,7 +101,7 @@ require_once TEMPLATES_PATH . "/header.php";
     <?php displayError(); ?>
 
     <div id="public-posts">
-        <h2><?php echo $_SESSION['user_login'] ?></h2>
+        <h2><?php echo $author_login ?></h2>
         <?php 
         foreach ($info->rows as $post) {
             include '../templates/user_post_box.php';
