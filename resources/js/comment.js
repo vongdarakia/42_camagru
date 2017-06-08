@@ -54,7 +54,7 @@ function commentDate(date) {
     let month = monthNames[date.getMonth()];
     let year = date.getFullYear();
     let mins = date.getMinutes();
-    let hrs = (date.getHours() + 1) % 12;
+    let hrs = date.getHours() % 12;
     let isPM = date.getHours() >= 12 ? 1 : 0;
     let time = hrs + ":" + mins + (isPM ? " pm" : " am");
     
@@ -65,9 +65,8 @@ function commentDate(date) {
 function postComment() {
     let comment = document.getElementById('comment-area').value;
 
-    if (comment == "")
+    if (comment.trim() == "")
         return;
-
     
     let post_id = document.getElementById('comment-area').getAttribute('post-id');
 
@@ -79,25 +78,25 @@ function postComment() {
             post_id: post_id
         },
         success: function(cObj) {
-            // console.log(cObj);
             try {
                 if (cObj) {
                     cObj = JSON.parse(cObj);
-                    // console.log(cObj);
-                    let author = document.getElementById('user-login').value;
-                    let box = commentBox(author, cObj.id, comment, commentDate(cObj.creation_date));
-                    let firstComment = document.querySelector('.comment-box');
-                    
-                    insertAfter(box, firstComment);
-                    document.getElementById('comment-area').value = "";
+                    if (cObj) {
+                        let author = cObj.author_login;
+                        let box = commentBox(author, cObj.id, cObj.comment, commentDate(cObj.creation_date));
+                        let firstComment = document.querySelector('.comment-box');
+                        
+                        insertAfter(box, firstComment);
+                        document.getElementById('comment-area').value = "";
+                    } else {
+                        alert("Couldn't add comment.");
+                    }
                 } else {
                     alert("Couldn't add comment.");
                 }
             } catch (err) {
                 console.log(err);
-                // alert("Couldn't add comment.");
             }
-            
         },
         error: function(err) {
             alert(err);

@@ -89,11 +89,12 @@ function signUp($first, $last, $username, $email, $password)
     $user = new User($dbh);
 
     if ($user->getUserByEmail($email)) {
-        throw new Exception("Email alright exists.", 1);
+        throw new Exception("Email already exists.", 1);
     }
     if ($user->getUserByUsername($username)) {
-        throw new Exception("Username alright exists.", 1);
+        throw new Exception("Username already exists.", 1);
     }
+
     return $user->add(
         array(
             "first" => $first,
@@ -150,6 +151,16 @@ function checkUserAuthentication($errMsg="You must be logged in first.")
     header("location: /camagru/pages/login.php");
     exit(0);
 }
+
+// function isValueHTML($value) {
+//     strip_tags
+// }
+
+// function areValuesHTML($values) {
+//     foreach ($values as $val) {
+//         if (strip_tags($val) == null)
+//     }
+// }
 
 /**
  * Displays error message if it exists for the session, then clears it.

@@ -78,7 +78,7 @@ class User extends DbItem
      */
     public function setFirstName($value)
     {
-        if (DbItem::validNonEmptyString($value)) {
+        if (DbItem::validNonEmptyString($value) && ctype_alnum($value)) {
             $this->_first = $value;
             return true;
         }
@@ -104,7 +104,7 @@ class User extends DbItem
      */
     public function setLastName($value)
     {
-        if (DbItem::validNonEmptyString($value)) {
+        if (DbItem::validNonEmptyString($value) && ctype_alnum($value)) {
             $this->_last = $value;
             return true;
         }
@@ -130,7 +130,7 @@ class User extends DbItem
      */
     public function setUsername($value)
     {
-        if (DbItem::validNonEmptyString($value)) {
+        if (DbItem::validNonEmptyString($value) && ctype_alnum($value)) {
             $this->_username = $value;
             return true;
         }
@@ -182,7 +182,7 @@ class User extends DbItem
      */
     public function setPassword($value)
     {
-        if (DbItem::validNonEmptyString($value)) {
+        if (DbItem::validNonEmptyString($value) && strlen($value) >= 6) {
             $this->_password = hash('whirlpool', $value);
             return true;
         }
@@ -373,17 +373,17 @@ class User extends DbItem
             }
             if (array_key_exists('first', $fields)) {
                 if (!$this->setFirstName($fields['first'])) {
-                    throw new Exception("first name can't be empty.", 1);
+                    throw new Exception("first name must be alphanumeric.", 1);
                 }
             }
             if (array_key_exists('last', $fields)) {
                 if (!$this->setLastName($fields['last'])) {
-                    throw new Exception("last name can't be empty.", 1);
+                    throw new Exception("last name must be alphanumeric.", 1);
                 }
             }
             if (array_key_exists('username', $fields)) {
                 if (!$this->setUsername($fields['username'])) {
-                    throw new Exception("username can't be empty.", 1);
+                    throw new Exception("username must be alphanumeric.", 1);
                 }
             }
             if (array_key_exists('email', $fields)) {
@@ -393,7 +393,7 @@ class User extends DbItem
             }
             if (array_key_exists('password', $fields)) {
                 if (!$this->setPassword($fields['password'])) {
-                    throw new Exception("password can't be empty.", 1);
+                    throw new Exception("password must be at least 6 characters.", 1);
                 }
             }
             return true;

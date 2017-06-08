@@ -23,8 +23,7 @@ try {
     $_SESSION["last"] = isset($_POST["last"]) ? $_POST["last"] : "";
     $_SESSION["username"] = isset($_POST["username"]) ? $_POST["username"] : "";
     $_SESSION["email"] = isset($_POST["email"]) ? $_POST["email"] : "";
-    $_SESSION["password"] = isset($_POST["password"]) ? $_POST["password"] : "";
-
+    
     if (!isset($_POST['first']) ||
         !isset($_POST['last']) ||
         !isset($_POST['username']) ||
@@ -41,11 +40,16 @@ try {
         $_POST["password"]
     )
     ) {
+        $_SESSION["first"] = "";
+        $_SESSION["last"] = "";
+        $_SESSION["username"] = "";
+        $_SESSION["email"] = "";
+        $_SESSION["password"] = "";
         initSession($_POST);
         header("Location: " . SITE_DIR);
     }
 } catch (Exception $e) {
-    
+
     $_SESSION["err_msg"] = $e->getMessage();
     header("Location: ../pages/signup.php");
 }

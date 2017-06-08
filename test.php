@@ -23,13 +23,15 @@ require_once 'includes/models/Like.php';
 require_once 'includes/models/Comment.php';
 
 try {
-    $dbh = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // $dbh = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+    // $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $user = new User($dbh);
+    // $user = new User($dbh);
 
-    $go = strrchr("asdfpicjpg", ".");
-    echo $go;
+    // $go = strrchr("asdfpicjpg", ".");
+    // echo $go;
+    // echo ctype_alnum('a?bc');
+    echo htmlentities("abc<a>");
     // $obj = $user->getDataByPage(10, 10000);
 
     // foreach ($obj->rows as $row) {
