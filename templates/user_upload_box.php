@@ -26,6 +26,11 @@ $img_path = $relative_path . POSTS_DIR_NAME . "/" . $row["img_file"];
 $class = "perfect-box";
 $style = "";
 
+if (!isset($invisible)) {
+    $invisible = "";
+}
+$box_class = "user-upload-box " . $invisible;
+
 if (file_exists($img_path)) {
     $size = getimagesize($img_path);
     $width = $size[0];
@@ -50,12 +55,9 @@ if (file_exists($img_path)) {
 else {
     $img_path = IMG_DIR . "/" . "image-not-available.png";
 }
-
-
-// echo $row["post_id"];
 ?>
 
-<div class="user-upload-box" id="upload-box-<?php echo $row['post_id'] ?>">
+<div class="<?php echo $box_class ?>" id="upload-box-<?php echo $row['post_id'] ?>">
     <div class="crop">
         <img
             src="<?php echo $img_path; ?>"

@@ -26,6 +26,11 @@
 
 $page = PAGES_DIR . 'user_post.php?post_id=' . $post['post_id'];
 $img_path = $relative_path . POSTS_DIR_NAME . "/" . $post["img_file"];
+
+if (!isset($invisible)) {
+    $invisible = "";
+}
+$box_class = "user-post-box " . $invisible;
 $class = "perfect-box";
 $style = "";
 
@@ -54,7 +59,7 @@ if (file_exists($img_path)) {
 }
 ?>
 <i class="btn-liked icon-heart-empty"></i>
-<div class="user-post-box">
+<div class="<?php echo $box_class ?>">
     <div class="crop">
         <a href="<?php echo $page ?>" title="">
             <span class="vertical-helper"></span>

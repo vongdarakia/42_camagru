@@ -26,7 +26,7 @@ require_once 'includes/models/Post.php';
 require_once 'includes/lib/auth.php';
 
 $page  = 1;             // Page that we're trying to get.
-$limit = 20;            // How many post to show per page
+$limit = 12;            // How many post to show per page
 $relative_path = "./";  // Path to root;
 
 if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
@@ -69,7 +69,7 @@ left join (
     group by p.id
 ) c on c.id = p.id
 order by p.creation_date desc, p.id asc";
-asdfasdfasdfasdf
+
 // Pagination info
 $param    = array(':email'=>$email);
 $info     = $Post->getDataByPage($page, $limit, $query, $param);
@@ -90,9 +90,18 @@ require_once TEMPLATES_PATH . "/header.php";
 <div class="container">
     <?php displayError(); ?>
 
+    <h2 class="thin">Another day, another picture.</h2>
+    <h4 class="thin">Here are today's most recent post.</h4>
+
     <div id="public-posts">
-        <?php 
+        <?php
+        $invisible = "";
         foreach ($info->rows as $post) {
+            include 'templates/user_post_box.php';
+        }
+
+        if ($info->total < $limit && $info->total % 2 == 1) {
+            $invisible = "invisible";
             include 'templates/user_post_box.php';
         }
         ?>
