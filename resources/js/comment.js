@@ -1,4 +1,5 @@
 function commentBox(author, id, comment, time) {
+    let linkEl      = document.getElementById('author-link');
     let box         = document.createElement('div');
     let p1          = document.createElement('p');
     let p2          = document.createElement('p');

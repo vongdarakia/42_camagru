@@ -82,6 +82,7 @@ $post_id      = $_GET['post_id'];
 $logged_in    = isset($_SESSION["user_login"]) && $_SESSION["user_login"] != "";
 $user_login   = $logged_in ? $_SESSION["user_login"] : "";
 $placeholder  = "Commenting as {$_SESSION['user_login']}...";
+$author_link  = PAGES_DIR . "user.php?user=";
 
 if (!$logged_in) {
     $placeholder = "You must be logged in to comment";
@@ -97,6 +98,7 @@ require_once TEMPLATES_PATH . "/header.php";
     value="<?php echo ACTIONS_DIR ?>comment.php">
     <input type="hidden" id="delete-comment-action"
     value="<?php echo ACTIONS_DIR ?>delete_comment.php">
+    <input type="hidden" id="author-link" value="<?php echo $author_link ?>">
     <div id="post-wrapper">
         <div id="post-box" class="back-shadow smooth-corners">
             <div class="photo-box-wrapper smooth-top-corners">
@@ -166,12 +168,12 @@ require_once TEMPLATES_PATH . "/header.php";
 
                 echo '
                     <p>
-                        <span class="comment-author">
-                            <a href="#" class="author-link">
-                                '.$com['author_login'].'
-                            </a>
-                        </span>
-                        <span class="comment-time">'.$time.'</span>
+                        <span class="comment-author">'.
+                            '<a href="'.$author_link.$com['author_login'].'" class="author-link">'
+                            .$com['author_login'].
+                            '</a>'.
+                        '</span>'.
+                        '<span class="comment-time">'.$time.'</span>
                     </p>
                     <p class="p-comment"><span class="comment">'.$com["comment"].'</span></p>
                 </div>';
