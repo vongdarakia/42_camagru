@@ -215,7 +215,7 @@ function changeMode(mode) {
             stopVideo();
             changingMode = false;
             document.querySelectorAll(".mode-radio")[0].classList.add('inactive');
-            document.getElementById('btn-capture').classList.remove('disabled');
+            // document.getElementById('btn-capture').classList.remove('disabled');
             document.querySelectorAll(".mode-radio")[0].removeAttribute('disabled');
         }, 1000);
 
@@ -348,6 +348,7 @@ function fileChange(input) {
 
                     cameraImg.setAttribute("src", camData);
                     cameraImg.classList.remove('invisible');
+                    document.getElementById('btn-capture').classList.remove('disabled');
                 });
             }
         }
