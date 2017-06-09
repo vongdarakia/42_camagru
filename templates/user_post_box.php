@@ -59,7 +59,7 @@ if (file_exists($img_path)) {
 }
 ?>
 <i class="btn-liked icon-heart-empty"></i>
-<div class="<?php echo $box_class ?>">
+<div id="post-box-<?php echo $post['post_id'] ?>" class="<?php echo $box_class ?>">
     <div class="crop">
         <a href="<?php echo $page ?>" title="">
             <span class="vertical-helper"></span>
@@ -69,6 +69,13 @@ if (file_exists($img_path)) {
                 style="<?php echo $style; ?>"
             >
         </a>
+        <?php 
+        if ($can_delete) {
+            if ($email != "" && $post['author_login'] == $_SESSION["user_login"]) {
+                echo '<i class="btn-delete fa fa-trash-o" onclick="deletePost('.$post['post_id'].')"></i>';
+            }
+        }
+        ?>
     </div>
     <?php 
     

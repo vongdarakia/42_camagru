@@ -48,22 +48,6 @@ require_once TEMPLATES_PATH . "/header.php";
     ?>
     <div class="main">
         <div class="wrapper">
-            <input
-                type="hidden" 
-                value="<?php echo IMG_DIR ?>"
-                id="img-dir"
-            >
-            <input
-                type="hidden" 
-                value="<?php echo POSTS_DIR ?>"
-                id="post-dir"
-            >
-            <input
-                type="hidden" 
-                value="<?php echo ACTIONS_DIR ?>"
-                id="action-dir"
-            >
-
             <form id="form-sticker">
             <?php 
             $stickers = ["patrick-gasp.png", "doge.png", "mustache-glasses.png"];

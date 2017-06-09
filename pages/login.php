@@ -24,17 +24,21 @@ require_once TEMPLATES_PATH . "/header.php";
 ?>
 
 <div id="container">
-    <h2>Login</h2>
+    
     <?php  
     if (isset($_SESSION["err_msg"]) && $_SESSION["err_msg"] != "") {
         echo "Error: " . $_SESSION["err_msg"];
         $_SESSION["err_msg"] = "";
     }
     ?>
-    <form action="<?php echo ACTIONS_DIR ?>login.php" method="post">
-        <input type="text" name="username">
-        <input type="password" name="password">
-        <button>Login</button>
+    <form class="camagru-form" action="<?php echo ACTIONS_DIR ?>login.php" method="post">
+        <h2 class="thin">Login</h2>
+        <div>
+            <input class="form-input" type="text" name="username" placeholder="Username">
+            <input class="form-input" type="password" name="password" placeholder="Password">
+            <div class="btn back-shadow smooth-corners" onclick="document.forms[0].submit();">Login</div>
+        </div>
+        
     </form>
 </div>
 

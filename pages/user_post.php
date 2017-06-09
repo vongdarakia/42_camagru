@@ -21,22 +21,9 @@ session_start();
 require_once '../config/paths.php';
 require_once '../config/connect.php';
 require_once '../includes/lib/auth.php';
+require_once '../includes/lib/features.php';
 require_once '../includes/models/Post.php';
 require_once '../includes/models/User.php';
-
-/**
- * Get a formated date.
- *
- * @param String $date Date of item from database.
- *
- * @return String formated date.
- */
-function commentDate($date)
-{
-    $date = strtotime($date);
-    $date = date('F j, Y g:i a', $date);
-    return $date;
-}
 
 if (!isset($_GET["post_id"])) {
     header("Location: " . SITE_DIR);
@@ -81,7 +68,7 @@ $num_likes    = $Post->getNumLikes($_GET['post_id']);
 $post_id      = $_GET['post_id'];
 $logged_in    = isset($_SESSION["user_login"]) && $_SESSION["user_login"] != "";
 $user_login   = $logged_in ? $_SESSION["user_login"] : "";
-$placeholder  = "Commenting as {$_SESSION['user_login']}...";
+$placeholder  = "Commenting as {$user_login}...";
 $author_link  = PAGES_DIR . "user.php?user=";
 
 if (!$logged_in) {
@@ -150,7 +137,7 @@ require_once TEMPLATES_PATH . "/header.php";
                     <?php echo !$logged_in ? "disabled" : "" ?>></textarea>
                 <div>
                     <div id="btn-comment"
-                    class="back-shadow smooth-corners"
+                    class="btn back-shadow smooth-corners"
                     onclick="postComment()">Comment
                     </div>    
                 </div>

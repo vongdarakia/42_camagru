@@ -18,6 +18,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Camagru</title>
     <link
         href="https://fonts.googleapis.com/css?family=Pacifico|Lato:100"
@@ -50,4 +51,19 @@
             </ul>
         </div>
     </div>
+    <input
+        type="hidden" 
+        value="<?php echo IMG_DIR ?>"
+        id="img-dir"
+    >
+    <input
+        type="hidden" 
+        value="<?php echo POSTS_DIR ?>"
+        id="post-dir"
+    >
+    <input
+        type="hidden" 
+        value="<?php echo ACTIONS_DIR ?>"
+        id="action-dir"
+    >
 </div>

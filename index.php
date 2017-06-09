@@ -91,7 +91,7 @@ require_once TEMPLATES_PATH . "/header.php";
     <?php displayError(); ?>
 
     <h2 class="thin">Another day, another picture.</h2>
-    <h4 class="thin">Here are today's most recent post.</h4>
+    <h4 class="thin">Here are some of today's most recent post.</h4>
 
     <div id="public-posts">
         <?php

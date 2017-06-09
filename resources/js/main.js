@@ -120,3 +120,45 @@ function like(heart) {
         }
     });
 }
+
+/**
+ * Deletes a post
+ * @param {number} id Id of the post
+ * @return {void}
+ */
+function deletePost(id) {
+    let yes = confirm("Are you sure?");
+    if (yes) {
+        ajax({
+            method: 'post',
+            url: actionDir + 'delete_post.php',
+            data: {
+                post_id: id
+            },
+            success: function(res) {
+                let post = document.getElementById('upload-box-' + id);
+                if (!post)
+                    post = document.getElementById('post-box-' + id);
+                
+                post.style.opacity = '0';
+                setTimeout(function() {
+                    post.parentNode.removeChild(post);
+                    appendLastPost();
+                }, 400);
+            },
+            error: function(err) {
+                alert(err);
+            }
+        });
+    }
+}
+
+var imgDir;
+var actionDir;
+var postDir;
+
+(function() {
+    imgDir          = document.getElementById('img-dir').getAttribute('value');
+    actionDir       = document.getElementById('action-dir').getAttribute('value');
+    postDir         = document.getElementById('post-dir').getAttribute('value');
+}());

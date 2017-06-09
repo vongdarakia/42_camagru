@@ -38,8 +38,6 @@ function commentBox(author, id, comment, time) {
 
     cAuthor.append(authorLink);
 
-    
-
     // <i class="btn-delete fa fa-trash-o" onclick="deleteComment(this)" comment-id="2"></i>
     return box;
 }
@@ -62,7 +60,6 @@ function commentDate(date) {
     let time = hrs + ":" + mins + (isPM ? " pm" : " am");
     
     return month + " " + day + ", " + year + " " + time;
-
 }
 
 function postComment() {

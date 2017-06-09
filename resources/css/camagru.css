@@ -8,7 +8,7 @@ body {
 
 .container {
     max-width:  1024px;
-    min-width:  512px;
+    /*min-width:  360px;*/
     margin:     auto;
     padding:    0 20px;
     overflow-y: auto;
@@ -46,6 +46,7 @@ body {
 #header .nav {
     margin-top:     32px;
     margin-bottom:  0;
+    padding: 0;
 }
 
 #header .nav a {
@@ -252,23 +253,63 @@ body {
 /**************** Image Post ****************/
 
 #public-posts {
-    text-align:     center;
-    padding:        20px 20px;
+    /*text-align:     center;*/
+    padding:        40px 20px;
     overflow:       auto;
+    max-width:      623px;
+    margin:         auto;
+}
 
+.user-post-box {
+  margin: .1rem;
+}
+
+@media only screen and (max-width: 1000px) {
+}
+
+@media only screen and (max-width: 741px) {
+    #public-posts {
+        max-width: 476px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #public-posts {
+        max-width: 310px;
+    }
+}
+
+@media only screen and (max-width: 405px) {
+    #public-posts {
+        width: 154px;
+    }
+}
+
+#profile {
+    margin: 30px 0 40px 0;
+}
+
+.profile {
+    margin: 3px 0 3px 0;
+}
+
+.author-header {
+    margin-bottom: 10px;
 }
 
 .user-post-box, .user-upload-box {
     text-align: center;
     display:    inline-block;
-    box-shadow: 0px 2px 7px #ddd;
+    /*box-shadow: 0px 2px 7px #ddd;*/
     position:   relative;
+}
+
+.user-upload-box {
     margin:     2px;
 }
 
 .user-post-box {
     width: 150px;
-    /*width: 150px;*/
     background-color: black;
     cursor: pointer;
 
@@ -547,6 +588,10 @@ img.perfect-box {
     visibility: hidden;
 }
 
+.title {
+    margin-top: 20px;
+}
+
 .thin {
     font-weight: 100;
     text-align: center;
@@ -674,6 +719,57 @@ img.perfect-box {
     background-color: #ddd;
 }
 
+/**************** Form Input ****************/
+.form-input {
+    display:        block;
+    /*margin:     auto;*/
+    line-height:    2;
+    text-align:     center;
+    margin:         20px auto;
+    border:         none;
+    font-size:      1em;
+    background-color: transparent;
+    border-bottom: 1px solid #ccc;
+
+    -moz-transition:      border-color 0.3s;
+    -webkit-transition:   border-color 0.3s;
+    transition:           border-color 0.3s;
+}
+
+.form-input:focus {
+    /*outline: 1px dotted #000;*/
+    /*outline: -webkit-focus-ring-color auto 5px;*/
+    outline: none;
+}
+
+.form-input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px #F2F1EF inset !important;
+    /*-webkit-text-fill-color: transparent !important;*/
+    border-color: #2C3E50;
+}
+
+.camagru-form {
+    width: 300px;
+    margin: auto;
+    text-align: center;
+    margin-top: 50px;
+    padding: 40px;
+    /*border: 1px solid #ccc;*/
+    border-radius: 4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.camagru-form div {
+    overflow: auto;
+    display: inline-block;
+    padding: 10px;
+}
+
+.camagru-form .btn {
+    font-size: .9em;
+    padding: 10px 20px;
+}
+
 /**************** Modes ****************/
 
 #modes {
@@ -775,26 +871,21 @@ img.perfect-box {
 }
 
 .no-hover {
-    /*background-color: transparent;*/
     color: black;
 }
 
 /**************** User Post Page ****************/
 
 #post-wrapper {
-    max-width: 500px;
-    /*min-width: 400px;*/
-
-    margin: auto;
+    max-width:  500px;
+    margin:     auto;
     margin-top: 40px;
     text-align: center;
-    /*background-color: white;*/
-    /*background-color: white;*/
 }
 
 .photo-box {
-    width: 400px;
-    height: 300px;
+    max-width:  400px;
+    max-height: 300px;
     margin: auto;
     
 }
@@ -805,9 +896,9 @@ img.perfect-box {
 
 .photo-box img {
     flex-shrink: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    width:       100%;
+    height:      100%;
+    object-fit:  contain;
 }
 
 #post-box {
@@ -816,34 +907,33 @@ img.perfect-box {
 .post-info {
     height: 60px;
     position: relative;
-    /*background-color: white;*/
 }
 
 .post-info .post-author {
-    position: absolute;
-    top: 10px;
-    left: 10px;
+    position:   absolute;
+    top:        10px;
+    left:       10px;
 }
 
 .post-info .post-time {
-    position: absolute;
-    top: 34px;
-    left: 10px;
+    position:   absolute;
+    top:        34px;
+    left:       10px;
     font-size: .7em;
 }
 
 .post-info .num-likes {
-    position: absolute;
-    top: 22px;
-    right: 50px;
+    position:   absolute;
+    top:        22px;
+    right:      50px;
 }
 
 .post-info .btn-like, .post-info .btn-liked {
-    position: absolute;
-    top: 15px;
-    right: 10px;
-    font-size: 2em;
-    color: black;
+    position:   absolute;
+    top:        15px;
+    right:      10px;
+    font-size:  2em;
+    color:      black;
 }
 
 .post-info .btn-liked, .post-info .btn-like:hover {
@@ -851,27 +941,23 @@ img.perfect-box {
 }
 
 #comments {
-    margin: 10px 0;
-    text-align: left;
-    /*padding: 5px 10px 10px 10px;*/
-    background-color: white;
+    margin:             10px 0;
+    text-align:         left;
+    background-color:   white;
 }
 
 #comments p {
     margin: 4px 0;
-    /*border: 1px solid black;*/
-    
 }
 
 #write-comment {
-    overflow: auto;
-    position: relative;
-    padding-top: 15px;
+    overflow:       auto;
+    position:       relative;
+    padding-top:    15px;
 }
 
 #write-comment textarea {
     resize:         none;
-    /*max-width: 500px;*/
     width:          466px;
     border-radius:  2px;
     border-color:   #d5d5d5;
@@ -883,7 +969,6 @@ img.perfect-box {
 }
 
 #write-comment textarea:focus {
-    /*outline: 1px dotted #000;*/
     outline:        none;
     border-color:   #167ac6;
 }
@@ -891,31 +976,27 @@ img.perfect-box {
 #write-comment span {
     clear:      both;
     display:    block;
-    /*float: left;*/
 }
 
-#btn-comment {
+.btn {
     float:              right;
     margin-top:         5px;
-    /*border-radius: 0;*/
     padding:            10px;
     background-color:   #EC644B;
     color:              white;
     font-size:          .7em;
     cursor:             pointer;
-    /*right: 0;*/
-    /*position: absolute;*/
 
     -moz-transform:     all 0.3s;
     -webkit-transition: all 0.3s;
     transition:         all 0.3s;
 }
 
-#btn-comment:hover {
+.btn:hover {
     background-color: #FF977E;
 }
 
-#btn-comment:active {
+.btn:active {
     background-color: #EC644B;
     box-shadow: none;
 }
@@ -924,30 +1005,14 @@ img.perfect-box {
     white-space: pre-wrap;
 }
 
-
-/*.comment-author a {
-    text-decoration: none;
-    color: #2C3E50;
-
-    -moz-transform:     color 0.3s;
-    -webkit-transition: color 0.3s;
-    transition:         color 0.3s;
-}*/
-
-/*.comment-author a:hover {
-    color: #EC644B;
-}*/
-
 .comment-time {
     font-size:      0.7em;
     margin-left:    5px;
 }
 
 .comment-box {
-    padding: 0 10px 10px 10px;
-    /*padding-bottom: 10px;*/
-    position:       relative;
-    /*border: 1px solid black;*/
+    padding:    0 10px 10px 10px;
+    position:   relative;
 }
 
 .comment-box .btn-delete {

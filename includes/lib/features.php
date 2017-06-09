@@ -44,4 +44,18 @@ function post($email, $title, $img_file, $description="")
     }
     return false;
 }
+
+/**
+ * Get a formated date.
+ *
+ * @param String $date Date of item from database.
+ *
+ * @return String formated date.
+ */
+function commentDate($date)
+{
+    $date = strtotime($date);
+    $date = date('F j, Y g:i a', $date);
+    return $date;
+}
 ?>
