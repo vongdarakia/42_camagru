@@ -57,20 +57,24 @@ var stickers = [
 function userUploadBox(id, imgClass="", style="", src="") {
     let box = document.createElement('div');
     let crop = document.createElement('div');
+    let link = document.createElement('a');
     let photo = document.createElement('img');
     let icon = document.createElement('i');
 
     box.className = 'user-upload-box';
     box.id = 'upload-box-' + id;
+
     crop.className = 'crop';
     photo.className = imgClass;
     photo.style = style;
     photo.src = src;
     icon.className = "btn-delete fa fa-trash-o";
     icon.setAttribute('onclick', 'deletePost(' + id + ')');
+    link.href = document.getElementById("pages-dir").value + "user_post.php?post_id="+id;
 
-    crop.appendChild(photo);
-    crop.appendChild(icon);
+    link.appendChild(photo);
+    link.appendChild(icon);
+    crop.appendChild(link);
     box.appendChild(crop);
     return box;
 }

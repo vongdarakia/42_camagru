@@ -22,6 +22,7 @@
  * @link      localhost:8080
  */
 
+$page = PAGES_DIR . 'user_post.php?post_id=' . $row['post_id'];
 $img_path = $relative_path . POSTS_DIR_NAME . "/" . $row["img_file"];
 $class = "perfect-box";
 $style = "";
@@ -59,11 +60,13 @@ else {
 
 <div class="<?php echo $box_class ?>" id="upload-box-<?php echo $row['post_id'] ?>">
     <div class="crop">
-        <img
-            src="<?php echo $img_path; ?>"
-            class="<?php echo $class; ?>"
-            style="<?php echo $style; ?>"
-        >
+        <a href="<?php echo $page ?>" title="">
+            <img
+                src="<?php echo $img_path; ?>"
+                class="<?php echo $class; ?>"
+                style="<?php echo $style; ?>"
+            >
+        </a>
         <i class="btn-delete fa fa-trash-o" onclick="deletePost(<?php echo $row['post_id'] ?>)"></i>
     </div>
 </div>

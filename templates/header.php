@@ -66,4 +66,9 @@
         value="<?php echo ACTIONS_DIR ?>"
         id="action-dir"
     >
+    <input
+        type="hidden" 
+        value="<?php echo PAGES_DIR ?>"
+        id="pages-dir"
+    >
 </div>
