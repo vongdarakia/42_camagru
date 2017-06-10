@@ -20,28 +20,47 @@ if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
     exit(0);
 }
 
+if (!isset($_SESSION['first'])) {
+    $_SESSION["first"] = "";
+}
+
+if (!isset($_SESSION['last'])) {
+    $_SESSION["last"] = "";
+}
+if (!isset($_SESSION['username'])) {
+    $_SESSION["username"] = "";
+}
+
+if (!isset($_SESSION['email'])) {
+    $_SESSION["email"] = "";
+}
+
 require_once TEMPLATES_PATH . "/header.php";
 ?>
 
 <div id="container">
-    <h2>Sign up</h2>
-    <?php  
+    <h3 class="err-msg">
+    <?php
     if (isset($_SESSION["err_msg"]) && $_SESSION["err_msg"] != "") {
         echo "Error: " . $_SESSION["err_msg"];
         $_SESSION["err_msg"] = "";
     }
     ?>
-    <form action="<?php echo ACTIONS_DIR ?>signup.php" method="post">
-        <input type="text" name="first" placeholder="first"
-            value="<?php echo $_SESSION['first'] ?>">
-        <input type="text" name="last" placeholder="last"
-            value="<?php echo $_SESSION['last'] ?>">
-        <input type="text" name="username" placeholder="username"
-            value="<?php echo $_SESSION['username'] ?>">
-        <input type="email" name="email" placeholder="email"
-            value="<?php echo $_SESSION['email'] ?>">
-        <input type="password" name="password" placeholder="password">
-        <button>Sign Up</button>
+    </h3>
+    <form class="camagru-form" action="<?php echo ACTIONS_DIR ?>signup.php" method="post">
+        <h2 class="thin">Sign Up</h2>
+        <div>
+            <input class="form-input" type="text" name="first" placeholder="first"
+                value="<?php echo $_SESSION['first'] ?>">
+            <input class="form-input" type="text" name="last" placeholder="last"
+                value="<?php echo $_SESSION['last'] ?>">
+            <input class="form-input" type="text" name="username" placeholder="username"
+                value="<?php echo $_SESSION['username'] ?>">
+            <input class="form-input" type="email" name="email" placeholder="email"
+                value="<?php echo $_SESSION['email'] ?>">
+            <input class="form-input" type="password" name="password" placeholder="password">
+            <div class="btn back-shadow smooth-corners" onclick="submitSignUp()">Sign Up</div>
+        </div>
     </form>
 </div>
 
@@ -51,5 +70,4 @@ $_SESSION["first"] = "";
 $_SESSION["last"] = "";
 $_SESSION["username"] = "";
 $_SESSION["email"] = "";
-$_SESSION["password"] = "";
 ?>

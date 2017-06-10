@@ -38,11 +38,12 @@
         <div class="right-col">
             <ul class="nav global">
                 <?php
+                echo '<li><a href="'.PAGES_DIR.'post.php">Take Picture!</a></li>';
                 if (isset($_SESSION["user_email"])
                     && $_SESSION["user_email"] !== ""
                 ) {
+                    echo '<li><a href="'.PAGES_DIR.'user.php?user='.$_SESSION['user_login'].'">Account</a></li>';
                     echo '<li><a href="'.ACTIONS_DIR.'logout.php">Log Out</a></li>';
-                    echo '<li><a href="'.PAGES_DIR.'post.php">Account</a></li>';
                 } else {
                     echo '<li><a href="'.PAGES_DIR.'login.php">Log In</a></li>';
                     echo '<li><a href="'.PAGES_DIR.'signup.php">Sign up</a></li>';

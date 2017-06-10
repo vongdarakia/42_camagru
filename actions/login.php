@@ -26,7 +26,7 @@ if (isset($_POST["username"])
     header("Location: " . SITE_DIR);
 } else {
     clearSession();
-    $_SESSION['error_msg'] = "Invalid login credentials";
+    $_SESSION['err_msg'] = "Invalid login credentials";
     header("Location: ../pages/login.php");
 }
 

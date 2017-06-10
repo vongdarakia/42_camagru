@@ -25,12 +25,14 @@ require_once TEMPLATES_PATH . "/header.php";
 
 <div id="container">
     
+    <h3 class="err-msg">
     <?php  
     if (isset($_SESSION["err_msg"]) && $_SESSION["err_msg"] != "") {
         echo "Error: " . $_SESSION["err_msg"];
         $_SESSION["err_msg"] = "";
     }
     ?>
+    </h3>
     <form class="camagru-form" action="<?php echo ACTIONS_DIR ?>login.php" method="post">
         <h2 class="thin">Login</h2>
         <div>
@@ -38,7 +40,6 @@ require_once TEMPLATES_PATH . "/header.php";
             <input class="form-input" type="password" name="password" placeholder="Password">
             <div class="btn back-shadow smooth-corners" onclick="document.forms[0].submit();">Login</div>
         </div>
-        
     </form>
 </div>
 
