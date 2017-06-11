@@ -149,37 +149,6 @@ $linkPrev = SITE_DIR . "/?page=$pagePrev";
             echo pageDots();
         }
 
-
-        // // If current page is within a range of 4 under then max page
-        // // show all pages from max page - 4 to the current page.
-        // $range = $maxPages - 4;
-        // if ($currPage > $range) {
-        //     $idx = 0;
-        //     while ($range + $idx < $currPage) {
-        //         if ($range + $idx > 1) {
-        //             echo pageBox($range + $idx, $info, $url);
-        //         }
-        //         $idx++;
-        //     }
-        // }
-
-        // // Will display up to 3 page boxes minimum
-        // // or till the max page.
-        // $idx = 0;
-        // while ($idx++ < 3 && $currPage < $maxPages) {
-        //     echo pageBox($currPage++, $info, $url);
-        // }
-
-        // // If the current page is within a range of 2 from the max,
-        // // show those page boxes in between, otherwise show dots to
-        // // indicate there are many more pages in between.
-        // if ($maxPages - $currPage < 2) {
-        //     while ($currPage < $maxPages) {
-        //         echo pageBox($currPage++, $info, $url);
-        //     }
-        // } else {
-        //     echo pageDots();
-        // }
         echo pageBox($maxPages, $info, $url);
         ?>
         <?php
