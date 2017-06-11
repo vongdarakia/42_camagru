@@ -26,7 +26,7 @@ require_once 'includes/models/Post.php';
 require_once 'includes/lib/auth.php';
 
 $page  = 1;             // Page that we're trying to get.
-$limit = 24;            // How many post to show per page
+$limit = 2;            // How many post to show per page
 $relative_path = "./";  // Path to root;
 
 if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
@@ -70,6 +70,12 @@ left join (
 ) c on c.id = p.id
 order by p.creation_date desc, p.id asc";
 
+if ($page <= 0) {
+    $page = 1;
+}
+if ($limit <= 0) {
+    $limit = 1;
+}
 // Pagination info
 $param    = array(':email'=>$email);
 $info     = $Post->getDataByPage($page, $limit, $query, $param);

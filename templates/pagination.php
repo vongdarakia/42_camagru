@@ -77,20 +77,26 @@ $linkPrev = SITE_DIR . "/?page=$pagePrev";
 ?>
 
 <div class="pagination">
-    <div class="wrapper">
         <div class="pagination-count">
-            <h4 class="thin no-margin">Showing</h4>
-            <h4 class="thin no-margin">
-                <?php 
-                if ($info->page * $info->limit <= $info->total) {
-                    echo $info->page * $info->limit;
-                } else {
+        <h4 class="thin no-margin">Showing
+            <?php 
+            if ($info->page * $info->limit <= 0) {
+                echo "There are no photos to show.";
+                return;
+            } else {
+                echo ($info->page - 1) * $info->limit;
+                echo " - ";
+                if ($info->page * $info->limit > $info->total) {
                     echo $info->total;
+                } else {
+                    echo $info->page * $info->limit;
                 }
-                echo " / " . $info->total;
-                ?>
-            </h4>
-        </div>
+                echo " out of " . $info->total . " photos.";
+            }
+            ?>
+        </h4>
+    </div>
+    <div class="wrapper">
         
         <?php
         if ($maxPages == 1) {
@@ -114,42 +120,66 @@ $linkPrev = SITE_DIR . "/?page=$pagePrev";
         $currPage = $info->page + ($info->page == 1);
 
         // Displays dots only when current page is beyond page 3
-        if ($info->page > 3) {
+        // Also check if the current page is far from the first page
+        // so that it doesn't display dots between 1 and 2.
+        if ($currPage - 2 > 2) {
             echo pageDots();
+        }
+
+        if ($currPage + 2 >= $maxPages) {
+            $currPage = $maxPages - 4;
         } else {
+            $currPage -= 2;
+        }
+
+        // Minimum has to be 2 since 1 is already printed.
+        if ($currPage <= 1) {
             $currPage = 2;
         }
 
-        // If current page is within a range of 4 under then max page
-        // show all pages from max page - 4 to the current page.
-        $range = $maxPages - 4;
-        if ($currPage > $range) {
-            $idx = 0;
-            while ($range + $idx < $currPage) {
-                if ($range + $idx > 1) {
-                    echo pageBox($range + $idx, $info, $url);
-                }
-                $idx++;
-            }
-        }
-
-        // Will display up to 3 page boxes minimum
-        // or till the max page.
+        $range = 5;
         $idx = 0;
-        while ($idx++ < 3 && $currPage < $maxPages) {
-            echo pageBox($currPage++, $info, $url);
+        $newCurrPage = $currPage;
+        while ($idx < $range && $currPage + $idx < $maxPages) {
+            echo pageBox($currPage + $idx++, $info, $url);
+            $newCurrPage++;
         }
-
-        // If the current page is within a range of 2 from the max,
-        // show those page boxes in between, otherwise show dots to
-        // indicate there are many more pages in between.
-        if ($maxPages - $currPage < 2) {
-            while ($currPage < $maxPages) {
-                echo pageBox($currPage++, $info, $url);
-            }
-        } else {
+        $currPage = $newCurrPage;
+        if ($currPage <= $maxPages - 1) {
             echo pageDots();
         }
+
+
+        // // If current page is within a range of 4 under then max page
+        // // show all pages from max page - 4 to the current page.
+        // $range = $maxPages - 4;
+        // if ($currPage > $range) {
+        //     $idx = 0;
+        //     while ($range + $idx < $currPage) {
+        //         if ($range + $idx > 1) {
+        //             echo pageBox($range + $idx, $info, $url);
+        //         }
+        //         $idx++;
+        //     }
+        // }
+
+        // // Will display up to 3 page boxes minimum
+        // // or till the max page.
+        // $idx = 0;
+        // while ($idx++ < 3 && $currPage < $maxPages) {
+        //     echo pageBox($currPage++, $info, $url);
+        // }
+
+        // // If the current page is within a range of 2 from the max,
+        // // show those page boxes in between, otherwise show dots to
+        // // indicate there are many more pages in between.
+        // if ($maxPages - $currPage < 2) {
+        //     while ($currPage < $maxPages) {
+        //         echo pageBox($currPage++, $info, $url);
+        //     }
+        // } else {
+        //     echo pageDots();
+        // }
         echo pageBox($maxPages, $info, $url);
         ?>
         <?php
