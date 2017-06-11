@@ -31,7 +31,7 @@ require_once '../includes/lib/features.php';
 
 
 $page  = 1; // Page that we're trying to get.
-$limit = 20; // How many post to show per page
+$limit = 24; // How many post to show per page
 $relative_path = "../"; // Path to root;
 
 if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
@@ -116,17 +116,21 @@ require_once TEMPLATES_PATH . "/header.php";
 <div class="container">
     <?php displayError(); ?>
 
+    <div id="profile">
+        <h2 class="author-header profile thin"><?php echo $author_login ?></h2>
+        <p class="profile thin">Joined <?php echo commentDate($user->creation_date) ?></p>
+        <p class="profile thin">Has a total of <?php echo $info->total ?> photos</p>
+    </div>
     <div id="public-posts">
-        <div id="profile">
-            <h2 class="author-header profile thin"><?php echo $author_login ?></h2>
-            <p class="profile thin">Joined <?php echo commentDate($user->creation_date) ?></p>
-            <p class="profile thin">Has a total of <?php echo $info->total ?> photos</p>
-        </div>
         <?php 
         foreach ($info->rows as $post) {
             include '../templates/user_post_box.php';
         }
+        if ($info->total == 0) {
+            echo "<h3 class='thin'>There are no photos to show.</h3>";
+        }
         ?>
+
     </div>
     <?php require_once TEMPLATES_PATH . "/pagination.php"; ?>
     <input type="hidden" id="like-action" value="<?php echo ACTIONS_DIR ?>like.php">

@@ -68,9 +68,6 @@ function pageDots()
     return '<div class="page-dots"><p>...</p></div>';
 }
 
-if ($maxPages == 1) {
-    return;
-}
 
 $pageNext = $info->page + 1;
 $pagePrev = $info->page - 1;
@@ -81,7 +78,25 @@ $linkPrev = SITE_DIR . "/?page=$pagePrev";
 
 <div class="pagination">
     <div class="wrapper">
+        <div class="pagination-count">
+            <h4 class="thin no-margin">Showing</h4>
+            <h4 class="thin no-margin">
+                <?php 
+                if ($info->page * $info->limit <= $info->total) {
+                    echo $info->page * $info->limit;
+                } else {
+                    echo $info->total;
+                }
+                echo " / " . $info->total;
+                ?>
+            </h4>
+        </div>
+        
         <?php
+        if ($maxPages == 1) {
+            return;
+        }
+
         // Previous button doesn't need to be shown if on page 1.
         if ($info->page > 1) {
             echo '<a href="'.$linkPrev.'">

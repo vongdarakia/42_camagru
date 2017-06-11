@@ -26,7 +26,7 @@ require_once 'includes/models/Post.php';
 require_once 'includes/lib/auth.php';
 
 $page  = 1;             // Page that we're trying to get.
-$limit = 12;            // How many post to show per page
+$limit = 24;            // How many post to show per page
 $relative_path = "./";  // Path to root;
 
 if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0) {
@@ -90,7 +90,7 @@ require_once TEMPLATES_PATH . "/header.php";
 <div class="container">
     <?php displayError(); ?>
 
-    <h2 class="thin">Another day, another picture.</h2>
+    <h2 class="thin top-header">Another day, another picture.</h2>
     <h4 class="thin">Here are some of today's most recent post.</h4>
 
     <div id="public-posts">

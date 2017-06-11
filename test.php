@@ -32,7 +32,21 @@ try {
     // echo $go;
     // echo ctype_alnum('a?bc');
     // echo htmlentities("abc<a>");
-    mail("asdfkdlslkjaslkdfjaslkdfjkl@gmail.com","My subject", "Hello");
+    // echo strpos("asdf.asdf", "3");
+    $value = "asd1f";
+    $len = strlen($value);
+    $has_num = false;
+    for ($i=0; $i < $len; $i++) { 
+        if (is_numeric($value[$i])) {
+            $has_num = true;
+            echo "yes";
+            break;
+        }
+    }
+    if (!$has_num) {
+        echo "no";
+    }
+    // mail("asdfkdlslkjaslkdfjaslkdfjkl@gmail.com","My subject", "Hello");
     // $obj = $user->getDataByPage(10, 10000);
 
     // foreach ($obj->rows as $row) {

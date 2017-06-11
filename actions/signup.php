@@ -28,9 +28,18 @@ try {
         !isset($_POST['last']) ||
         !isset($_POST['username']) ||
         !isset($_POST['email']) ||
-        !isset($_POST['password'])
+        !isset($_POST['password']) ||
+        !isset($_POST['password2'])
     ) {
-        sendError('All fields needs to be filled in.', 200);
+        $_SESSION["err_msg"] = 'All fields needs to be filled in.';
+        header("Location: ../pages/signup.php");
+        exit(0);
+    }
+    
+    if (strcmp($_POST['password'], $_POST['password2']) != 0) {
+        $_SESSION["err_msg"] = 'Passwords do not match.';
+        header("Location: ../pages/signup.php");
+        exit(0);
     }
     if (signUp(
         $_POST["first"],
@@ -49,9 +58,7 @@ try {
         header("Location: " . SITE_DIR);
     }
 } catch (Exception $e) {
-
     $_SESSION["err_msg"] = $e->getMessage();
     header("Location: ../pages/signup.php");
 }
-
 ?>

@@ -183,8 +183,18 @@ class User extends DbItem
     public function setPassword($value)
     {
         if (DbItem::validNonEmptyString($value) && strlen($value) >= 6) {
-            $this->_password = hash('whirlpool', $value);
-            return true;
+            $len = strlen($value);
+            $has_num = false;
+            for ($i=0; $i < $len; $i++) { 
+                if (is_numeric($value[$i])) {
+                    $has_num = true;
+                    break;
+                }
+            }
+            if ($has_num) {
+                $this->_password = hash('whirlpool', $value);
+                return true;
+            }
         }
         return false;
     }
@@ -393,7 +403,7 @@ class User extends DbItem
             }
             if (array_key_exists('password', $fields)) {
                 if (!$this->setPassword($fields['password'])) {
-                    throw new Exception("password must be at least 6 characters.", 1);
+                    throw new Exception("password must have at least 6 characters and at least 1 number.", 1);
                 }
             }
             return true;

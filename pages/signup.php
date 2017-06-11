@@ -50,20 +50,23 @@ require_once TEMPLATES_PATH . "/header.php";
     <form class="camagru-form" action="<?php echo ACTIONS_DIR ?>signup.php" method="post">
         <h2 class="thin">Sign Up</h2>
         <div>
-            <input class="form-input" type="text" name="first" placeholder="first"
+            <input class="form-input" type="text" name="first" placeholder="first" required
                 value="<?php echo $_SESSION['first'] ?>">
-            <input class="form-input" type="text" name="last" placeholder="last"
+            <input class="form-input" type="text" name="last" placeholder="last" required
                 value="<?php echo $_SESSION['last'] ?>">
-            <input class="form-input" type="text" name="username" placeholder="username"
+            <input class="form-input" type="text" name="username" placeholder="username" required
                 value="<?php echo $_SESSION['username'] ?>">
-            <input class="form-input" type="email" name="email" placeholder="email"
+            <input class="form-input" type="email" name="email" placeholder="email" required
                 value="<?php echo $_SESSION['email'] ?>">
-            <input class="form-input" type="password" name="password" placeholder="password">
-            <div class="btn back-shadow smooth-corners" onclick="submitSignUp()">Sign Up</div>
+            <input class="form-input" type="password" name="password" placeholder="password" id="pass1" required>
+            <input class="form-input" type="password" name="password2" placeholder="password again" id="pass2" required>
+            <input type="submit" class="hidden hidden-submit">
+            <div class="btn back-shadow smooth-corners" onclick="submit()">Sign Up</div>
         </div>
     </form>
 </div>
 
+<script src="<?php echo JS_DIR . "submit.js" ?>"></script>
 <?php
 require_once TEMPLATES_PATH . "/footer.php";
 $_SESSION["first"] = "";

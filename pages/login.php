@@ -36,11 +36,14 @@ require_once TEMPLATES_PATH . "/header.php";
     <form class="camagru-form" action="<?php echo ACTIONS_DIR ?>login.php" method="post">
         <h2 class="thin">Login</h2>
         <div>
-            <input class="form-input" type="text" name="username" placeholder="Username">
-            <input class="form-input" type="password" name="password" placeholder="Password">
-            <div class="btn back-shadow smooth-corners" onclick="document.forms[0].submit();">Login</div>
+            <input class="form-input" type="text" name="username" placeholder="Username" required>
+            <input class="form-input" type="password" name="password" placeholder="Password" required>
+            <div class="btn back-shadow smooth-corners" onclick="submit()">Login</div>
+            <input type="submit" class="hidden hidden-submit">
         </div>
     </form>
 </div>
+
+<script src="<?php echo JS_DIR . "submit.js" ?>"></script>
 
 <?php require_once TEMPLATES_PATH . "/footer.php"; ?>
