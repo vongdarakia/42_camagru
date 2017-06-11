@@ -33,7 +33,7 @@ $query = "select
 from `user` u inner join `post` p on p.author_id = u.id
 where u.email = '".$email."'
 order by p.creation_date desc";
-$info = $User->getDataByPage(1, 12, $query);
+$info = $User->getDataByPage(1, 24, $query);
 $relative_path = "../"; // Path to root;
 
 require_once TEMPLATES_PATH . "/header.php";
