@@ -1,6 +1,6 @@
 <?php 
 /**
- * A templated for the user uploads on the post page.
+ * A templated for the user uploads on the post and user pages.
  * This require the object $row and $relative_path to be present.
  *
  * $row Fields

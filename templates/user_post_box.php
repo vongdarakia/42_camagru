@@ -62,7 +62,6 @@ if (file_exists($img_path)) {
 <div id="post-box-<?php echo $post['post_id'] ?>" class="<?php echo $box_class ?>">
     <div class="crop">
         <a href="<?php echo $page ?>" title="">
-            <span class="vertical-helper"></span>
             <img
                 src="<?php echo $img_path; ?>"
                 class="<?php echo $class; ?>"

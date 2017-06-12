@@ -292,15 +292,14 @@ body {
     background-color: black;
     cursor: pointer;
 
-    -webkit-transition: all .3s;
-    -moz-transition: all .3s;
-    -ms-transition: all .3s;
-    -o-transition: all .3s;
-    transition: all .3s;
+    -webkit-transition: transform .3s;
+    -moz-transition: transform .3s;
+    -ms-transition: transform .3s;
+    -o-transition: transform .3s;
+    transition: transform .3s;
 }
 
 .user-post-box .post-info {
-    /*display: none;*/
     width: 100%;
     background-color: #F2F1EF;
     clear: both;
@@ -318,11 +317,12 @@ body {
 .user-post-box:hover {
     transform: scale(1.2, 1.2);
     z-index: 2;
-    /*background-color: black;*/
-    /*box-shadow: none;*/
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
+.user-post-box:hover img {
+
+}
 .user-post-box:hover img {
     max-height: 100%;
     max-width: 100%;
