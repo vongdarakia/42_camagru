@@ -1,4 +1,4 @@
-function commentBox(author, id, comment, time) {
+function commentBox(author, id, comment, time, url) {
     let linkEl      = document.getElementById('author-link');
     let box         = document.createElement('div');
     let p1          = document.createElement('p');
@@ -17,6 +17,7 @@ function commentBox(author, id, comment, time) {
     cAuthor.className = 'comment-author';
     authorLink.className = 'author-link';
     authorLink.innerHTML = author;
+    authorLink.href = url;
 
     cTime.className = 'comment-time';
     cTime.innerHTML = time;
@@ -83,7 +84,8 @@ function postComment() {
                     cObj = JSON.parse(cObj);
                     if (cObj) {
                         let author = cObj.author_login;
-                        let box = commentBox(author, cObj.id, cObj.comment, commentDate(cObj.creation_date));
+                        let url = document.querySelector('#author-link').value + author;
+                        let box = commentBox(author, cObj.id, cObj.comment, commentDate(cObj.creation_date), url);
                         let firstComment = document.querySelector('.comment-box');
                         
                         insertAfter(box, firstComment);
