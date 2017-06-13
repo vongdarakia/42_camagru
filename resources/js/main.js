@@ -1,7 +1,18 @@
+/**
+ * Inserts an element after another element.
+ * @param {Node Element} newNode Node to insert.
+ * @param {Node Element} referenceNode Reference of insert.
+ * @return {void}
+ */
 function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
+/**
+ * AJAX call, much like how jQuery AJAX works.
+ * @param {object} o Holds information
+ * @return {void}
+ */
 function ajax(o){
     let xmlhttp;
     xmlhttp = new XMLHttpRequest();
@@ -41,32 +52,11 @@ function ajax(o){
     }
 }
 
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#blah')
-                .attr('src', e.target.result)
-                .width(150)
-                .height(200);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-function getBase64(file) {
-   var reader = new FileReader();
-   reader.readAsDataURL(file);
-   reader.onload = function () {
-     console.log(reader.result);
-   };
-   reader.onerror = function (error) {
-     console.log('Error: ', error);
-   };
-}
-
+/**
+ * UI modifications for liking a post
+ * @param {DOM Element} heart The heart icon
+ * @return {void}
+ */
 function applyLike(heart) {
     heart.classList.remove('btn-like');
     heart.classList.remove('fa-heart-o');
@@ -74,6 +64,11 @@ function applyLike(heart) {
     heart.classList.add('fa-heart');
 }
 
+/**
+ * UI modifications for unliking a post
+ * @param {DOM Element} heart The heart icon
+ * @return {void}
+ */
 function applyUnlike(heart) {
     heart.classList.remove('btn-liked');
     heart.classList.remove('fa-heart');
@@ -81,6 +76,11 @@ function applyUnlike(heart) {
     heart.classList.add('fa-heart-o');
 }
 
+/**
+ * Likes or unlikes a post
+ * @param {DOM Element} heart The heart icon
+ * @return {void}
+ */
 function like(heart) {
     let url = document.getElementById("like-action").value;
     let isLiking = true;

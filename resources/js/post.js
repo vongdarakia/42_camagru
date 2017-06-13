@@ -54,6 +54,14 @@ var stickers = [
     }
 ];
 
+/**
+ * Creates and adds a photo box to the side photo list.
+ * @param {number} postObj   Has imgFile and postId
+ * @param {string} imgClass  Class for image
+ * @param {string} style     Style for image
+ * @param {string} src       Source of image
+ * @return {void}
+ */
 function userUploadBox(id, imgClass="", style="", src="") {
     let box = document.createElement('div');
     let crop = document.createElement('div');
@@ -83,6 +91,7 @@ function userUploadBox(id, imgClass="", style="", src="") {
  * Creates and adds a photo box to the side photo list.
  * @param {object}      postObj   Has imgFile and postId
  * @param {DOM Element} photosDiv Div we're adding to.
+ * @param {DOM Element} pre       Whether or not to prepend.
  * @return {void}
  */
 function createUserUploadBox(postObj, photosDiv, pre=true) {
@@ -150,6 +159,11 @@ function changeSticker(radio) {
     }
 }
 
+/**
+ * Changes the capture mode.
+ * @param {DOM Element} mode Input element
+ * @return {void}
+ */
 function changeMode(mode) {
     if (changingMode) {
         mode.checked = false;
@@ -215,7 +229,6 @@ function changeMode(mode) {
             stopVideo();
             changingMode = false;
             document.querySelectorAll(".mode-radio")[0].classList.add('inactive');
-            // document.getElementById('btn-capture').classList.remove('disabled');
             document.querySelectorAll(".mode-radio")[0].removeAttribute('disabled');
         }, 1000);
 
@@ -227,7 +240,7 @@ function changeMode(mode) {
 
 /**
  * Loads a given sticker.
- * @param {object}   o        Info on sticker we're drawing.
+ * @param {object}   s        Info on sticker we're drawing.
  * @param {object}   extra    Info on adjusted w/h as well as their offsets.
  * @param {function} callback Function to call after we're done.
  * @return {void}
@@ -266,7 +279,7 @@ function loadStickerImage(s, extra, callback) {
 
         let dataUrl = stickerCanvas.toDataURL('image/png');
         stickerImg.setAttribute("src", dataUrl);
-        // stickerPhoto.setAttribute('value', dataUrl);
+
         if (callback) {
             callback();
         }
@@ -289,10 +302,20 @@ function drawToCanvas(img, canvas, x, y, w, h) {
     canvas.getContext('2d').drawImage(img, x, y, w, h);
 }
 
+/**
+ * Extracts the file extension from a file name.
+ * @param {string} file The name of the file.
+ * @return {void}
+ */
 function getFileExtension(file) {
     return file.substr((~-file.lastIndexOf(".") >>> 0) + 2);
 }
 
+/**
+ * Extracts the file name from the input file.
+ * @param {DOM Element} input File input element.
+ * @return {void}
+ */
 function getFilenameFromInput(input) {
     let str = input.value;
     return str.split(/(\\|\/)/g).pop();
@@ -474,6 +497,10 @@ function fileCapture() {
     captureImage();
 }
 
+/**
+ * Captures the photo depending on which mode is on.
+ * @return {void}
+ */
 function capture() {
     if (changingMode)
         return;
@@ -498,7 +525,6 @@ function capture() {
 function appendLastPost() {
     let numUploads = document.querySelectorAll('.user-upload-box').length;
     if (numUploads < 10) {
-        // console.log(numUploads);
         ajax({
             method: 'post',
             url: actionDir + 'get_nth_post.php',

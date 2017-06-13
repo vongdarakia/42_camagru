@@ -1,3 +1,12 @@
+/**
+ * Creates a comment box.
+ * @param {string} author  Id of the post
+ * @param {number} id      Id of the comment
+ * @param {string} comment Comment message
+ * @param {string} time    Time of creation
+ * @param {string} url     Link to the author's page
+ * @return {DOM Element}
+ */
 function commentBox(author, id, comment, time, url) {
     let linkEl      = document.getElementById('author-link');
     let box         = document.createElement('div');
@@ -38,11 +47,14 @@ function commentBox(author, id, comment, time, url) {
     p2.append(cComment);
 
     cAuthor.append(authorLink);
-
-    // <i class="btn-delete fa fa-trash-o" onclick="deleteComment(this)" comment-id="2"></i>
     return box;
 }
 
+/**
+ * Converts date to something more appropriate for the comment.
+ * @param {string} date DateTime string
+ * @return {string}
+ */
 function commentDate(date) {
     let monthNames = [
         "January", "February", "March",
@@ -63,6 +75,10 @@ function commentDate(date) {
     return month + " " + day + ", " + year + " " + time;
 }
 
+/**
+ * Creates and posts a comment by the user.
+ * @return {void}
+ */
 function postComment() {
     let comment = document.getElementById('comment-area').value;
 
@@ -106,6 +122,11 @@ function postComment() {
     });
 }
 
+/**
+ * Deletes a comment by the user.
+ * @param {DOM Element} comment TextArea input box.
+ * @return {void}
+ */
 function deleteComment(comment) {
     let yes = confirm("Are you sure you want to delete this?");
     if (!yes) {
@@ -134,6 +155,10 @@ function deleteComment(comment) {
     
 }
 
+/**
+ * Allows comment textarea to resize on Enter (new line)
+ * or when any new lines are inputted.
+ */
 (function() {
     var text = document.getElementById('comment-area');
 
