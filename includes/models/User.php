@@ -2,6 +2,10 @@
 /**
  * User class file
  *
+ * Resources:
+ *      Common Passwords
+ *      https://github.com/danielmiessler/SecLists/blob/master/Passwords/10_million_password_list_top_500.txt
+ *
  * PHP version 5.5.38
  *
  * @category  User
@@ -174,6 +178,35 @@ class User extends DbItem
     }
 
     /**
+     * Checks if password is one of the top 500 common passwords.
+     *
+     * @param String $pass password.
+     *
+     * @return Boolean whether set was successful or not.
+     */
+    public function isPassCommon($pass)
+    {
+        $handle = fopen(CONFIG_PATH . "/500_common_passwords.txt", "r");
+        $is_common = false;
+
+        if ($handle) {
+            while (($line = fgets($handle)) !== false) {
+                // process the line read.
+                $line = trim($line);
+                if ($line == $pass) {
+                    $is_common = true;
+                    break;
+                }
+            }
+            fclose($handle);
+        } else {
+            // error opening the file.
+            throw new Exception("Couldn't open file.", 1);
+        } 
+        return $is_common;
+    }
+
+    /**
      * Sets the password.
      *
      * @param String $value password.
@@ -185,15 +218,30 @@ class User extends DbItem
         if (DbItem::validNonEmptyString($value) && strlen($value) >= 6) {
             $len = strlen($value);
             $has_num = false;
+            $has_alph = false;
+
             for ($i=0; $i < $len; $i++) { 
                 if (is_numeric($value[$i])) {
                     $has_num = true;
-                    break;
+                }
+                if (ctype_alpha($value[$i])) {
+                    $has_alph = true;
                 }
             }
-            if ($has_num) {
-                $this->_password = hash('whirlpool', $value);
-                return true;
+
+            if ($has_num && $has_alph) {
+                if (!$this->isPassCommon($value)) {
+                    $this->_password = hash('whirlpool', $value);
+                    return true;
+                } else {
+                    throw new Exception("This password is too common.", 1);
+                }
+            } else {
+                throw new Exception(
+                    "password must have at least 6 " .
+                    "characters and at least 1 number.",
+                    1
+                );
             }
         }
         return false;
@@ -403,11 +451,7 @@ class User extends DbItem
             }
             if (array_key_exists('password', $fields)) {
                 if (!$this->setPassword($fields['password'])) {
-                    throw new Exception(
-                        "password must have at least 6" .
-                        "characters and at least 1 number.",
-                        1
-                    );
+                    return false;
                 }
             }
             return true;
