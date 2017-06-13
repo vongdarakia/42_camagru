@@ -80,7 +80,6 @@ require_once TEMPLATES_PATH . "/header.php";
 ?>
 
 <div class="container">
-    <!-- <input type="hidden" id="user-login" value="<?php echo $_SESSION['user_login']; ?>"> -->
     <input type="hidden" id="like-action" value="<?php echo ACTIONS_DIR ?>like.php">
     <input type="hidden" id="comment-action"
     value="<?php echo ACTIONS_DIR ?>comment.php">

@@ -10,8 +10,8 @@
 .photo-box {
     max-width:  400px;
     max-height: 300px;
-    margin: auto;
-    
+    margin:     auto;
+    padding:    0 10px;
 }
 
 .photo-box-wrapper {
@@ -20,8 +20,9 @@
 
 .photo-box img {
     flex-shrink: 0;
-    width:       400px;
-    height:      300px;
+    max-width:   400px;
+    max-height:  300px;
+    width:       100%;
     object-fit:  contain;
 }
 
@@ -82,7 +83,7 @@
 
 #write-comment textarea {
     resize:         none;
-    width:          466px;
+    width:          100%;
     border-radius:  2px;
     border-color:   #d5d5d5;
     font-family:    'Lato', sans-serif;
@@ -90,6 +91,10 @@
     font-weight:    100;
     padding:        6px;
     cursor:         text;
+
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 #write-comment textarea:focus {

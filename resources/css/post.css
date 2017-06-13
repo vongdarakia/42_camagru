@@ -282,3 +282,38 @@
     background:         #333;
     background-image:   linear-gradient(to right, #ccc, #333, #ccc);
 }
+
+/**************** Some Responsiveness ****************/
+
+@media only screen and (max-width: 680px) {
+    .side, .main {
+        display: block;
+        clear: both;
+        width: 100%;
+    }
+
+    .side {
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #public-posts {
+        max-width: 310px;
+    }
+    .camagru-form {
+        border-radius: 0;
+        box-shadow: none;
+        width: 90%;
+        padding: 0;
+    }
+    .form-input {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 405px) {
+    #public-posts {
+        width: 154px;
+    }
+}

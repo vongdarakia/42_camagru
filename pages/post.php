@@ -55,9 +55,15 @@ require_once TEMPLATES_PATH . "/header.php";
             $stickers = ["patrick-gasp.png", "doge.png", "mustache-glasses.png"];
             $stickerNames = ["Patrick Gasp", "Doge", "Mustache Glasses"];
             for ($i=0; $i < 3; $i++) {
+                if ($i == 0) {
+                    $checked = "checked";
+                } else {
+                    $checked = "";
+                }
                 echo '<label class="radio-inline">
                     <input type="radio" name="opt-sticker"
-                        onclick="changeSticker(this)" value="'.$i.'">
+                        onclick="changeSticker(this)" value="'.$i.'" '
+                    . $checked . '>
                     <div class="sticker-box" title="'. $stickerNames[$i] .'">
                         <img src="'. IMG_DIR . $stickers[$i] .'">
                     </div>
