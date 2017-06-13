@@ -25,7 +25,7 @@ require_once 'includes/models/User.php';
 require_once 'includes/models/Post.php';
 require_once 'includes/lib/auth.php';
 
-$page  = 5;             // Page that we're trying to get.
+$page  = 1;             // Page that we're trying to get.
 $limit = 24;            // How many post to show per page
 $relative_path = "./";  // Path to root;
 
