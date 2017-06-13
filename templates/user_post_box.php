@@ -77,7 +77,6 @@ if (file_exists($img_path)) {
         ?>
     </div>
     <?php 
-    
     if ($email != "") {
         if ($post['liked'] == 1) {
             echo '<i class="btn-liked fa fa-heart" onclick="like(this)" post-id="' .$post['post_id'] . '"></i>';

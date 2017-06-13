@@ -403,7 +403,11 @@ class User extends DbItem
             }
             if (array_key_exists('password', $fields)) {
                 if (!$this->setPassword($fields['password'])) {
-                    throw new Exception("password must have at least 6 characters and at least 1 number.", 1);
+                    throw new Exception(
+                        "password must have at least 6" .
+                        "characters and at least 1 number.",
+                        1
+                    );
                 }
             }
             return true;
@@ -470,9 +474,9 @@ class User extends DbItem
     public function passwordMatchesUsername($username, $password)
     {
         $hashedPass = hash('whirlpool', $password);
-        $qry = "select * from `user` where username=:username and password=:password";
+        $qry = "select * from `user` where username=:username and password=:pass";
         $stmt = $this->db->prepare($qry);
-        $stmt->execute(array(':username' => $username, ':password' => $hashedPass));
+        $stmt->execute(array(':username' => $username, ':pass' => $hashedPass));
         return $stmt->rowCount() == 1;
     }
 }

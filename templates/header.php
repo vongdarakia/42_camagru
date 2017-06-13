@@ -24,8 +24,14 @@
         href="https://fonts.googleapis.com/css?family=Pacifico|Lato:100"
         rel="stylesheet"
     >
-    
     <link rel="stylesheet" type="text/css" href="<?php echo CSS_DIR; ?>camagru.css">
+    <?php 
+    if (isset($css_files)) {
+        foreach ($css_files as $css) {
+            echo '<link rel="stylesheet" type="text/css" href="'.CSS_DIR.$css.'">';
+        }
+    }
+    ?>
 </head>
 <body>
 <div id="header">

@@ -25,7 +25,7 @@ require_once 'includes/models/User.php';
 require_once 'includes/models/Post.php';
 require_once 'includes/lib/auth.php';
 
-$page  = 1;             // Page that we're trying to get.
+$page  = 5;             // Page that we're trying to get.
 $limit = 24;            // How many post to show per page
 $relative_path = "./";  // Path to root;
 
@@ -71,7 +71,7 @@ left join (
 order by p.creation_date desc, p.id asc";
 
 if ($page <= 0) {
-    $page = 1;
+    $page = 6;
 }
 if ($limit <= 0) {
     $limit = 1;

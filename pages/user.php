@@ -25,10 +25,6 @@ require_once '../includes/models/User.php';
 require_once '../includes/models/Post.php';
 require_once '../includes/lib/auth.php';
 require_once '../includes/lib/features.php';
-// require_once 'includes/models/Post.php';
-// require_once 'includes/models/Like.php';
-// require_once 'includes/models/Comment.php';
-
 
 $page  = 1; // Page that we're trying to get.
 $limit = 24; // How many post to show per page
@@ -125,9 +121,6 @@ require_once TEMPLATES_PATH . "/header.php";
         <?php 
         foreach ($info->rows as $post) {
             include '../templates/user_post_box.php';
-        }
-        if ($info->total == 0) {
-            echo "<h3 class='thin'>There are no photos to show.</h3>";
         }
         ?>
 

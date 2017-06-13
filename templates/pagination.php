@@ -32,6 +32,7 @@
  *
  * @param Int    $pageNum The page number we're making the box for.
  * @param Object $info    The object described above. Has info on pagination.
+ * @param Object $url     The link that the box will go to.
  *
  * @return Boolean if valid.
  */
@@ -78,12 +79,13 @@ $linkPrev = SITE_DIR . "/?page=$pagePrev";
 
 <div class="pagination">
         <div class="pagination-count">
-        <h4 class="thin no-margin">Showing
+        <h4 class="thin no-margin">
             <?php 
-            if ($info->page * $info->limit <= 0) {
+            if ($info->total <= 0) {
                 echo "There are no photos to show.";
                 return;
             } else {
+                echo "Showing ";
                 echo ($info->page - 1) * $info->limit;
                 echo " - ";
                 if ($info->page * $info->limit > $info->total) {

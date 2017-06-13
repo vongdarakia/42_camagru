@@ -24,6 +24,8 @@ require_once '../includes/lib/auth.php';
 require_once '../includes/models/User.php';
 
 checkUserAuthentication();
+
+$css_files = ['post.css'];
 $email = $_SESSION["user_email"];
 $User = new User($dbh);
 $query = "select

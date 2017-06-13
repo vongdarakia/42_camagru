@@ -70,12 +70,6 @@ body {
     font-size:          0.8em;
 }
 
-/**************** Post ****************/
-
-#post-container {
-    margin-top: 20px;
-}
-
 /**************** Main Section ****************/
 
 .main {
@@ -112,148 +106,9 @@ body {
     height: 840px;
 }
 
-/**************** Web Cam ****************/
-
-#camera {
-    transform:          rotateY(180deg);
-    -webkit-transform:  rotateY(180deg);
-    -moz-transform:     rotateY(180deg);
-}
-
-#booth {
-    width:              400px;
-    background-color:   #ccc;
-    border:             10px solid #ddd;
-    margin:             0 auto;
-    overflow: auto;
-}
-
-#btn-capture {
-    display:            block;
-    padding:            10px 20px;
-    background-color:   #2C3E50;
-    color:              #fff;
-    text-align:         center;
-    text-decoration:    none;
-    border-top:         10px solid #ddd;
-    border-bottom:      10px solid #ddd;
-    cursor:             pointer;
-
-    -moz-transform:     background-color 0.3s, color 0.3s;
-    -webkit-transition: background-color 0.3s, color 0.3s;
-    transition:         background-color 0.3s, color 0.3s;
-}
-
-#btn-capture:hover {
-    background-color: cornflowerblue;
-}
-
-#btn-capture:active {
-    background-color: #97C8FF;
-}
-
-#btn-capture.disabled {
-    background-color: #ccc;
-    color: #999;
-    cursor: default;
-}
-
-#camera-canvas, #sticker-canvas {
-    display: none;
-}
-
-#video-wrapper, #captured-wrapper {
-    position: relative;
-}
-
-#video-wrapper {
-    width: 400px;
-    height: 300px !important;
-    overflow: hidden;
-}
-
-#captured-wrapper {
-    height: 300px;
-    overflow: hidden;
-}
-
-#captured-cam-img, #captured-sticker-img {
-    position: absolute;
-}
-
-#form-sticker input {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 8px;
-    margin-top: -3px;
-    cursor: pointer;
-}
-
-#form-sticker label {
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-
-#sticker-img {
-    position:   absolute;
-    z-index:    2;
-}
-
-#camera-img {
-    position:   absolute;
-    z-index:    1;
-}
-
-/**************** Photos ****************/
-
-#photos {
-    width: 308px;
-    margin: 20px auto;
-    overflow: auto;
-}
-
-#photos-header {
-    text-align: center;
-}
-
-#photos-header h3 {
-    margin:         0;
-    padding:        12px;
-    font-weight:    300;
-}
-
-#photos-body {
-    overflow: hidden;
-}
-
-#photos-header hr.style14 { 
-  border: 0; 
-  height: 1px; 
-  background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-  background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-  background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-  background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
-}
-
-#photos-header hr.style6 {
-    border:         0;
-    height:         0;
-    border-top:     1px solid rgba(0, 0, 0, 0.1);
-    border-bottom:  1px solid rgba(255, 255, 255, 0.3);
-}
-
-#photos-header hr.style1 {
-    border:             0;
-    height:             1px;
-    background:         #333;
-    background-image:   linear-gradient(to right, #ccc, #333, #ccc);
-}
-
 /**************** Image Post ****************/
 
 #public-posts {
-    /*text-align:     center;*/
     padding:        40px 20px;
     overflow:       auto;
     max-width:      623px;
@@ -279,7 +134,6 @@ body {
 .user-post-box, .user-upload-box {
     text-align: center;
     display:    inline-block;
-    /*box-shadow: 0px 2px 7px #ddd;*/
     position:   relative;
 }
 
@@ -288,30 +142,30 @@ body {
 }
 
 .user-post-box {
-    width: 150px;
-    background-color: black;
-    cursor: pointer;
+    width:              150px;
+    background-color:   black;
+    cursor:             pointer;
 
     -webkit-transition: transform .3s;
-    -moz-transition: transform .3s;
-    -ms-transition: transform .3s;
-    -o-transition: transform .3s;
-    transition: transform .3s;
+    -moz-transition:    transform .3s;
+    -ms-transition:     transform .3s;
+    -o-transition:      transform .3s;
+    transition:         transform .3s;
 }
 
 .user-post-box .post-info {
-    width: 100%;
-    background-color: #F2F1EF;
-    clear: both;
-    height: 100px;
+    width:              100%;
+    background-color:   #F2F1EF;
+    clear:              both;
+    height:             100px;
 }
 
 .user-post-box img {
     -webkit-transition: width .3s, height .3s;
-    -moz-transition: width .3s, height .3s;
-    -ms-transition: width .3s, height .3s;
-    -o-transition: width .3s, height .3s;
-    transition: width .3s, height .3s;
+    -moz-transition:    width .3s, height .3s;
+    -ms-transition:     width .3s, height .3s;
+    -o-transition:      width .3s, height .3s;
+    transition:         width .3s, height .3s;
 }
 
 .user-post-box:hover {
@@ -321,19 +175,16 @@ body {
 }
 
 .user-post-box:hover img {
-
-}
-.user-post-box:hover img {
-    max-height: 100%;
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    margin: auto;
+    max-height:     100%;
+    max-width:      100%;
+    width:          auto;
+    height:         auto;
+    position:       absolute;
+    top:            0 !important;
+    bottom:         0 !important;
+    left:           0 !important;
+    right:          0 !important;
+    margin:         auto;
 }
 
 .user-post-box:hover .post-info {
@@ -341,88 +192,80 @@ body {
 }
 
 .user-post-box .num-likes {
-    font-family:  'Lato', sans-serif;
-    font-size: .6em;
-    position: absolute;
-    bottom: 10px;
-    right: 37px;
-    color: white;
-    text-shadow: 0px 0px 1px black;
+    font-family:    'Lato', sans-serif;
+    font-size:      .6em;
+    position:       absolute;
+    bottom:         10px;
+    right:          37px;
+    color:          white;
+    text-shadow:    0px 0px 1px black;
 }
 
 .user-post-box .post-author {
-    font-size: .6em;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: white;
+    font-size:  .6em;
+    position:   absolute;
+    top:        10px;
+    left:       10px;
+    color:      white;
 }
 
 .user-upload-box {
-    float: left;
-    opacity: 1;
+    float:      left;
+    opacity:    1;
 
     -webkit-transition: opacity .3s linear;
-    -moz-transition: opacity .3s linear;
-    -ms-transition: opacity .3s linear;
-    -o-transition: opacity .3s linear;
-    transition: opacity .3s linear; 
-}
-
-.vertical-helper {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+    -moz-transition:    opacity .3s linear;
+    -ms-transition:     opacity .3s linear;
+    -o-transition:      opacity .3s linear;
+    transition:         opacity .3s linear; 
 }
 
 .crop {
-    width:      150px;
-    height:     150px;
-    overflow:   hidden;
-    position:   relative;
+    width:          150px;
+    height:         150px;
+    overflow:       hidden;
+    position:       relative;
     vertical-align: top;
 }
 
 .crop .btn-delete {
-    position:   absolute;
-    right:      10px;
-    top:        10px;
-    color:      #D91E18;
-    font-size:  1.2em;
-    /*visibility: hidden;*/
-    opacity: 0;
-    filter:alpha(opacity=0);
-
-    border: 1px solid #D91E18;
-    border-radius: 4px;
-    padding: 3px;
-    cursor: pointer;
+    position:       absolute;
+    right:          10px;
+    top:            10px;
+    color:          #D91E18;
+    font-size:      1.2em;
+    opacity:        0;
+    filter:         alpha(opacity=0);
+    border:         1px solid #D91E18;
+    border-radius:  4px;
+    padding:        3px;
+    cursor:         pointer;
 }
 
 .crop:hover .btn-delete {
-    /*visibility: initial;*/
-    opacity:1.0;
-    filter:alpha(opacity=100);
+    opacity:    1.0;
+    filter:     alpha(opacity=100);
+
     -webkit-transition: all .3s ease-in-out; /* Safari, Chrome and Opera > 12.1 */
-    -moz-transition: all .3s ease-in-out; /* Firefox < 16 */
-    -ms-transition: all .3s ease-in-out; /* Internet Explorer */
-    -o-transition: all .3s ease-in-out; /* Opera < 12.1 */
-    transition: all .3s ease-in-out;      
+    -moz-transition:    all .3s ease-in-out; /* Firefox < 16 */
+    -ms-transition:     all .3s ease-in-out; /* Internet Explorer */
+    -o-transition:      all .3s ease-in-out; /* Opera < 12.1 */
+    transition:         all .3s ease-in-out;      
 }
 
 .crop .btn-delete:hover {
-    color: #FF6B65;
-    border-color: #FF6B65;
+    color:          #FF6B65;
+    border-color:   #FF6B65;
 }
 
 .crop .btn-delete:active {
-    color: white;
-    border-color: white;
+    color:              white;
+    border-color:       white;
     -webkit-transition: none; /* Safari, Chrome and Opera > 12.1 */
-    -moz-transition: none; /* Firefox < 16 */
-    -ms-transition: none; /* Internet Explorer */
-    -o-transition: none; /* Opera < 12.1 */
-    transition: none;   
+    -moz-transition:    none; /* Firefox < 16 */
+    -ms-transition:     none; /* Internet Explorer */
+    -o-transition:      none; /* Opera < 12.1 */
+    transition:         none;   
 }
 
 .user-post-box .btn-comment {
@@ -480,24 +323,6 @@ img.perfect-box {
     position: absolute;
     top: 0;
     left: 0;
-}
-
-/**************** Colors ****************/
-
-.white {
-    color: #F2F1EF;
-}
-
-.black {
-    color: #2C3E50;
-}
-
-.red {
-    color: #EC644B;
-}
-
-.heart-red {
-    color: #D91E18;
 }
 
 /**************** Pagination ****************/
@@ -590,130 +415,18 @@ img.perfect-box {
     width:  auto;
 }
 
-/**************** Font ****************/
-
-@font-face {
-  font-family: 'FontAwesome';
-  src:          url('../fonts/fontawesome-webfont.eot?v=4.7.0');
-  src:          url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
-  font-weight:  normal;
-  font-style:   normal;
-}
-
-.fa {
-  display:                  inline-block;
-  font:                     normal normal normal 14px/1 FontAwesome;
-  font-size:                inherit;
-  text-rendering:           auto;
-  -webkit-font-smoothing:   antialiased;
-  -moz-osx-font-smoothing:  grayscale;
-}
-
-.fa-heart:before {
-  content: "\f004";
-}
-
-.fa-heart-o:before {
-  content: "\f08a";
-}
-
-.fa-trash-o:before {
-  content: "\f014";
-}
-
-.fa-trash:before {
-  content: "\f1f8";
-}
-
-/**************** Fade ****************/
-
-@keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Firefox < 16 */
-@-moz-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Safari, Chrome and Opera > 12.1 */
-@-webkit-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Internet Explorer */
-@-ms-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Opera < 12.1 */
-@-o-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/**************** Form Stickers ****************/
-
-#form-sticker {
-    overflow:   hidden;
-    padding:    8px;
-}
-
-.sticker-box {
-    float:          left;
-    width:          80px;
-    height:         80px;
-    margin-right:   24px;
-    padding:        8px;
-    border-radius:  2px;
-    text-align:     center;
-    display:        inline-block;
-}
-
-#form-sticker input {
-    visibility: hidden;
-    position:   absolute;
-}
-
-#form-sticker img {
-    max-height: 100%;
-}
-
-#form-sticker input + div {
-    -moz-transition:      background-color 0.3s;
-    -webkit-transition:   background-color 0.3s;
-    transition:           background-color 0.3s;
-}
-
-#form-sticker input.active + div {
-    background-color: #ddd;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-
-    -moz-transition:      all 0.3s cubic-bezier(.25,.8,.25,1);
-    -webkit-transition:   all 0.3s cubic-bezier(.25,.8,.25,1);
-    transition:           all 0.3s cubic-bezier(.25,.8,.25,1);
-}
-
-#form-sticker input + div:hover {
-    background-color: #ddd;
-}
-
 /**************** Form Input ****************/
+
 .form-input {
-    display:        block;
-    /*margin:     auto;*/
-    width:          250px;
-    line-height:    2;
-    text-align:     left;
-    margin:         20px auto;
-    border:         none;
-    font-size:      1em;
-    background-color: transparent;
-    border-bottom: 1px solid #ccc;
+    display:            block;
+    width:              250px;
+    line-height:        2;
+    text-align:         left;
+    margin:             20px auto;
+    border:             none;
+    font-size:          1em;
+    background-color:   transparent;
+    border-bottom:      1px solid #ccc;
 
     -moz-transition:      border-color 0.3s;
     -webkit-transition:   border-color 0.3s;
@@ -721,248 +434,38 @@ img.perfect-box {
 }
 
 .form-input:focus {
-    /*outline: 1px dotted #000;*/
-    /*outline: -webkit-focus-ring-color auto 5px;*/
-    outline: none;
-    border-color: #2C3E50;
+    outline:        none;
+    border-color:   #2C3E50;
 }
 
 .form-input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 30px #F2F1EF inset !important;
-    /*-webkit-text-fill-color: transparent !important;*/
-    border-color: #E9D460;
+    border-color:       #E9D460;
 }
 
 .camagru-form {
-    width: 400px;
-    margin: auto;
-    text-align: center;
-    margin-top: 50px;
-    padding: 40px;
-    /*border: 1px solid #ccc;*/
-    overflow: auto;
-    border-radius: 4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    width:          400px;
+    margin:         auto;
+    text-align:     center;
+    margin-top:     50px;
+    padding:        40px;
+    overflow:       auto;
+    border-radius:  4px;
+    box-shadow:     0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .camagru-form div {
-    overflow: auto;
-    display: inline-block;
-    padding: 10px;
+    overflow:   auto;
+    display:    inline-block;
+    padding:    10px;
 }
 
 .camagru-form .btn {
-    font-size: .9em;
-    padding: 10px 20px;
+    font-size:  .9em;
+    padding:    10px 20px;
 }
 
-/**************** Modes ****************/
-
-#modes {
-    width:    420px;
-    margin:   0 auto;
-    overflow: auto;
-    
-}
-
-.mode-radio + label {
-    float:              left;
-    width:              50%;
-    padding:            10px 0;
-    background-color:   #ccc;
-}
-
-.mode-radio.inactive + label:hover {
-    color: white;
-}
-
-.mode-radio:disabled + label {
-    background-color: #ccc !important;
-    color: #999 !important;
-    cursor: default !important;
-}
-
-.mode-radio:checked + label {
-    background-color:   #EC644B;
-    color:              white;
-}
-
-#upload-mode:checked + #file-wrapper {
-    color: blue;
-}
-
-/**************** Upload File Input ****************/
-
-#file-wrapper {
-    width:      420px;
-    margin:     auto;
-    height:     0px;
-    padding:    0px;
-
-    -webkit-transition: height 0.8s, padding 0.8s;
-}
-
-#file-wrapper.active {
-    height: 39px;
-}
-
-#file-label {
-    -moz-transform:     background-color 0.3s;
-    -webkit-transition: background-color 0.3s;
-    transition:         background-color 0.3s;
-}
-
-.file-input.active + label{
-    padding: 10px 0;
-    -webkit-transition: padding 0.8s;
-}
-
-.file-input, .mode-radio {
-    width:      0px;
-    height:     0px;
-    opacity:    0;
-    overflow:   hidden;
-    position:   absolute;
-    z-index:    -1;
-}
-
-.file-input + label, .mode-radio + label {
-    text-align:         center;
-    display:            inline-block;
-    cursor:             pointer;
-
-    -moz-transform:     background-color 0.3s, color 0.3s;
-    -webkit-transition: background-color 0.3s, color 0.3s;
-    transition:         background-color 0.3s, color 0.3s;
-}
-
-.file-input + label {
-    width:              100%;
-    background-color:   #2C3E50;
-    color:              white;
-}
-
-.file-input:focus + label,
-.file-input + label:hover {
-    background-color: cornflowerblue;
-}
-
-.file-input + label:active {
-    background-color: #97C8FF;
-}
-
-.file-input:focus + label {
-    /*outline: 1px dotted #000;*/
-    /*outline: -webkit-focus-ring-color auto 5px;*/
-}
-
-.no-hover {
-    color: black;
-}
-
-/**************** User Post Page ****************/
-
-#post-wrapper {
-    max-width:  500px;
-    margin:     auto;
-    margin-top: 40px;
-    text-align: center;
-}
-
-.photo-box {
-    max-width:  400px;
-    max-height: 300px;
-    margin: auto;
-    
-}
-
-.photo-box-wrapper {
-    background-color: black;
-}
-
-.photo-box img {
-    flex-shrink: 0;
-    width:       400px;
-    height:      300px;
-    object-fit:  contain;
-}
-
-#post-box {
-    background-color: white;
-}
-.post-info {
-    height: 60px;
-    position: relative;
-}
-
-.post-info .post-author {
-    position:   absolute;
-    top:        10px;
-    left:       10px;
-}
-
-.post-info .post-time {
-    position:   absolute;
-    top:        34px;
-    left:       10px;
-    font-size: .7em;
-}
-
-.post-info .num-likes {
-    position:   absolute;
-    top:        22px;
-    right:      50px;
-}
-
-.post-info .btn-like, .post-info .btn-liked {
-    position:   absolute;
-    top:        15px;
-    right:      10px;
-    font-size:  2em;
-    color:      black;
-}
-
-.post-info .btn-liked, .post-info .btn-like:hover {
-    color: #D91E18;
-}
-
-#comments {
-    margin:             10px 0;
-    text-align:         left;
-    background-color:   white;
-}
-
-#comments p {
-    margin: 4px 0;
-}
-
-#write-comment {
-    overflow:       auto;
-    position:       relative;
-    padding-top:    15px;
-}
-
-#write-comment textarea {
-    resize:         none;
-    width:          466px;
-    border-radius:  2px;
-    border-color:   #d5d5d5;
-    font-family:    'Lato', sans-serif;
-    font-size:      1em;
-    font-weight:    100;
-    padding:        6px;
-    cursor:         text;
-}
-
-#write-comment textarea:focus {
-    outline:        none;
-    border-color:   #167ac6;
-}
-
-#write-comment span {
-    clear:      both;
-    display:    block;
-}
+/**************** Button ****************/
 
 .btn {
     float:              right;
@@ -986,6 +489,26 @@ img.perfect-box {
     background-color: #EC644B;
     box-shadow: none;
 }
+
+/**************** Colors ****************/
+
+.white {
+    color: #F2F1EF;
+}
+
+.black {
+    color: #2C3E50;
+}
+
+.red {
+    color: #EC644B;
+}
+
+.heart-red {
+    color: #D91E18;
+}
+
+/**************** Helpers ****************/
 
 .p-comment {
     white-space: pre-wrap;
@@ -1059,6 +582,78 @@ img.perfect-box {
     margin: 0;
 }
 
+.no-hover {
+    color: black;
+}
+
+/**************** Fade ****************/
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/**************** Font ****************/
+
+@font-face {
+  font-family: 'FontAwesome';
+  src:          url('../fonts/fontawesome-webfont.eot?v=4.7.0');
+  src:          url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
+  font-weight:  normal;
+  font-style:   normal;
+}
+
+.fa {
+  display:                  inline-block;
+  font:                     normal normal normal 14px/1 FontAwesome;
+  font-size:                inherit;
+  text-rendering:           auto;
+  -webkit-font-smoothing:   antialiased;
+  -moz-osx-font-smoothing:  grayscale;
+}
+
+.fa-heart:before {
+  content: "\f004";
+}
+
+.fa-heart-o:before {
+  content: "\f08a";
+}
+
+.fa-trash-o:before {
+  content: "\f014";
+}
+
+.fa-trash:before {
+  content: "\f1f8";
+}
+
+/**************** Some Responsiveness ****************/
+
 @media only screen and (max-width: 1000px) {
 }
 
@@ -1079,7 +674,6 @@ img.perfect-box {
         padding: 0;
     }
     .form-input {
-        /*width: 200px;*/
         width: 100%;
     }
 }

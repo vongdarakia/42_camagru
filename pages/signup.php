@@ -14,6 +14,7 @@
 
 session_start();
 require_once '../config/paths.php';
+require_once '../includes/lib/auth.php';
 
 if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
     header("Location: " . SITE_DIR);
@@ -39,14 +40,7 @@ require_once TEMPLATES_PATH . "/header.php";
 ?>
 
 <div id="container">
-    <h3 class="err-msg">
-    <?php
-    if (isset($_SESSION["err_msg"]) && $_SESSION["err_msg"] != "") {
-        echo "Error: " . $_SESSION["err_msg"];
-        $_SESSION["err_msg"] = "";
-    }
-    ?>
-    </h3>
+    <?php displayError(); ?>
     <form class="camagru-form" action="<?php echo ACTIONS_DIR ?>signup.php" method="post">
         <h2 class="thin">Sign Up</h2>
         <div>

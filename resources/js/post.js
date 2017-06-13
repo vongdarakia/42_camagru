@@ -477,6 +477,10 @@ function fileCapture() {
 function capture() {
     if (changingMode)
         return;
+    if (!document.querySelector('.radio-inline input[type=radio]:checked')) {
+        alert("A sticker must be selected.");
+        return;
+    }
 
     let isCameraMode = document.querySelectorAll('#modes input[type=radio]')[0].checked;
     

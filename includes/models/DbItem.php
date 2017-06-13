@@ -210,6 +210,7 @@ class DbItem
      * @param Int    $page  Which page of items we're trying to get.
      * @param Int    $limit How many items per page we want to see.
      * @param String $query Query we're applying a limit to.
+     * @param String $param Parameters for the query.
      *
      * @return Object
      *      $page  -> Page number

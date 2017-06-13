@@ -29,10 +29,4 @@ if (isset($_POST["username"])
     $_SESSION['err_msg'] = "Invalid login credentials";
     header("Location: ../pages/login.php");
 }
-
-// if (isset($_SESSION["user_email"]) && !empty($_SESSION["user_email"])) {
-    
-// } else {
-    
-// }
 ?>

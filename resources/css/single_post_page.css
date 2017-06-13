@@ -1,0 +1,103 @@
+/**************** User Post Page ****************/
+
+#post-wrapper {
+    max-width:  500px;
+    margin:     auto;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.photo-box {
+    max-width:  400px;
+    max-height: 300px;
+    margin: auto;
+    
+}
+
+.photo-box-wrapper {
+    background-color: black;
+}
+
+.photo-box img {
+    flex-shrink: 0;
+    width:       400px;
+    height:      300px;
+    object-fit:  contain;
+}
+
+#post-box {
+    background-color: white;
+}
+.post-info {
+    height: 60px;
+    position: relative;
+}
+
+.post-info .post-author {
+    position:   absolute;
+    top:        10px;
+    left:       10px;
+}
+
+.post-info .post-time {
+    position:   absolute;
+    top:        34px;
+    left:       10px;
+    font-size: .7em;
+}
+
+.post-info .num-likes {
+    position:   absolute;
+    top:        22px;
+    right:      50px;
+}
+
+.post-info .btn-like, .post-info .btn-liked {
+    position:   absolute;
+    top:        15px;
+    right:      10px;
+    font-size:  2em;
+    color:      black;
+}
+
+.post-info .btn-liked, .post-info .btn-like:hover {
+    color: #D91E18;
+}
+
+#comments {
+    margin:             10px 0;
+    text-align:         left;
+    background-color:   white;
+}
+
+#comments p {
+    margin: 4px 0;
+}
+
+#write-comment {
+    overflow:       auto;
+    position:       relative;
+    padding-top:    15px;
+}
+
+#write-comment textarea {
+    resize:         none;
+    width:          466px;
+    border-radius:  2px;
+    border-color:   #d5d5d5;
+    font-family:    'Lato', sans-serif;
+    font-size:      1em;
+    font-weight:    100;
+    padding:        6px;
+    cursor:         text;
+}
+
+#write-comment textarea:focus {
+    outline:        none;
+    border-color:   #167ac6;
+}
+
+#write-comment span {
+    clear:      both;
+    display:    block;
+}

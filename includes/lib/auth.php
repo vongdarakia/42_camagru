@@ -48,7 +48,7 @@ function auth($email, $pass)
  * first before checking it.
  *
  * @param String $username Email we're trying to find.
- * @param String $pass  Password to check if it matches the given username.
+ * @param String $pass     Password to check if it matches the given username.
  *
  * @return Boolean on if the password and username matches.
  */
@@ -152,16 +152,6 @@ function checkUserAuthentication($errMsg="You must be logged in first.")
     exit(0);
 }
 
-// function isValueHTML($value) {
-//     strip_tags
-// }
-
-// function areValuesHTML($values) {
-//     foreach ($values as $val) {
-//         if (strip_tags($val) == null)
-//     }
-// }
-
 /**
  * Displays error message if it exists for the session, then clears it.
  * So, it should only display once.
@@ -171,7 +161,9 @@ function checkUserAuthentication($errMsg="You must be logged in first.")
 function displayError()
 {
     if (isset($_SESSION["err_msg"]) && $_SESSION["err_msg"] != "") {
-        echo "<h4>Error: " . $_SESSION["err_msg"]."</h4>";
+        echo '<h3 class="err-msg">';
+        echo "Error: " . $_SESSION["err_msg"];
+        echo '</h3>';
         $_SESSION["err_msg"] = "";
     }
 }

@@ -32,9 +32,9 @@ try {
 
         $path = POSTS_PATH . $Post->getImgFile();
         
-        if ($Post->getId() > 0 &&
-            $Post->getAuthorId() == $User->getId() &&
-            $Post->removeById($post_id) == 1
+        if ($Post->getId() > 0
+            && $Post->getAuthorId() == $User->getId()
+            && $Post->removeById($post_id) == 1
         ) {
             if (file_exists($path)) {
                 unlink($path);    

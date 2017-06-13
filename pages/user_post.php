@@ -29,6 +29,7 @@ if (!isset($_GET["post_id"])) {
     header("Location: " . SITE_DIR);
 }
 
+$css_files = ['single_post_page.css'];
 $email = "";
 if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
     $email = $_SESSION["user_email"];
