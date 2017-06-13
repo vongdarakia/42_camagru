@@ -71,6 +71,7 @@ $logged_in    = isset($_SESSION["user_login"]) && $_SESSION["user_login"] != "";
 $user_login   = $logged_in ? $_SESSION["user_login"] : "";
 $placeholder  = "Commenting as {$user_login}...";
 $author_link  = PAGES_DIR . "user.php?user=";
+$disabled = !$logged_in ? "disabled" : "";
 
 if (!$logged_in) {
     $placeholder = "You must be logged in to comment";
@@ -134,10 +135,10 @@ require_once TEMPLATES_PATH . "/header.php";
                     name="comment"
                     placeholder="<?php echo $placeholder ?>"
                     post-id="<?php echo $post_id ?>"
-                    <?php echo !$logged_in ? "disabled" : "" ?>></textarea>
+                    <?php echo $disabled ?>></textarea>
                 <div>
                     <div id="btn-comment"
-                    class="btn back-shadow smooth-corners"
+                    class="btn back-shadow smooth-corners <?php echo $disabled ?>"
                     onclick="postComment()">Comment
                     </div>    
                 </div>
