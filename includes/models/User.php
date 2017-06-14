@@ -35,8 +35,12 @@ class User extends DbItem
     private $_username;
     private $_email;
     private $_password;
+    private $_verified;
+    public static $VERIFIED_FAILED = 0;
+    public static $VERIFIED_SUCCESS = 1;
+    public static $ALREADY_VERIFIED = 2;
     private static $_fields = array(
-        "id", "first", "last", "username", "email", "password"
+        "id", "first", "last", "username", "email", "password", "verified"
     );
     
     /**
@@ -54,6 +58,7 @@ class User extends DbItem
         $this->_username = "";
         $this->_email = "";
         $this->_password = "";
+        $this->_verified = 0;
         if (isset($fields)) {
             if ($this->validFields($fields, User::$_fields)) {
                 $this->setFields($fields);
@@ -246,6 +251,34 @@ class User extends DbItem
         }
         return false;
     }
+
+    /**
+     * Gets the verification status.
+     *
+     * @return Int the verification status.
+     */
+    public function getVerified()
+    {
+        return $this->_verified;
+    }
+
+    /**
+     * Sets the verification status.
+     *
+     * @param Int $value verification status.
+     *
+     * @return Boolean whether set was successful or not.
+     */
+    public function setVerified($value)
+    {
+        if (is_numeric($value)
+            && ($value == 1 || $value == 0)
+        ) {
+            $this->_verified = $value;
+            return true;
+        }
+        return false;
+    }
     
     /**
      * Returns whether the email is valid.
@@ -295,7 +328,8 @@ class User extends DbItem
                 last=:last,
                 username=:username,
                 email=:email,
-                password=:password
+                password=:password,
+                verified=:verified
             where id=:id";
         $stmt = $this->db->prepare($qry);
         $stmt->execute(
@@ -305,10 +339,42 @@ class User extends DbItem
                 ":username" => $this->_username,
                 ":email" => $this->_email,
                 ":password" => $this->_password,
+                ":verified" => $this->_verified,
                 ":id" => $this->id
             )
         );
         return $stmt->rowCount();
+    }
+
+    /**
+     * Verifies a user's account.
+     *
+     * @param String $code Email confirmation code.
+     *
+     * @return Boolean Success
+     */
+    public function verify($code) {
+        $qry = "update `user` u
+            inner join `email_confirmation` ec on u.id = ec.author_id
+            set verified=1
+            where ec.code=:code";
+        $stmt = $this->db->prepare($qry);
+        $stmt->execute(array(":code" => $code));
+
+        if ($stmt->rowCount() == 0) {
+            $qry = "select first from `user` u
+            inner join `email_confirmation` ec on ec.author_id = u.id
+            where ec.`code`=:code";
+            $stmt = $this->db->prepare($qry);
+            $stmt->execute(array(":code" => $code));
+            $user = $stmt->fetchObject();
+
+            if ($user) {
+                return User::$ALREADY_VERIFIED;
+            }
+            return User::$VERIFIED_FAILED;
+        }
+        return User::$VERIFIED_SUCCESS;
     }
 
     /**
@@ -360,6 +426,7 @@ class User extends DbItem
             $this->_username = $obj->username;
             $this->_email = $obj->email;
             $this->_password = $obj->password;
+            $this->_verified = $obj->verified;
             unset($obj);
             return true;
         } else {
@@ -369,6 +436,7 @@ class User extends DbItem
             $this->_username = "";
             $this->_email = "";
             $this->_password = "";
+            $this->_verified = "";
         }
         return false;
     }
@@ -454,6 +522,11 @@ class User extends DbItem
                     return false;
                 }
             }
+            if (array_key_exists('verified', $fields)) {
+                if (!$this->setVerified($fields['verified'])) {
+                    throw new Exception("verified is invalid.", 1);
+                }
+            }
             return true;
         }
         return false;
@@ -473,8 +546,8 @@ class User extends DbItem
         ) {
             $stmt = $this->db->prepare(
                 "insert into `{$this->table}`
-                (first, last, username, email, password)
-                values (:first, :last, :username, :email, :password)"
+                (first, last, username, email, password, verified)
+                values (:first, :last, :username, :email, :password, :verified)"
             );
             $stmt->execute(
                 array(
@@ -482,7 +555,8 @@ class User extends DbItem
                     ":last" => $this->_last,
                     ":username" => $this->_username,
                     ":email" => $this->_email,
-                    ":password" => $this->_password
+                    ":password" => $this->_password,
+                    ":verified" => $this->_verified
                 )
             );
             return $stmt->rowCount() == 1;

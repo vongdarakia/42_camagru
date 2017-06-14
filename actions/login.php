@@ -19,14 +19,19 @@ session_start();
 require_once '../config/paths.php';
 require_once '../includes/lib/auth.php';
 
-if (isset($_POST["username"])
-    && isset($_POST["password"])
-    && authUsername($_POST["username"], $_POST["password"])
-) {
-    header("Location: " . SITE_DIR);
-} else {
-    clearSession();
-    $_SESSION['err_msg'] = "Invalid login credentials";
-    header("Location: ../pages/login.php");
+if (isset($_POST["username"]) && isset($_POST["password"])) {
+    $auth = authUsername($_POST["username"], $_POST["password"]);
+
+    if ($auth === true) {
+        header("Location: " . SITE_DIR);
+    } else if ($auth === "Needs verification") {
+        $_SESSION['message'] = '<h2 class="thin">Sorry. Your account must '
+        . 'be verified first. Please check your email.</h2>';
+        header("Location: ../pages/message.php");
+        exit(0);
+    }
 }
+clearSession();
+$_SESSION['err_msg'] = "Invalid login credentials";
+header("Location: ../pages/login.php");
 ?>

@@ -43,24 +43,29 @@ try {
         exit(0);
     }
 
+    $code = hash('ripemd128', urldecode($_POST["email"]) . date('YmdHis'));
     if (signUp(
         urldecode($_POST["first"]),
         urldecode($_POST["last"]),
         urldecode($_POST["username"]),
         urldecode($_POST["email"]),
-        urldecode($_POST["password"])
+        urldecode($_POST["password"]),
+        $code
     )
     ) {
+
         $_SESSION["first"] = "";
         $_SESSION["last"] = "";
         $_SESSION["username"] = "";
         $_SESSION["email"] = "";
         $_SESSION["password"] = "";
-        initSession($_POST);
+        // initSession($_POST);
+
 
         $User = new User($dbh);
         $User->loadByEmail($_SESSION["email"]);
 
+        $url = WEBSITE_URL . ACTIONS_DIR . "verify_email.php?code=" . $code;
         $sub = "Camagru Sign-up Confirmation";
         $msg = "Thank you for signing up for Camagru, "
             . $_POST['first'] . " " . $_POST['last']
@@ -70,7 +75,16 @@ try {
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         mail($_SESSION['user_email'], $sub, $msg, $headers);
-        header("Location: " . SITE_DIR);
+        // header("Location: " . SITE_DIR);
+        $_SESSION['message'] = '<h2 class="thin"> Thank you for signing up for Camagru, '. urldecode($_POST["first"])
+        .'!</h2> <p class="thin">A confirmation email has been sent to '
+        . urldecode($_POST["email"]) .'</p>'
+        .'<p class="thin">Please verify your email before logging in.</p>';
+        header("Location: ../pages/message.php");
+    } else {
+        $_SESSION["message"] = '<h3 class="err-msg">Something happened. Please contact Akia Vongdara (vongdarakia@gmail.com) for support.</h3>';
+        header("Location: ../pages/message.php");
+        exit(0);
     }
 } catch (Exception $e) {
     $_SESSION["err_msg"] = $e->getMessage();

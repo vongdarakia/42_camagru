@@ -58,15 +58,19 @@ function authUsername($username, $pass)
     $user = new User($dbh);
     if ($user->passwordMatchesUsername($username, $pass)) {
         $user->loadByUsername($username);
-        initSession(
-            array(
-                "first" => $user->getFirstName(),
-                "last" => $user->getLastName(),
-                "username" => $user->getUsername(),
-                "email" => $user->getEmail()
-            )
-        );
-        return true;
+        if ($user->getVerified() == 1) {
+            initSession(
+                array(
+                    "first" => $user->getFirstName(),
+                    "last" => $user->getLastName(),
+                    "username" => $user->getUsername(),
+                    "email" => $user->getEmail()
+                )
+            );
+            return true;
+        } else {
+            return "Needs verification";
+        }
     }
     return false;
 }
@@ -80,10 +84,11 @@ function authUsername($username, $pass)
  * @param String $username Username
  * @param String $email    Email
  * @param String $password Password
+ * @param String $code     Verification code
  *
  * @return Boolean on if the password and email matches.
  */
-function signUp($first, $last, $username, $email, $password)
+function signUp($first, $last, $username, $email, $password, $code)
 {
     global $dbh;
     $user = new User($dbh);
@@ -95,15 +100,32 @@ function signUp($first, $last, $username, $email, $password)
         throw new Exception("Username already exists.", 1);
     }
 
-    return $user->add(
+    $success = $user->add(
         array(
             "first" => $first,
             "last" => $last,
             "username" => $username,
             "email" => $email,
-            "password" => $password
+            "password" => $password,
+            "verified" => 0
         )
     );
+
+    if ($success) {
+        $user->loadByEmail($email);
+        $sth = $dbh->prepare(
+            'insert into `email_confirmation` (author_id, code)
+            values (:author_id, :code)'
+        );
+        $sth->execute(
+            array(
+                ":author_id" => $user->getId(),
+                ":code" => $code
+            )
+        );
+        return true;
+    }
+    return false;
 }
 
 /**

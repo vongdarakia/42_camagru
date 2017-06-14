@@ -15,6 +15,9 @@
  *      Using Foreign Keys
  *      https://dev.mysql.com/doc/refman/5.6/en/create-table-foreign-keys.html
  *
+ *      What data type to use for hashed passwords
+ *      https://stackoverflow.com/questions/614476/storing-sha1-hash-values-in-mysql
+ *
  * PHP version 5.5.38
  *
  * @category  Config
@@ -39,6 +42,7 @@ require 'database.php';
  */
 function dropTables($dbh)
 {
+    $dbh->exec("drop table if exists `email_confirmation`");
     $dbh->exec("drop table if exists `comment`");
     $dbh->exec("drop table if exists `like`");
     $dbh->exec("drop table if exists `post`");
@@ -60,7 +64,8 @@ function createTables($dbh)
         last            varchar(35) not null,
         username        varchar(40) not null unique,
         email           varchar(40) not null unique,
-        password        varchar(128) not null,
+        password        char(128) not null,
+        verified        int not null default 0,
         creation_date   datetime default current_timestamp,
         update_date     datetime on update current_timestamp
     )";
@@ -96,6 +101,14 @@ function createTables($dbh)
         update_date     datetime on update current_timestamp
     )";
     $dbh->exec($qry);
+
+    $qry = "create table `email_confirmation` (
+        id              int not null auto_increment primary key,
+        author_id       int not null,
+        code            char(32) not null unique,
+        creation_date   datetime default current_timestamp
+    )";
+    $dbh->exec($qry);
 }
 
 /**
@@ -113,19 +126,21 @@ function insertDummyUsers($dbh)
             ":last" => "Doe",
             ":username" => "jdoe",
             ":email" => "jdoe@gmail.com",
-            ":password" => hash('whirlpool', "john")
+            ":password" => hash('whirlpool', "john"),
+            ":verified" => 1
         ),
         array(
             ":first" => "Akia",
             ":last" => "Vongdara",
             ":username" => "avongdar",
             ":email" => "vongdarakia@gmail.com",
-            ":password" => hash('whirlpool', "password")
+            ":password" => hash('whirlpool', "password"),
+            ":verified" => 1
         )
     );
     $sth = $dbh->prepare(
-        'insert into `user` (first, last, username, email, password)
-        values (:first, :last, :username, :email, :password)'
+        'insert into `user` (first, last, username, email, password, verified)
+        values (:first, :last, :username, :email, :password, :verified)'
     );
     foreach ($dummyData as $value) {
         $sth->execute($value);
@@ -138,7 +153,8 @@ function insertDummyUsers($dbh)
                 ":last" => "Vongdara" . $i,
                 ":username" => "avongdar" . $i,
                 ":email" => "vongdarakia".$i."@gmail.com",
-                ":password" => $password
+                ":password" => $password,
+                ":verified" => 1
             )
         );
     }
@@ -185,6 +201,30 @@ function insertDummyPosts($dbh)
     }
 }
 
+/**
+ * Inserts dummy data for email confirmations.
+ *
+ * @param String $dbh PDO Database handler.
+ *
+ * @return void
+ */
+function insertDummyEmailConfirmations($dbh)
+{
+    $sth = $dbh->prepare(
+        'insert into `email_confirmation` (author_id, code)
+        values (:author_id, :code)'
+    );
+
+    $code = hash('ripemd128', 'okay');
+    echo $code;
+    $sth->execute(
+        array(
+            ":author_id" => 2,
+            ":code" => $code
+        )
+    );
+}
+
 require 'paths.php';
 
 // Creates a database if it doesn't exist, then connects to it.
@@ -205,6 +245,7 @@ try {
     createTables($dbh);
     insertDummyUsers($dbh);
     insertDummyPosts($dbh);
+    insertDummyEmailConfirmations($dbh);
     if (!file_exists('../'.POSTS_DIR_NAME)) {
         mkdir('../'.POSTS_DIR_NAME);
     }
