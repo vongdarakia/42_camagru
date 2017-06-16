@@ -24,6 +24,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 
     if ($auth === true) {
         header("Location: " . SITE_DIR);
+        exit(0);
     } else if ($auth === "Needs verification") {
         $_SESSION['message'] = '<h2 class="thin">Sorry. Your account must '
         . 'be verified first. Please check your email.</h2>';
@@ -32,6 +33,6 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
     }
 }
 clearSession();
-$_SESSION['err_msg'] = "Invalid login credentials";
+$_SESSION['err_msg'] = "Invalid login credentials " . $_POST["username"] . $_POST["password"];
 header("Location: ../pages/login.php");
 ?>
