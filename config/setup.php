@@ -216,7 +216,6 @@ function insertDummyEmailConfirmations($dbh)
     );
 
     $code = hash('ripemd128', 'okay');
-    echo $code;
     $sth->execute(
         array(
             ":author_id" => 2,
