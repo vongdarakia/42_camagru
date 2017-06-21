@@ -70,7 +70,7 @@ try {
         $msg = "Thank you for signing up for Camagru, "
             . $_POST['first'] . " " . $_POST['last']
             . "!<br><br>Your username is " . $_POST['username']
-            . ".<br><br>We hope you enjoy the web app!";
+            . ".<br><br>Verify your email here: " . $url;
 
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";

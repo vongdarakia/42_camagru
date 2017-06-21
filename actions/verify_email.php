@@ -44,6 +44,15 @@ try {
         $stmt->execute(array(":code" => $code));
         $user = $stmt->fetchObject();
 
+        $url = WEBSITE_HOME_URL;
+        $sub = "Camagru: Your email have been verified!";
+        $msg = "Your email have been verified! Now you can log into your account!"
+            . "!<br><br>Your username is " . $_POST['username']
+            . ".<br><br>We hope you enjoy the <a href='" . $url . "'>app</a>!";
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        mail($user->email, $sub, $msg, $headers);
+
         $_SESSION["message"] = '<h2 class="thin"> Welcome to Camagru, '. $user->first
         .'!</h2> <p class="thin">Your email have been verified! Now you can log into your account!</p>';
         header("Location: ../pages/message.php");
