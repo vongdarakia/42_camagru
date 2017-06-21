@@ -16,7 +16,7 @@
     or define('SITE_ROOT', realpath(dirname(__DIR__)));
 
     defined("SITE_DIR")
-    or define('SITE_DIR', "/camagru");
+    or define('SITE_DIR', "");
 
     defined("TEMPLATES_PATH")
     or define("TEMPLATES_PATH", dirname(__DIR__) . '/templates');
@@ -59,8 +59,6 @@
 
     defined("WEBSITE_HOME_URL")
     or define("WEBSITE_HOME_URL", WEBSITE_URL . SITE_DIR);
-    
-    
 
     ini_set('display_errors', 1);
     error_reporting(E_ALL|E_STRICT);

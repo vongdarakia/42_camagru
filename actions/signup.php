@@ -24,7 +24,7 @@ try {
     $_SESSION["last"] = isset($_POST["last"]) ? $_POST["last"] : "";
     $_SESSION["username"] = isset($_POST["username"]) ? $_POST["username"] : "";
     $_SESSION["email"] = isset($_POST["email"]) ? $_POST["email"] : "";
-    
+
     if (!isset($_POST['first'])
         || !isset($_POST['last'])
         || !isset($_POST['username'])
@@ -36,7 +36,7 @@ try {
         header("Location: ../pages/signup.php");
         exit(0);
     }
-    
+
     if (strcmp($_POST['password'], $_POST['password2']) != 0) {
         $_SESSION["err_msg"] = 'Passwords do not match.';
         header("Location: ../pages/signup.php");
@@ -63,7 +63,7 @@ try {
 
 
         $User = new User($dbh);
-        $User->loadByEmail($_SESSION["email"]);
+        $User->loadByEmail($_POST["email"]);
 
         $url = WEBSITE_URL . ACTIONS_DIR . "verify_email.php?code=" . $code;
         $sub = "Camagru Sign-up Confirmation";
@@ -74,7 +74,7 @@ try {
 
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-        mail($_SESSION['user_email'], $sub, $msg, $headers);
+        mail($_POST['email'], $sub, $msg, $headers);
         // header("Location: " . SITE_DIR);
         $_SESSION['message'] = '<h2 class="thin"> Thank you for signing up for Camagru, '. urldecode($_POST["first"])
         .'!</h2> <p class="thin">A confirmation email has been sent to '
