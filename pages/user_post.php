@@ -26,7 +26,7 @@ require_once '../includes/models/Post.php';
 require_once '../includes/models/User.php';
 
 if (!isset($_GET["post_id"])) {
-    header("Location: " . SITE_DIR);
+    header("Location: " . WEBSITE_HOME_URL);
 }
 
 $css_files = ['single_post_page.css'];
@@ -54,7 +54,7 @@ $img_path = $relative_path . POSTS_DIR_NAME . "/" . $post->img_file;
 if (!file_exists($img_path)) {
     $img_path = IMG_DIR . "image-not-available.png";
 } else {
-    $img_path = SITE_DIR . "/" . POSTS_DIR_NAME . "/" . $post->img_file;
+    $img_path = WEBSITE_HOME_URL . "/" . POSTS_DIR_NAME . "/" . $post->img_file;
 }
 
 $comments = $Post->getComments($_GET["post_id"]);
