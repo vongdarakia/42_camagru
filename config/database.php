@@ -17,5 +17,5 @@
     $DB_DSN_HOST_ONLY = "mysql:host={$DB_HOST}";
     $DB_DSN = "mysql:dbname={$DB_NAME};host={$DB_HOST}";
     $DB_USER = "root";
-    $DB_PASSWORD = "password";  
+    $DB_PASSWORD = "ft_salad";  
 ?>
