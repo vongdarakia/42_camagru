@@ -364,7 +364,7 @@ class User extends DbItem
         if ($stmt->rowCount() == 0) {
             $qry = "select first from `user` u
             inner join `email_confirmation` ec on ec.author_id = u.id
-            where ec.`code`=:code";
+            where ec.`code`=:code and verified=1";
             $stmt = $this->db->prepare($qry);
             $stmt->execute(array(":code" => $code));
             $user = $stmt->fetchObject();

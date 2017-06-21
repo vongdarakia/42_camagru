@@ -58,7 +58,7 @@ try {
         $_SESSION["last"] = "";
         $_SESSION["username"] = "";
         $_SESSION["email"] = "";
-        $_SESSION["password"] = "";
+        // $_SESSION["password"] = "";
         // initSession($_POST);
 
 

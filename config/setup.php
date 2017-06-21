@@ -133,7 +133,7 @@ function insertDummyUsers($dbh)
             ":first" => "Akia",
             ":last" => "Vongdara",
             ":username" => "avongdar",
-            ":email" => "vongdarakia@gmail.com",
+            ":email" => "avongdar@student.42.us.org",
             ":password" => hash('whirlpool', "password"),
             ":verified" => 1
         )

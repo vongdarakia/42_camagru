@@ -16,7 +16,7 @@
     or define('SITE_ROOT', realpath(dirname(__DIR__)));
 
     defined("SITE_DIR")
-    or define('SITE_DIR', "");
+    or define('SITE_DIR', "/camagru");
 
     defined("TEMPLATES_PATH")
     or define("TEMPLATES_PATH", dirname(__DIR__) . '/templates');
