@@ -30,9 +30,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         header("Location: " . WEBSITE_HOME_URL . "/pages/message.php");
         exit;
     }
-    echo "bad";
 }
 clearSession();
-$_SESSION['err_msg'] = "Invalid login credentials " . $_POST["username"] . $_POST["password"];
+$_SESSION['err_msg'] = "Invalid login credentials";
 header("Location: ../pages/login.php");
 ?>
