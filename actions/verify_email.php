@@ -31,7 +31,7 @@ try {
             $_SESSION["message"] = '<h3 class="err-msg">This email has already be verified.</h3>';
             header("Location: ../pages/message.php");
             exit(0);
-        } else {
+        } else if ($status == User::$VERIFIED_SUCCESS) {
             $_SESSION["message"] = '<h3 class="err-msg">Failed to verify email. Please contact Akia Vongdara (vongdarakia@gmail.com) for support.</h3>';
             header("Location: ../pages/message.php");
             exit(0);
