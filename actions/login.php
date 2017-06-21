@@ -22,12 +22,12 @@ require_once '../includes/lib/auth.php';
 if (isset($_POST["username"]) && isset($_POST["password"])) {
     $auth = authUsername($_POST["username"], $_POST["password"]);
     if ($auth === true) {
-        header("Location: http:\/\/192.241.202.155/" . SITE_DIR);
+        header("Location: " . WEBSITE_HOME_URL);
         exit;
     } else if ($auth === "Needs verification") {
         $_SESSION['message'] = '<h2 class="thin">Sorry. Your account must '
         . 'be verified first. Please check your email.</h2>';
-        header("Location: " . SITE_DIR . "/pages/message.php");
+        header("Location: " . WEBSITE_HOME_URL . "/pages/message.php");
         exit;
     }
     echo "bad";

@@ -17,7 +17,7 @@ require_once '../config/paths.php';
 require_once '../includes/lib/auth.php';
 
 if (isset($_SESSION["user_email"]) && $_SESSION["user_email"] != "") {
-    header("Location: " . SITE_DIR);
+    header("Location: " . WEBSITE_HOME_URL);
     exit(0);
 }
 

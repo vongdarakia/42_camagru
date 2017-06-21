@@ -170,7 +170,7 @@ function checkUserAuthentication($errMsg="You must be logged in first.")
         return;
     }
     $_SESSION["err_msg"] = $errMsg;
-    header("location: " . SITE_DIR . "/pages/login.php");
+    header("location: " . WEBSITE_HOME_URL . "/pages/login.php");
     exit(0);
 }
 
