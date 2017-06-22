@@ -412,7 +412,7 @@ function captureImage() {
     } else {
         title = "";
     }
-
+    console.log("Capturing image");
     ajax({
         url: actionDir + "post.php",
         data: {
@@ -423,9 +423,10 @@ function captureImage() {
         },
         method: "post",
         success: function(res) {
+	    console.log(res);
             if (res.indexOf("Error") < 0) {
                 res = JSON.parse(res);
-                // console.log(res);
+                console.log(res);
                 createUserUploadBox(res, document.getElementById('photos'));
             } else {
                 console.log(res);

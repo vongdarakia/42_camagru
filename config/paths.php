@@ -16,7 +16,7 @@
     or define('SITE_ROOT', realpath(dirname(__DIR__)));
 
     defined("SITE_DIR")
-    or define('SITE_DIR', "/camagru");
+    or define('SITE_DIR', "");
 
     defined("TEMPLATES_PATH")
     or define("TEMPLATES_PATH", dirname(__DIR__) . '/templates');
@@ -55,7 +55,7 @@
     or define("POSTS_PATH", SITE_ROOT . '/' . POSTS_DIR_NAME . '/');
 
     defined("WEBSITE_URL")
-    or define("WEBSITE_URL", 'http://localhost:8080');
+    or define("WEBSITE_URL", 'https://192.241.202.155');
 
     defined("WEBSITE_HOME_URL")
     or define("WEBSITE_HOME_URL", WEBSITE_URL . SITE_DIR);
