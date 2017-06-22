@@ -37,7 +37,7 @@
 <div id="header">
     <div class="container">
         <div class="left-col">
-            <a href="<?php echo SITE_DIR; ?>">
+            <a href="<?php echo WEBSITE_HOME_URL; ?>">
                 <span class="white">Cam</span><span class="black">agru</span>
             </a>
         </div>
