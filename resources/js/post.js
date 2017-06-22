@@ -427,6 +427,8 @@ function captureImage() {
                 res = JSON.parse(res);
                 // console.log(res);
                 createUserUploadBox(res, document.getElementById('photos'));
+            } else {
+                console.log(res);
             }
         },
         error: function(err) {
@@ -438,6 +440,8 @@ function captureImage() {
             } else if (err.indexOf("No image") >= 0){
                 // console.log(err);
                 alert("Please select an file first.");
+            } else {
+                alert(err);
             }
         }
     });
